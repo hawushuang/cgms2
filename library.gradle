@@ -1,0 +1,152 @@
+group = 'com.microtechmd'
+
+apply plugin: 'maven'
+apply plugin: 'com.android.library'
+
+/*repositories {
+	maven {
+		url 'http://127.0.0.1:8088/content/repositories/releases/'
+	}
+
+	maven {
+		url 'http://127.0.0.1:8088/content/repositories/snapshots/'
+	}
+
+	maven {
+		url 'http://127.0.0.1:8088/content/repositories/thirdparty/'
+	}
+
+	maven {
+		url 'http://127.0.0.1:8088/content/repositories/jcenter/'
+	}
+
+	maven {
+		url 'http://127.0.0.1:8088/content/repositories/central/'
+	}
+}*/
+
+android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+            jni.srcDirs = []
+//            jniLibs.srcDirs = ['libs']
+//            jniLibs.srcDirs = []
+        }
+
+        // Move the tests to tests/java, tests/res, etc...
+        instrumentTest.setRoot('tests')
+
+        // Move the build types to build-types/<type>
+        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+        // This moves them out of them default location under src/<type>/... which would
+        // conflict with src/ being used by the main source set.
+        // Adding new build types or product flavors should be accompanied
+        // by a similar customization.
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+
+	ext.ndkBuildCmd = getNdkBuildCmd()
+
+	if (ext.ndkBuildCmd != null)
+	{
+		task buildJNI(type:Exec) {
+			workingDir file('./')
+			commandLine android.ext.ndkBuildCmd
+		}
+
+		tasks.withType(JavaCompile) {
+			compileTask -> compileTask.dependsOn buildJNI
+		}
+
+		task cleanJNI(type:Exec) {
+			workingDir file('./')
+			commandLine android.ext.ndkBuildCmd, 'clean'
+		}
+
+		clean.dependsOn cleanJNI
+	}
+}
+
+def getNdkBuildCmd() {
+	Properties properties = new Properties()
+	File localProperties = project.rootProject.file('local.properties')
+
+	if (!localProperties.exists()) {
+		return null
+	}
+
+	properties.load(localProperties.newDataInputStream())
+	def ndkDir = properties.getProperty('ndk.dir', null)
+
+	if (ndkDir == null) {
+		return null
+	}
+
+	File jniDir = file('jni');
+
+	if (!jniDir.exists())
+	{
+		return null
+	}
+
+	return ndkDir + "/ndk-build.cmd"
+}
+
+uploadArchives {
+	repositories.mavenDeployer {
+		repository(url: 'http://127.0.0.1:8088/content/repositories/releases/') {
+			authentication(userName: 'deployment', password: 'weitai')
+		}
+
+		snapshotRepository(url: 'http://127.0.0.1:8088/content/repositories/snapshots/') {
+			authentication(userName: 'deployment', password: 'weitai')
+		}
+
+		pom.project {
+			packaging 'aar'
+		}
+	}
+}
+
+android.libraryVariants.all { variant ->
+	if(variant.name == 'release') {
+		task javadoc(type: Javadoc) {
+			options.encoding = 'UTF-8'
+			source = variant.javaCompile.source
+			classpath = files(variant.javaCompile.classpath.files, project.android.getBootClasspath())
+            exclude '**/BuildConfig.java'
+            exclude '**/R.java'
+		}
+
+		task javadocJar(type: Jar, dependsOn: javadoc) {
+			classifier = 'javadoc'
+			from javadoc.destinationDir
+		}
+
+		artifacts {
+			archives javadocJar
+		}
+	}
+}
+
+task sourceJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives sourceJar
+}

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.microtechmd.pda"
+    android:sharedUserId="android.uid.system"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="25" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.RECEIVE_SHUTDOWN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <application
+        android:name="com.microtechmd.pda.ApplicationPDA"
+        android:allowBackup="true"
+        android:debuggable="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/theme_pda" >
+
+        <!-- android:theme="@android:style/Theme.NoTitleBar.Fullscreen" -->
+        <activity
+            android:name="com.microtechmd.pda.ui.activity.ActivityMain"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <!--
+                <category android:name="android.intent.category.HOME_REDEFINE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.MONKEY" />
+                -->
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.microtechmd.pda.ui.activity.ActivityUnlock"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.microtechmd.pda.ui.activity.ActivityBgApply"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.microtechmd.pda.ui.activity.ActivityBgEnter"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.microtechmd.pda.ui.activity.ActivityBgProcessing"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.microtechmd.pda.ui.activity.ActivityHistoryLog"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

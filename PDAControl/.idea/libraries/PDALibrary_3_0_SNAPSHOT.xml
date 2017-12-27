@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="PDALibrary-3.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../PDA/build/intermediates/exploded-aar/com.microtechmd/PDALibrary/3.0-SNAPSHOT/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../PDA/build/intermediates/exploded-aar/com.microtechmd/PDALibrary/3.0-SNAPSHOT/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.microtechmd/PDALibrary/3.0-SNAPSHOT/9dbfce40d7bf6d0b9749b8429f19bfa571320c5f/PDALibrary-3.0-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.microtechmd/PDALibrary/3.0-SNAPSHOT/9dbfce40d7bf6d0b9749b8429f19bfa571320c5f/PDALibrary-3.0-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.microtechmd/PDALibrary/3.0-SNAPSHOT/9dbfce40d7bf6d0b9749b8429f19bfa571320c5f/PDALibrary-3.0-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

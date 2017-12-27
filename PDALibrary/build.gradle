@@ -1,0 +1,17 @@
+buildscript {
+    repositories {
+		jcenter()
+		mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.0'
+    }
+}
+
+version = '3.0-SNAPSHOT'
+apply from: '../library.gradle'
+
+android {
+	compileSdkVersion 25
+	buildToolsVersion '26.0.2'
+}

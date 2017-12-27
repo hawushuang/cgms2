@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:paddingLeft="@dimen/size12"
+	android:paddingRight="@dimen/size8">
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_centerVertical="true"
+		android:orientation="vertical">
+
+		<TextView
+			android:id="@+id/tv_item_name"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/black"
+			android:textSize="@dimen/size18"
+			android:textStyle="bold"/>
+
+		<TextView
+			android:id="@+id/tv_item_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/size8"
+			android:textColor="@color/setting_text_purple"
+			android:textSize="@dimen/size16"/>
+	</LinearLayout>
+
+	<ImageView
+		android:id="@+id/iv_icon"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_centerVertical="true"
+		android:contentDescription="@string/app_name"
+		android:src="@drawable/icon_arrow_purple"/>
+
+	<CheckBox
+		android:id="@+id/rb_checkbox"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignLeft="@id/iv_icon"
+		android:layout_centerVertical="true"
+		android:button="@drawable/radio_button"
+		android:clickable="false"
+		android:focusable="false"/>
+
+</RelativeLayout>

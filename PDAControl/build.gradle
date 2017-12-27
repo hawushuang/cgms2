@@ -1,0 +1,46 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.0'
+    }
+}
+
+version = '3.0-SNAPSHOT'
+apply from: '../application.gradle'
+
+dependencies {
+    compile project(':PDALibrary')
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
+
+    signingConfigs {
+        signConfig {
+            storeFile file('sign.keystore')
+            storePassword 'weitai'
+            keyAlias 'pda'
+            keyPassword 'weitai'
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.signConfig
+        }
+
+        release {
+            signingConfig signingConfigs.signConfig
+        }
+    }
+
+    externalNativeBuild {
+        ndkBuild {
+            path file("jni//Android.mk")
+        }
+    }
+}

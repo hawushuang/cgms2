@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+		jcenter()
+		mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.0'
+    }
+}
+
+version = '3.0-SNAPSHOT'
+apply from: '../application.gradle'
+
+dependencies {
+	compile project(':PDALibrary')
+	compile project(':SeekArc_library')
+	compile 'com.android.support:appcompat-v7:25.0.1'
+	compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+
+//	compile 'com.github.feeeei:CircleSeekbar:v1.1.2'
+}
+
+android{
+	compileSdkVersion 25
+	buildToolsVersion '26.0.2'
+
+	signingConfigs {
+		signConfig {
+			storeFile file('sign.keystore')
+			storePassword 'weitai'
+			keyAlias 'pda'
+			keyPassword 'weitai'
+		}
+	}
+
+	buildTypes {
+		debug {
+			signingConfig signingConfigs.signConfig
+		}
+
+		release {
+			signingConfig signingConfigs.signConfig
+		}
+	}
+}

@@ -1,0 +1,41 @@
+<project name="jarsigner" default="signapk" basedir="./">
+
+	<!-- you project name -->
+	<property name="project.name" value="PDAModel"/><!-- 你工程的名称 -->
+
+	<property name="project.bin" value="${basedir}/bin"/>
+
+	<!-- Window下签名 -->
+	<property name="signapk.dir" value="${basedir}/mytool"/><!-- 签名包所在的路径 -->
+	<property name="platform.dir" value="${signapk.dir}/security/"/><!-- 签名包所在的路径 -->
+	<property name="apk.unsign" value="${project.bin}/${project.name}.apk"/>
+	<property name="apk.sign" value="${project.bin}/${project.name}-sign.apk"/>
+
+	<!--	Linux下签名
+	<property name="platform.dir" value="${user.dir}/mydroidsdk/build/target/product/security/"></property>
+	<property name="signapk.dir" value="${user.dir}/mydroidsdk/out/host/linux-x86/framework/"></property>
+	<property name="apk.unsign" value="${project.bin}/${project.name}.apk"></property>
+	<property name="apk.sign" value="${project.bin}/${project.name}-sign.apk"></property>
+	-->
+	
+	<!-- sign you project apk -->
+	<target name="only-signapk">
+		<echo message="signapk......">
+		</echo>
+		<java jar="${signapk.dir}/signapk.jar" fork="true">
+			<arg line="${platform.dir}/platform.x509.pem" />
+			<arg line="${platform.dir}/platform.pk8" />
+			<arg line="${apk.unsign}" />
+			<arg line="${apk.sign}" />
+		</java>
+
+	</target>
+
+	<!-- delete you project apk and rename you project apk -->
+	<target name="signapk" depends="only-signapk">
+		<echo message="changeFile......">
+		</echo>
+		<delete file="${apk.unsign}" />
+		<rename src="${apk.sign}" dest="${apk.unsign}" />
+	</target>
+</project>

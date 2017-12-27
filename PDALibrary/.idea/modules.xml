@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Code.iml" filepath="$PROJECT_DIR$/../Code.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../PDA/PDA.iml" filepath="$PROJECT_DIR$/../PDA/PDA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../PDAControl/PDAControl.iml" filepath="$PROJECT_DIR$/../PDAControl/PDAControl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PDALibrary.iml" filepath="$PROJECT_DIR$/PDALibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../PDAModel/PDAModel.iml" filepath="$PROJECT_DIR$/../PDAModel/PDAModel.iml" />
+    </modules>
+  </component>
+</project>

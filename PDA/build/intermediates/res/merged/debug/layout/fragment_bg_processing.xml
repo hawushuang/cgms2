@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/background_dark">
+
+	<android.support.v7.widget.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="38dp"
+		style="?style_bar_title"
+		app:navigationIcon="@null">
+
+		<TextView
+			android:id="@+id/text_view_title_bar"
+			style="?style_text_title_bar"
+			android:text="@string/activity_main_tab_calibration"/>
+	</android.support.v7.widget.Toolbar>
+
+	<TextView
+		android:id="@+id/tv_pro"
+		style="?style_text_medium"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="@dimen/size35"
+		android:layout_marginTop="65dp"
+		android:text="@string/actions_bg_process"/>
+
+	<ProgressBar
+		android:layout_width="142dp"
+		android:layout_height="142dp"
+		android:layout_below="@id/tv_pro"
+		android:layout_centerHorizontal="true"
+		android:layout_gravity="center_horizontal"
+		android:layout_marginBottom="@dimen/size10"
+		android:layout_marginLeft="@dimen/size20"
+		android:layout_marginRight="@dimen/size20"
+		android:layout_marginTop="@dimen/size10"
+		android:background="@drawable/load_01"
+		android:indeterminateDrawable="@drawable/progress_circle"/>
+
+	<TextView
+		android:id="@+id/tv_progress"
+		style="@style/text_28_black"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/tv_pro"
+		android:layout_marginLeft="@dimen/size150"
+		android:layout_marginTop="@dimen/size64"
+		android:textColor="@color/text_white"
+		android:text="5"/>
+
+</RelativeLayout>

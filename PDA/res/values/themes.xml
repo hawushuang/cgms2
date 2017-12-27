@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<style name="theme_pda" parent="Theme.AppCompat.NoActionBar">
+		<item name="android:windowFullscreen">true</item>
+		<item name="android:windowContentOverlay">@null</item>
+
+		<item name="style_text_base">@style/text_base</item>
+		<item name="style_text_white">@style/text_white</item>
+		<item name="style_text_black">@style/text_black</item>
+		<item name="style_text_tiny">@style/text_tiny</item>
+		<item name="style_text_small">@style/text_small</item>
+		<item name="style_text_medium">@style/text_medium</item>
+		<item name="style_text_big">@style/text_big</item>
+		<item name="style_text_large">@style/text_large</item>
+		<item name="style_text_title_bar">@style/text_title_bar</item>
+		<item name="style_text_panel_title">@style/text_panel_title</item>
+		<item name="style_text_panel_subtitle">@style/text_panel_subtitle</item>
+		<item name="style_text_panel_comment">@style/text_panel_comment</item>
+		<item name="style_text_input">@style/text_input</item>
+		<item name="style_button_base">@style/button_base</item>
+		<item name="style_button_small">@style/button_small</item>
+		<item name="style_button_tab_main">@style/button_tab_main</item>
+		<item name="style_bar_title">@style/bar_title</item>
+		<item name="style_image_divider">@style/image_divider</item>
+		<item name="style_edit_input">@style/edit_input</item>
+	</style>
+
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<RadioGroup
+		android:id="@+id/radio_group_tab"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:orientation="horizontal">
+
+		<com.microtechmd.pda.ui.widget.WidgetRadioButton
+			android:id="@+id/radio_button_tab_home"
+			style="?style_button_tab_main"
+			android:drawableTop="@drawable/button_tab_main_home"
+			android:text="@string/activity_main_tab_home"/>
+
+		<com.microtechmd.pda.ui.widget.WidgetRadioButton
+			android:id="@+id/radio_button_tab_calibration"
+			style="?style_button_tab_main"
+			android:drawableTop="@drawable/button_tab_main_calibration"
+			android:text="@string/activity_main_tab_calibration"/>
+
+		<com.microtechmd.pda.ui.widget.WidgetRadioButton
+			android:id="@+id/radio_button_tab_settings"
+			style="?style_button_tab_main"
+			android:drawableTop="@drawable/button_tab_main_settings"
+			android:text="@string/activity_main_tab_settings"/>
+	</RadioGroup>
+
+	<FrameLayout
+		android:id="@+id/layout_fragment"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_above="@id/radio_group_tab">
+	</FrameLayout>
+
+</RelativeLayout>

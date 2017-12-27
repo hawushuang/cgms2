@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:drawable="@drawable/icon_work_drum0"
+        android:maxLevel="22"/>
+
+    <item
+        android:drawable="@drawable/icon_work_drum1"
+        android:maxLevel="44"/>
+
+    <item
+        android:drawable="@drawable/icon_work_drum2"
+        android:maxLevel="66"/>
+
+    <item
+        android:drawable="@drawable/icon_work_drum3"
+        android:maxLevel="88"/>
+
+    <item
+        android:drawable="@drawable/icon_work_drum4"
+        android:maxLevel="110"/>
+
+    <item
+        android:drawable="@drawable/icon_work_drum5"
+        android:maxLevel="132"/>
+
+    <item
+        android:drawable="@drawable/icon_work_drum6"
+        android:maxLevel="154"/>
+
+    <item
+        android:drawable="@drawable/icon_work_drum7"
+        android:maxLevel="176"/>
+
+    <item
+        android:drawable="@drawable/icon_work_drum8"
+        android:maxLevel="200"/>
+
+    <item
+        android:drawable="@drawable/icon_work_drum_nosignal"
+        android:maxLevel="300"/>
+
+</level-list>

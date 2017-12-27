@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="library-1.1-SNAPSHOT">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../PDA/build/intermediates/exploded-aar/com.microtechmd/library/1.1-SNAPSHOT/res" />
+      <root url="jar://$PROJECT_DIR$/../PDA/build/intermediates/exploded-aar/com.microtechmd/library/1.1-SNAPSHOT/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.microtechmd/library/1.1-SNAPSHOT/319ac0a12bfecf062ba79442ffa6a892236fbd78/library-1.1-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

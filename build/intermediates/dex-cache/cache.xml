@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.0.1.aar\ec460cd1a1c9e8c4a99700d9dd9a1d23\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="bc7e99e8d0fc279a05aa91378530f467ad62d443">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\13.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\AppData\Local\Android\Sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.0-beta4\constraint-layout-solver-1.0.0-beta4.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="0a9cb567dc008f570c28531720168f19148da965">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\support-fragment-25.0.1.aar\172f1f32b03719218df97fc862b072c0\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="26c6eef571592c91f29e56fda0bac73321de0c92">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.0.1.aar\ec460cd1a1c9e8c4a99700d9dd9a1d23\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\14.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.0.1.aar\07a7292a1f0bec283d794f9a2de4e661\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="f7ac4b327fdb9e2ee386f5adc46164927658de4b">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\AppData\Local\Android\Sdk\extras\android\m2repository\com\android\support\support-annotations\25.0.1\support-annotations-25.0.1.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="a09194311f8f89c3e6db09d79f50897a889d615e">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\17.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.0-beta4.aar\de03c2b1f98a230deaca6e98ab3c93f8\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="662d7533b25a666c649c10a16b42edfb95f25a4f">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.0.1.aar\e2d0c39baeddd757d2d4c358239b7791\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="f83b00041ecfba705603fec40363416c7de69719">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\10.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\support-fragment-25.0.1.aar\172f1f32b03719218df97fc862b072c0\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="c0bd6ffb002a85b5e7cad29f8558d1cc59539679">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\support-v4-25.0.1.aar\50ff4b0f1027d584002119e518ce7c3e\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.0.1.aar\f9943d5987b1ea647c22ff0de377e967\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="b24e1c688744078e1fa833ffadf696794761bbe5">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Project\cgms2\PDALibrary\build\intermediates\intermediate-jars\release\classes.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="e80e16642b8d9ff5206a1ca86a894b277eb04a4a">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\18.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.0.1.aar\77bd3331b70a8fbba8e5b675846735bd\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="00d4c8eebf2b681073c72a26bd0849549e51c7cb">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\11.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.0.1.aar\e2d0c39baeddd757d2d4c358239b7791\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="6a1479afe9f1b3645e1cd9a87318976893472818">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.0.1.aar\77bd3331b70a8fbba8e5b675846735bd\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="c5b7145fb34779b6639147b8f2f8dd77c0db771b">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\12.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\support-compat-25.0.1.aar\f3fe42d2684bb29e614ea2b7dbb3d05d\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="51eba4a4dd73044f90a9d58dd7ca34adbebfcf4e">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\15.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\support-compat-25.0.1.aar\f3fe42d2684bb29e614ea2b7dbb3d05d\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="3af8cc51ef7088e56f132780da8c0bd858b6a6ad">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\16.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.0.1.aar\d80c32d227d518dbc838de894bbb7449\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="9"
+        optimize="true"
+        revision="26.0.2"
+        sha1="772bed2d992b67b9d0327f766cc95cd63031dcd3">
+        <dex dex="E:\Project\cgms2\PDA\build\intermediates\transforms\preDex\release\4.jar" />
+    </item>
+
+</items>

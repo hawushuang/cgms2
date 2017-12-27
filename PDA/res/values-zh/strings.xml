@@ -1,0 +1,732 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="text">文本</string>
+	<string name="image">图像</string>
+	<string name="list">列表</string>
+	<string name="table">表格</string>
+	<string name="graph">图表</string>
+	<string name="statistics">统计</string>
+	<string name="readings">次</string>
+	<string name="days">天</string>
+	<string name="all">全部</string>
+	<string name="average">平均值</string>
+	<string name="before_meal">餐前</string>
+	<string name="after_meal">餐后</string>
+	<string name="date">日期</string>
+	<string name="midnight">凌晨</string>
+	<string name="breakfast">早餐</string>
+	<string name="lunch">午餐</string>
+	<string name="dinner">晚餐</string>
+	<string name="bedtime">睡前</string>
+	<string name="bg">血糖</string>
+	<string name="carbs">饮食</string>
+	<string name="normal">正常值</string>
+	<string name="hyper">高血糖</string>
+	<string name="hypo">低血糖</string>
+	<string name="loading">加载中&#8230;</string>
+	<string name="connecting">连接中&#8230;</string>
+	<string name="searching">搜索中&#8230;</string>
+	<string name="search_again">重新搜索</string>
+	<string name="message">消息</string>
+	<string name="more">更多</string>
+	<string name="register">注册</string>
+	<string name="login">登录</string>
+	<string name="device">设备</string>
+	<string name="alarm">提醒</string>
+	<string name="knowledge">知识</string>
+	<string name="mall">商城</string>
+	<string name="setting">设置</string>
+	<string name="about">关于</string>
+	<string name="add">添加</string>
+	<string name="remove">删除</string>
+	<string name="toast_network_connection_failed">网络连接失败</string>
+	<string name="toast_network_device_not_open">网络设备未打开</string>
+	<string name="toast_bluetooth_device_not_support">不支持蓝牙设备</string>
+	<string name="unit_percentage">%</string>
+
+	<!-- fragment -->
+	<string name="fragment_home_last_bg_level">最近血糖值</string>
+	<string name="fragment_home_average_bg">平均血糖值</string>
+	<string name="fragment_home_week">最近一周</string>
+	<string name="fragment_home_month">最近一月</string>
+	<string name="fragment_home_add_data">+ 数据记录</string>
+	<string name="fragment_home_remaining_battery">剩余电量</string>
+	<string name="fragment_home_last_sync">更新于</string>
+	<string name="fragment_calibration_insert_strip">请插入血糖试纸进行校准</string>
+	<string name="fragment_manual_calibration">手动校准</string>
+	<string name="fragment_calibrate">校准</string>
+	<string name="fragment_settings_pairing">发射器配对</string>
+	<string name="fragment_settings_unpair">对该发射器控制权将被取消，是否继续？</string>
+	<string name="recovery_pair">如果重置，对该发射器控制权将被取消并且清除日志，是否继续？</string>
+	<string name="fragment_settings_hi_bg_threshold">高血糖阈值</string>
+	<string name="fragment_settings_lo_bg_threshold">低血糖阈值</string>
+	<string name="fragment_settings_language">中文</string>
+	<string name="fragment_settings_hyper_error">高血糖阈值范围是8mmol/L到25mmol/L</string>
+	<string name="fragment_settings_hypo_error">低血糖阈值范围是2mmol/L到5mmol/L</string>
+	<string name="fragment_settings_startup">传感器初始化中&#8230;</string>
+
+	<!-- activity -->
+	<string name="activity_main_tab_home">首页</string>
+	<string name="activity_main_tab_calibration">校准</string>
+	<string name="activity_main_tab_settings">设置</string>
+
+	<string name="alarm_hyper">高血糖！</string>
+	<string name="alarm_hypo">低血糖！</string>
+	<string name="alarm_new_sensor">检测到新传感器，请确认！</string>
+	<string name="alarm_expiration">传感器到达使用期限！</string>
+	<string name="alarm_sensor_error">传感器故障！</string>
+	<string name="alarm_pda_error">便携式显示器故障！</string>
+	<string name="alarm_pda_battery">便携式显示器电量低！</string>
+
+
+
+	<!-- app -->
+	<string name="app_name">便携式控制器</string>
+
+	<!-- normal -->
+	<string name="chart">图表</string>
+	<string name="clear">清除</string>
+	<string name="minutes">分钟</string>
+
+	<!-- dialog -->
+	<string name="shut_up">关闭</string>
+	<string name="ok">确定</string>
+	<string name="cancel">取消</string>
+
+	<string name="remind_title">提醒</string>
+	<string name="remind_again">稍后再响</string>
+	<string name="remind_off">关闭</string>
+	<string name="yes">是</string>
+	<string name="no">否</string>
+
+	<string name="suspend_title">暂停/停止</string>
+	<string name="suspend_option">暂停 (推杆不回退)</string>
+	<string name="stop_option">停止 (推杆回退)</string>
+	<string name="suspend_content">暂停泵注射？</string>
+	<string name="stop_content">停止泵注射？</string>
+	<string name="value_out_of_range">输入值超过范围</string>
+	<string name="resume_title">继续</string>
+	<string name="resume_prompt">泵已暂停 %s 分钟</string>
+	<string name="bolus_cancel_prompt">大剂量注射将被取消，请确认！</string>
+	<string name="bolus_cancel_title">取消大剂量注射</string>
+	<string name="temp_basal_title">临时基础率</string>
+	<string name="temp_basal_cancel_prompt">恢复暂停前的基础率设置，请确认！</string>
+	<string name="temp_basal_max_prompt">输入超过最大值</string>
+	<string name="change_name_title">更改基础率名称</string>
+	<string name="rate">速率</string>
+	<string name="time">时间</string>
+	<string name="begin">开始</string>
+	<string name="last_set">最近的输入</string>
+
+	<string name="end">结束</string>
+	<string name="start">开始</string>
+	<string name="basal_rate">基础率</string>
+	<string name="activate_basal">开始运行</string>
+	<string name="activate_basal_confirm">确认运行该设置%s？</string>
+	<string name="activate_basal_prompt">现处于暂停状态，是否运行%s？</string>
+
+	<string name="basal_rate_title">基础率</string>
+	<string name="basal_delete_prompt">确定删除这段基础率设置？</string>
+
+	<!-- toast -->
+	<string name="resume_bolus">暂停前请先停止大剂量注射</string>
+	<string name="basal_save_setting_prompt">请先保存设置或按回退键取消保存</string>
+	<string name="input_empty">输入不能为空</string>
+	<string name="basal_input_err">输入错误，请检查开始和结束时间</string>
+	<string name="connect_fail">连接失败！</string>
+
+	<!-- home activity -->
+	<string name="home_title">主界面</string>
+	<string name="home_bolus">大剂量</string>
+	<string name="home_basal">基础率</string>
+	<string name="home_actions">更多功能</string>
+	<string name="home_history">历史</string>
+	<string name="home_setting">设置</string>
+	<string name="home_suspend">暂停/停止</string>
+	<string name="home_resume">继续</string>
+	<string name="home_last_bg">最近血糖值</string>
+	<string name="home_last_bolus">最近大剂量</string>
+	<string name="home_current_basal">当前基础率</string>
+	<string name="home_bolus_title">正在进行大剂量注射</string>
+	<string name="home_temp_basal_title">临时基础率正在运行</string>
+	<string name="home_suspend_title">暂停</string>
+	<string name="home_minute_left"> 分钟 剩余</string>
+	<string name="home_u_left"> U 剩余</string>
+	<string name="home_delivery_stop">注射停止</string>
+	<string name="home_delivery_stop_unpaired">请更换胰岛素泵</string>
+	<string name="home_delivery_stop_paired">请更换储药器或胰岛素泵</string>
+
+	<!-- lock screen activity -->
+	<string name="lock_screen_prompt">长按“下”和“确认”键解锁</string>
+
+	<!-- status info activity -->
+	<string name="status_info_alarm">告警</string>
+	<string name="status_info_insulin_remaining">剩余胰岛素</string>
+	<string name="status_info_pump_battery">泵的电量</string>
+	<string name="status_info_link_status">无线连接状态</string>
+	<string name="status_info_alarm_active">血糖测试提醒</string>
+	<string name="status_info_pda_battery">控制器电量</string>
+
+	<!-- basal activity -->
+	<string name="basal_title">基础率</string>
+	<string name="basal_title_edit">基础率编辑</string>
+	<string name="basal_name_program1">基础率1</string>
+	<string name="basal_name_program2">基础率2</string>
+	<string name="basal_name_program3">基础率3</string>
+	<string name="basal_change_settings">改变设置</string>
+	<string name="basal_save_settings">保存设置</string>
+	<string name="basal_change_tab_name">更改基础率名称</string>
+	<string name="basal_temp_basal">临时基础率</string>
+	<string name="basal_activate_basal">运行%s</string>
+	<string name="basal_activated_basal">正在运行中</string>
+	<string name="basal_unactivated_basal">未运行</string>
+	<string name="basal_chart_long_click_prompt">请长按图表进入编辑状态</string>
+
+	<!-- actions activity -->
+	<string name="actions_title">更多功能</string>
+	<string name="actions_wizard_exit_confirm">中止向导并退出？</string>
+	<string name="actions_reservoir">更换储药器/电池</string>
+	<string name="actions_reservoir_no_pump">没有连接胰岛素泵，请先进行胰岛素泵更换操作</string>
+	<string name="actions_reservoir_remove">请把泵与底板分离</string>
+	<string name="actions_reservoir_rewind_prompt">推杆将回退复位，是否继续？</string>
+	<string name="actions_reservoir_rewinding">推杆复位中</string>
+	<string name="actions_reservoir_rewind_fail">推杆复位中失败</string>
+	<string name="actions_reservoir_connect">请将注满的储药器及充满电的电池与泵组装好</string>
+	<string name="actions_reservoir_prime">推杆定位</string>
+	<string name="actions_reservoir_prime_comment">请进行推杆定位直到储药器针头有液滴挤出</string>
+	<string name="actions_reservoir_prime_prompt">请确认储药器针头有液滴挤出</string>
+	<string name="actions_reservoir_attach">请将泵安装到底板上</string>
+	<string name="actions_reservoir_prime_cannula">排除留置针内空气</string>
+	<string name="actions_reservoir_cannula_6">6mm的留置软针</string>
+	<string name="actions_reservoir_cannula_9">9mm的留置软针</string>
+	<string name="actions_reservoir_cannula_steel">留置硬针</string>
+	<string name="actions_reservoir_cannula_skip">跳过</string>
+
+	<string name="actions_pump">更换胰岛素泵</string>
+	<string name="actions_pump_continue">下一步</string>
+	<string name="actions_pump_prime_continue">排除储药器空气/下一步</string>
+	<string name="actions_pump_remove">请把泵与底板分离</string>
+	<string name="actions_pump_disconnect">取消控制器\n对泵%s的控制权</string>
+	<string name="actions_pump_disconnect_prompt">控制器对该泵控制权将被取消，是否继续？</string>
+	<string name="actions_pump_disconnecting">取消中</string>
+	<string name="actions_pump_discn_failed">取消失败</string>
+	<string name="actions_pump_rewind">（推杆将回退复位）</string>
+	<string name="actions_pump_connect">请将注满的储药器及充满电的电池与泵组装好</string>
+	<string name="actions_pump_connecting">连接中</string>
+	<string name="actions_pump_enter">输入新泵的序列号</string>
+	<string name="actions_pump_id">泵的序列号</string>
+	<string name="actions_pump_not_found">%s没有找到</string>
+	<string name="actions_pump_ready">已连接就绪</string>
+	<string name="actions_pump_prime">推杆定位</string>
+	<string name="actions_pump_id_blank">发射器的序列号必须是6位</string>
+	<string name="actions_pump_pda_deactivate">泵连接失败。是否单独取消控制器配对信息？</string>
+
+	<string name="actions_bg">输入血糖值</string>
+	<string name="actions_bg_manually_title">输入血糖值</string>
+	<string name="actions_bg_test">血糖测试</string>
+	<string name="actions_bg_apply_blood">请在试纸条上加血样</string>
+	<string name="actions_bg_control">控制液测试</string>
+	<string name="actions_bg_apply_control">请加控制液</string>
+	<string name="actions_bg_process">正在处理</string>
+	<string name="actions_bg_control_slt">运动前</string>
+	<string name="actions_bg_after">餐后</string>
+	<string name="actions_bg_before">餐前</string>
+	<string name="actions_bg_missed">运动后</string>
+	<string name="actions_bg_save">保存</string>
+	<string name="actions_bg_bolus_calculator">大剂量计算器</string>
+	<string name="actions_bg_bolus">大剂量</string>
+	<string name="actions_bg_read">血糖值</string>
+	<string name="actions_bg_carb">碳水化合物</string>
+	<string name="actions_bg_active">体内活性胰岛素</string>
+	<string name="actions_bg_suggest">建议大剂量值</string>
+	<string name="actions_bg_extend">延长双波大剂量</string>
+	<string name="actions_bg_start">开始</string>
+	<string name="actions_bg_details">详细</string>
+	<string name="actions_bg_bolus_calc">大剂量计算</string>
+	<string name="actions_bg_eating_prompt">您要马上进餐吗？</string>
+	<string name="actions_bg_delete_from_history">无效的测量值</string>
+	<string name="actions_bg_enter">请输入摄入的碳水化合物量</string>
+	<string name="actions_bg_carb_0">碳水化合物的量必须大于0</string>
+	<string name="bolus_bg_title">大剂量计算详细信息</string>
+	<string name="bolus_bg_detail">请参考新页面设计指导</string>
+	
+	<string name="actions_food_lib">食物数据库</string>
+	<string name="actions_audio">音频播放器</string>
+
+	<!-- setting activity -->
+	<string name="setting_title">设置</string>
+	<string name="setting_wizard">设置向导</string>
+	<string name="setting_bg">血糖设置</string>
+	<string name="setting_insulin">胰岛素注射设置</string>
+	<string name="setting_history">历史设置</string>
+	<string name="setting_general">常规设置</string>
+	<string name="setting_alert">告警/提醒</string>
+
+	<string name="setting_status_on">开</string>
+	<string name="setting_status_off">关</string>
+	<string name="setting_status_percent">%</string>
+	<string name="setting_status_u">U</string>
+	<string name="setting_status_u_hr">(U/小时)</string>
+
+	<string name="year">年</string>
+	<string name="month">月</string>
+	<string name="day">日</string>
+	<string name="am">上午</string>
+	<string name="pm">下午</string>
+
+	<string name="setting_wizard_welcome">欢迎使用微泰胰岛素注射管理系统</string>
+	<string name="setting_wizard_content1">请设置正确的时间和日期</string>
+	<string name="setting_wizard_target_bg_level">目标血糖值</string>
+	<string name="setting_wizard_max_basal_rate">最大基础率</string>
+	<string name="setting_wizard_temp_basal">临时基础率设置</string>
+	<string name="setting_wizard_content2">血糖测试模块设置</string>
+	<string name="setting_wizard_content3">基础率基本设置</string>
+	<string name="setting_wizard_content4">大剂量注射基本设置</string>
+	<string name="setting_wizard_max_bolus">最大大剂量</string>
+	<string name="setting_wizard_extended_bolus_unit">延长双波大剂量设置</string>
+
+	<string name="setting_wizard_content5">大剂量注射高级设置</string>
+	<string name="setting_wizard_low_reservoir">药量低报警阀值</string>
+	<string name="setting_wizard_content6">报警参数设置</string>
+	<string name="setting_wizard_content7">微泰胰岛素泵向导设置完成</string>
+	<string name="setting_wizard_content7_1">You can......</string>
+	<string name="setting_wizard_foot1">时间日期设置</string>
+	<string name="setting_wizard_foot2">血糖设置</string>
+	<string name="setting_wizard_foot3">基础率设置</string>
+	<string name="setting_wizard_foot4">大剂量设置</string>
+	<string name="setting_wizard_foot5">大剂量高级设置</string>
+	<string name="setting_wizard_foot6">告警设置</string>
+	<string name="setting_wizard_foot7"></string>
+	<string name="setting_pre">上一步</string>
+	<string name="setting_next">下一步</string>
+	<string name="setting_finish">完成</string>
+
+	<string name="setting_bg_hypoglycemia">低血糖告警阀值</string>
+	<string name="setting_bg_hypoglycemia_short">低血糖</string>
+
+	<string name="setting_bg_hyperglycemia">高血糖告警阀值</string>
+	<string name="setting_bg_hyperglycemia_short">高血糖</string>
+
+	<string name="setting_bg_reminder_on">血糖测试提醒开启</string>
+	<string name="setting_bg_reminder_setting">血糖测试提醒设置</string>
+	<string name="setting_bg_alarms_act">%s个提醒时间</string>
+	<string name="setting_bg_alarm_act">%s个提醒时间</string>
+	<string name="setting_bg_goal">目标血糖范围</string>
+	<string name="setting_bg_goal_default">默认目标血糖范围</string>
+	<string name="setting_bg_goal_low">下限</string>
+	<string name="setting_bg_goal_high">上限</string>
+	<string name="setting_bg_goal_middle">中间值：%s\n（用于大剂量计算器）</string>
+	<string name="setting_bg_goal_tip2">(该值被用于大剂量计算器的计算)</string>
+	<string name="setting_bg_goal_tip1">下限高于上限值，请修改后再保存。</string>
+
+	<string name="setting_bg_alarms">提醒</string>
+	<string name="setting_bg_alarms_name">提醒的名称</string>
+	<string name="setting_bg_alarms_time">提醒的时间</string>
+	<string name="setting_bg_repeat">重复</string>
+	<string name="setting_bg_repeat_alarm">重复这次提醒</string>
+	<string name="setting_bg_alarm_update_fail">更新提醒%s失败</string>
+	<string name="setting_bg_name">名称</string>
+	<string name="setting_bg_alarm_5">您可以添加最多5个提醒</string>
+
+	<string name="setting_insulin_title">胰岛素注射设置</string>
+	<string name="setting_insulin_line_title">胰岛素注射设置</string>
+	<string name="setting_bolus_calc_line_title">大剂量计算器设置</string>
+	<string name="setting_insulin_low_reservoir">低药量报警阀值</string>
+	<string name="setting_insulin_auto_off">自动关机</string>
+	<string name="setting_insulin_expiration">自动关机等待时间</string>
+	<string name="setting_insulin_default">默认值(*)</string>
+	<string name="setting_insulin_target_bg">目标血糖值</string>
+	<string name="setting_insulin_sensitivity">胰岛素敏感因子</string>
+	<string name="setting_insulin_sensitivity_default">默认胰岛素敏感因子</string>
+	<string name="setting_insulin_carb_ratio">碳水化合物系数</string>
+	<string name="setting_insulin_carb_ratio_default">默认碳水化合物系数</string>
+	<string name="setting_insulin_active_time">体内胰岛素有效时间</string>
+	<string name="setting_insulin_reverse_corr">负校正因子</string>
+	<string name="setting_insulin_cann_type">留置针种类</string>
+	<string name="setting_insulin_bolus_calcs">大剂量计算器</string>
+	<string name="setting_insulin_temp_basal">临时基础率</string>
+	<string name="setting_insulin_extended">延长双波大剂量</string>
+	<string name="setting_insulin_bolus_incre">大剂量增加量</string>
+	<string name="setting_insulin_max_bolus">最大大剂量</string>
+	<string name="setting_insulin_max_basal">最大基础率</string>
+	<string name="setting_insulin_base_basal_rate">初始基础率</string>
+	<string name="setting_insulin_quick_bolus_incre">快速大剂量增加量</string>
+	<string name="setting_insulin_quick_bolus">快速大剂量</string>
+
+	<string name="setting_general_title">常规设置</string>
+	<string name="setting_general_date_time">日期和时间</string>
+	<string name="setting_general_set_time">设置时间</string>
+	<string name="setting_general_set_date">设置日期</string>
+	<string name="setting_general_set_timezone">设置时区</string>
+	<string name="setting_general_24_hr">使用24小时格式</string>
+	<string name="setting_general_date_format">选择日期的格式</string>
+	<string name="setting_general_date_mdy">MM-dd-yyyy</string>
+	<string name="setting_general_date_dmy">dd-MM-yyyy</string>
+	<string name="setting_general_date_ymd">yyyy-MM-dd</string>
+	<string name="setting_general_date_disable">输注过程中不能修改日期时间</string>
+
+	<string name="setting_general_language">语言</string>
+	<string name="setting_general_language_switch">现在语言是中文，点确定切换到英语</string>
+
+	<string name="setting_general_storage">存储卡</string>
+	<string name="setting_general_line_storage">存储卡</string>
+	<string name="setting_general_storage_total">总容量</string>
+	<string name="setting_general_storage_available">可用空间</string>
+	<string name="setting_general_storage_export">历史记录导出</string>
+
+	<string name="setting_general_display">显示</string>
+	<string name="setting_general_brightness">亮度</string>
+	<string name="setting_general_brightness_auto">自动调节亮度</string>
+	<string name="setting_general_screnn">屏幕超时</string>
+	<string name="setting_general_screnn_15s">15秒</string>
+	<string name="setting_general_screnn_30s">30秒</string>
+	<string name="setting_general_screnn_1min">1分钟</string>
+	<string name="setting_general_screnn_2min">2分钟</string>
+	<string name="setting_general_screnn_10min">10分钟</string>
+	<string name="setting_general_screnn_30min">30分钟</string>
+
+
+	<string name="setting_general_sound">声音</string>
+	<string name="setting_general_sound_type">声音告警</string>
+	<string name="setting_general_vibration_type">震动告警</string>
+
+	<string name="setting_general_privacy">隐私</string>
+	<string name="setting_general_reset">恢复出厂设置</string>
+	<string name="setting_general_reset_content">与胰岛素泵配对关系将解除，所有的数据将被清除，确认继续？</string>
+
+	<string name="setting_general_about">关于系统</string>
+	<string name="setting_general_version">软件版本</string>
+	<string name="setting_general_pda_serial">便携式控制器序列号</string>
+	<string name="setting_general_pump_serial">已配对泵的序列号</string>
+	<string name="setting_general_days">泵剩余使用时间</string>
+	<string name="setting_days">天</string>
+	<string name="setting_hours">小时</string>
+	<string name="setting_minutes">分钟</string>
+
+	<string name="setting_general_bluetooth">蓝牙</string>
+
+	<string name="unit_u">U</string>
+	<string name="unit_percent">%</string>
+	<string name="unit_hr">hr</string>
+	<string name="unit_hour">小时</string>
+	<string name="unit_u_hr">U/小时</string>
+	<string name="unit_u_day">U/天</string>
+	<string name="unit_mmol_l">mmol/L</string>
+	<string name="unit_mg_dl">mg/dL</string>
+	<string name="unit_mmol_l_u">mmol/L/U</string>
+	<string name="unit_mg_dl_u">mg/dL/U</string>
+	<string name="unit_carb_u">g carb/U</string>
+	<string name="unit_g">克</string>
+	<string name="unit_per_u">/U</string>
+	<string name="six_hour">6小时</string>
+	<string name="half_hour">12小时</string>
+	<string name="all_hour">24小时</string>
+
+	<string-array name="temp_array">
+		<item>关</item>
+		<item>U/小时</item>
+		<item>%</item>
+	</string-array>
+
+	<string-array name="extend_bolus_array">
+		<item>关</item>
+		<item>U</item>
+		<item>%</item>
+	</string-array>
+
+	<!-- bolus activity -->
+	<string name="bolus_title">大剂量</string>
+	<string name="bolus_unit">U</string>
+	<string name="bolus_preset">预设 %s</string>
+	<string name="bolus_amt_now">立即量</string>
+	<string name="bolus_amt_extend">延长量</string>
+	<string name="bolus_amt_extend_hours">(%s小时)</string>
+	<string name="bolus_amt">%sU</string>
+	<string name="bolus_extend_bolus">设置延长双波大剂量</string>
+	<string name="bolus_start">开始</string>
+	<string name="bolus_delivering">正在注射大剂量</string>
+	<string name="bolus_delivering_content">您可在主界面上浏览或者取消大剂量注射</string>
+	<string name="bolus_jump">This page should automatically jump to Home after 5 seconds</string>
+	<string name="bolus_amount_now">立即量</string>
+	<string name="bolus_extend_time">延长量时间</string>
+	<string name="bolus_name">名称</string>
+	<string name="bolus_preset_title">预设</string>
+	<string name="bolus_name_blank">名称不能为空</string>
+	<string name="bolus_value_out_of_range">输入值%s超限</string>
+	<string name="bolus_start_content">将要开始大剂量注射</string>
+	<string name="bolus_start_content1">将要开始大剂量注射，立即量 %s，</string>
+	<string name="bolus_start_content2">延长量 (%s小时)</string>
+	<string name="bolus_start_content3">药量不足。是否仍然开始大剂量注射？</string>
+	<string name="bolus_number">大剂量值</string>
+	<!-- help activity -->
+	<string name="help_title">帮助</string>
+
+	<!-- history activity -->
+	<string name="history_bg">血糖</string>
+	<string name="history_carbs">碳水化合物</string>
+	<string name="history_insulin">胰岛素</string>
+	<string name="history_bolus">大剂量</string>
+	<string name="history_basal">基础率</string>
+	<string name="history_alarm">报警</string>
+	<string name="history_log_title">历史日志</string>
+	<string name="recovery">恢复出厂设置</string>
+	<string name="history_bg_average">血糖平均值</string>
+	<string name="history_total_carbs">碳水化合物总量</string>
+	<string name="history_total_insulin">胰岛素总量</string>
+	<string name="history_bolus_percent">大剂量%</string>
+	<string name="history_carbs_unit">克</string>
+
+	<string name="history_bg_name1">血糖测试值</string>
+	<string name="history_bg_name2">血糖输入值</string>
+	<string name="history_carbs_name">碳水化合物</string>
+	<string name="history_insulin_name1">基础率</string>
+	<string name="history_insulin_name2">临时基础率</string>
+	<string name="history_insulin_name3">大剂量</string>
+	<string name="history_insulin_name4">大剂量(延长)</string>
+
+	<string name="history_average_title">历史均值</string>
+	<string name="history_average_prompt">日均值</string>
+	<string name="his_sun">周日</string>
+	<string name="his_mon">周一</string>
+	<string name="his_tue">周二</string>
+	<string name="his_wen">周三</string>
+	<string name="his_thi">周四</string>
+	<string name="his_fri">周五</string>
+	<string name="his_sat">周六</string>
+
+	<string name="his_avg_quick_keys">快速选择</string>
+	<string name="his_avg_7">7天</string>
+	<string name="his_avg_14">14天</string>
+	<string name="his_avg_30">30天</string>
+	<string name="his_avg_60">60天</string>
+	<string name="his_avg_90">90天</string>
+	
+	<string name="his_avg_days_average">天平均</string>
+	<string name="his_avg_bg_average">平均血糖值</string>
+	<string name="his_avg_bg_readings">总测量次数</string>
+	<string name="his_avg_bg_readings_above">高于目标范围次数</string>
+	<string name="his_avg_bg_readings_below">低于目标范围次数</string>
+	<string name="his_avg_carbs_average">平均每日摄入碳水化合物</string>
+	<string name="his_avg_insulin_average">平均每日注射胰岛素</string>
+
+	<string name="history_dialog_average_title">详细</string>
+	<string name="history_dialog_bg">血糖：</string>
+	<string name="history_dialog_carbs">碳水化合物：</string>
+	<string name="history_dialog_bolus">大剂量：</string>
+	<string name="history_dialog_bolusextend">延长量：</string>
+
+	<string name="sd_not_mount">SD card could not be mounted</string>
+	<string name="history_sd_prompt">your history is leading to your sd card,please
+		wait!
+	</string>
+
+	<string name="excel_file_name">history@历史</string>
+	<string-array name="history_excel">
+		<item>time</item>
+		<item>description</item>
+		<item>value</item>
+		<item>proiority</item>
+		<item>bg tag</item>
+	</string-array>
+
+	<!-- food library -->
+	<string name="food_library_title">食物数据库</string>
+	<string name="food_library_search">搜索</string>
+	<string name="food_library_add">添加/编辑食物</string>
+	<string name="food_library_type_hint">目录</string>
+	<string name="food_library_search_hint">请输入</string>
+	<string name="food_library_name">名称</string>
+	<string name="food_library_chinese">中文</string>
+	<string name="food_library_english">英语</string>
+	<string name="food_library_value">碳水化合物含量（克/100克）</string>
+	<string name="food_library_chinese_name_empty">中文名不能为空！</string>
+	<string name="food_library_english_name_empty">英文名不能为空！</string>
+	<string name="food_library_type_empty">类别不能空！！</string>
+	<string name="food_library_value_empty">数值不能为空！</string>
+	<string name="food_library_food_exsit">食物已经存在！</string>
+	<string name="food_library_food_category">食物/类别</string>
+	<string name="food_library_unit">克/100克</string>
+	<string name="food_library_initialize">这是您第一次进入食物数据库。\n正在为您加载预设数据，请稍等。</string>
+	
+	<string-array name="food_type_english">
+	    <item>&lt;All&gt;</item>
+		<item>Milk and Egg</item>
+		<item>Fruits</item>
+		<item>Vegetables</item>
+		<item>Beverages</item>
+		<item>Shellfish</item>
+		<item>Staples</item>
+		<item>Snacks</item>
+		<item>Other</item>
+		<item>Meat/Meat Substitutes</item>
+		<item>Fats</item>
+	</string-array>
+	
+	<string-array name="food_type_chinese">
+	    <item>&lt;全部&gt;</item>
+		<item>辅食</item>
+		<item>水果</item>
+		<item>蔬菜</item>
+		<item>饮料</item>
+		<item>鱼/贝类</item>
+		<item>主食</item>
+		<item>小吃</item>
+		<item>其他</item>
+		<item>肉类</item>
+		<item>脂肪</item>
+	</string-array>
+
+	<!-- blue tooth -->
+	<string name="bluetooth_setting_title">蓝牙</string>
+	<string name="bluetooth_setting_name">蓝牙</string>
+	<string name="bluetooth_setting_open">开启蓝牙</string>
+	<string name="bluetooth_setting_opening">开启中</string>
+	<string name="bluetooth_setting_closing">关闭中</string>
+	<string name="bluetooth_setting_visiable">可检测性</string>
+	<string name="bluetooth_setting_let_visiable">使设备可检测</string>
+	<string name="bluetooth_setting_visiable_time">可检测时间剩余 %s 秒</string>
+	<string name="bluetooth_setting_machine_name">设备名称</string>
+	<string name="bluetooth_setting_machine_name_empty">设备名称不能为空！</string>
+	<string name="bluetooth_setting_bluetooth_machines">蓝牙设备</string>
+	<string name="bluetooth_setting_searching">扫描中 &#8230;</string>
+	<string name="bluetooth_setting_search_machine">扫描设备</string>
+	<string name="bluetooth_setting_match">与本设备配对</string>
+	<string name="bluetooth_setting_matching">配对进行中</string>
+	<string name="bluetooth_setting_match_success">配对成功</string>
+	<string name="bluetooth_setting_accept">确定</string>
+	<string name="bluetooth_setting_refuse">取消</string>
+	<string name="bluetooth_setting_match_title">蓝牙</string>
+	<string name="bluetooth_setting_match_content">与 %s 配对</string>
+	<string name="bluetooth_setting_match_error">与 %s 配对错误</string>
+	<string name="bluetooth_setting_match_remove">解除配对</string>
+	<string name="bluetooth_setting_export">历史记录导出</string>
+
+	<!-- mp3 player -->
+	<string name="Mp3_player_title">音频播放器</string>
+	<string name="Mp3_player_empty">请将音频文件拷贝到SD卡上</string>
+
+	<string name="history_graph_title">历史图表</string>
+	<string name="remuse_basal_name">继续 %s </string>
+	<string name="percent">%</string>
+	<string name="home_bolus_amt_now">立即量</string>
+	<string name="bolus_connecting_title">正在连接泵</string>
+	<string name="choose_cannula_size">选择留置针的种类</string>
+	<string name="confirm">确认</string>
+	<string name="back">后退</string>
+	<string name="prime_cannula_resume">排除留置针内空气并且恢复 %s</string>
+	
+	<string name="meal_bolus">进餐大剂量</string>
+	<string name="correction_bolus">校正大剂量</string>
+	<string name="active_insulin">体内活性胰岛素</string>
+	<string name="total_suggested_bolus">建议大剂量总量</string>
+	<string name="all_readings">所有读值</string>
+	<string name="basal_cancel_save_title">取消设置</string>
+	<string name="basal_cancel_save_prompt">确认要取消您现在正在编辑的基础量？</string>
+	<string name="update_pump_title">向泵发送同步指令</string>
+	<string name="update_pump_prompt">如果更改正在运行的基础率 %s ，需要向泵发送同步指令</string>
+	<string name="basal_time_unit">时间</string>
+	
+	<string name="no_set">还没设置</string>
+	
+	<!-- Quick Bolus String Value
+       * @author qian.zhou
+       * @version 1.1.2,2013-1-24
+       * @since 1.1,2012-12-18
+       * -->
+    <string name="Quickbolus_DefaultFloatValue">0.0</string>
+    <string name="Quickbolus_TimeOutTip">快速大剂量注射取消。(操作超时)</string>
+    <string name="Quickbolus_UserCancelTip">快速大剂量注射已取消。</string>
+    
+	<string name="Quickbolus_setting_title">快速大剂量设置</string>
+	<string name="Quickbolus_setting_tv1">每步增幅:</string>
+	<string name="Quickbolus_setting_tv2">U/次按键</string>
+	<string name="Quickbolus_setting_tip1">按确认键增加大剂量注射值。</string>
+	<string name="Quickbolus_setting_tip2">稍作等待将进入确认界面并重播声音。</string>
+	<string name="Quickbolus_setting_MaxWarningText">已达上限。</string>
+	
+	<string name="Quickbolus_confirm_title">快速大剂量注射确认</string>
+	<string name="Quickbolus_confirm_tip2">按确认键开始注射。</string>
+	<string name="Quickbolus_confirm_tip3">按返回键取消。</string>
+	<string name="Quickbolus_confirm_DlgTitle">确认</string>
+	<string name="Quickbolus_confirm_DlgContent">大剂量注射确认音正在播放…</string>
+	
+	<!-- dialog_confirm_yesno
+       * @author qian.zhou
+       * @version 1.1.2,2012-12-29
+       * @since 1.1.2,2012-12-29
+       * -->
+	<string name="confirm_yesno_tv_title">请选择</string>
+	<string name="confirm_yesno_tv_content">你确定吗？</string>
+	<string name="btn_yes">是</string>
+	<string name="btn_no">否</string>
+	
+	<string name="Toast_shutdown">正在关机…</string>
+	<string name="Toast_shutdown_fail">关机失败。</string>
+	<string name="shutdown_title">关机确认</string>
+	<string name="shutdown_content">你确定要关机吗？</string>
+	
+	<!-- lockSceen
+       * @author qian.zhou
+       * @version 1.1.3,2013-1-28
+       * @since 1.1.3,2013-1-28
+       * -->
+	<string name="lockscreen_Default">文本</string>
+	<string name="lockscreen_CancelCmdTip">你正在进行大剂量注射或者处于暂停状态，此时不能使用快速大剂量注射功能。</string>
+	<string name="lockscreen_QuickBolusNotEnable">快速大剂量注射功能尚未开启，请到设置中开启后再使用。</string>
+	
+	<!-- alarm text -->
+	<string name="alarm_dialog_title">报警</string>
+	<string name="alarm_text_unknown">未知故障！</string>
+	<string name="alarm_text_occlusion">检测到堵塞！</string>
+	<string name="alarm_text_reservoir">药液耗尽！</string>
+	<string name="alarm_text_encoder">泵故障！</string>
+	<string name="alarm_text_battery">泵电池耗尽！</string>
+	<string name="alarm_text_expiration">泵过期！</string>
+	<string name="alarm_text_auto_off">泵自动关机！</string>
+	
+	<!-- alert text -->
+	<string name="alert_text_unknown">未知警告！</string>
+	<string name="alert_text_reservoir">药量低！</string>
+	<string name="alert_text_battery">泵电量低！</string>
+	<string name="alert_text_expiration_one_hour">泵1天后过期！</string>
+	<string name="alert_text_expiration_three_days">泵3天后过期！</string>
+	<string name="alert_text_expiration_seven_days">泵7天后过期！</string>
+	<string name="alert_text_suspend">泵暂停中！</string>
+	<string name="alert_text_auto_off">泵15分钟后自动关机！</string>
+	<string name="alert_text_pda_battery">便携式控制器电池耗尽！</string>
+	<string name="alert_text_pda_error">便携式控制器故障！</string>
+
+	<!-- glucose error text -->
+	<string name="glucose_error_title">提示</string>
+	<string name="glucose_error_unknown">未知错误！</string>
+	<string name="glucose_error_code">血糖测试模块自检错误！</string>
+	<string name="glucose_error_channel">血糖测试模块自检错误！</string>
+	<string name="glucose_error_nbb">测试条被污染、被使用过或者血样被过早的加到测试条上！</string>
+	<string name="glucose_error_temperature">环境温度超限！</string>
+	<string name="glucose_error_blood_filling">血样不足！</string>
+	<string name="glucose_error_blood_not_enough">血样不足！</string>
+	<string name="glucose_error_strip">测试中移出测试条！</string>
+	<string name="glucose_error_overflow">血糖测试值超出测试上限！</string>
+	<string name="glucose_error_underflow">血糖测试值超出测试下限！</string>
+	
+	<!-- ActionsBgBolusActivity -->
+	<string name="actions_bgbolus_setting">大剂量计算器的设置尚未完成，请检查设置。</string>
+	<string name="actions_bgbolus_reverse_correct_not">负校正因子未选中</string>
+	<string name="actions_bgbolus_tip1">Type值错误</string>
+	<string name="actions_bgbolus_tip2">还未完成设置，请完成后再试</string>
+	<string name="actions_bgbolus_tip3">请扩展其他项的时间来删除该项</string>
+	<string name="actions_bgbolus_tip4">清除该项设置值？</string>
+	<string name="actions_bgbolus_time">时间：</string>
+	<string name="actions_bgbolus_value">值</string>
+	<string name="actions_bgbolus_upper">上限</string>
+	<string name="actions_bgbolus_lower">下限</string>
+	<string name="actions_bgbolus_now">当前：</string>
+	<string name="actions_bgbolus_inall">(共%s项)</string>
+ 	
+	<!-- ImageView's contentDescription-->
+	<string name="empty_string"></string>
+	
+	<string name="no_data_dash">--</string>
+ 
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="50dp"
+	android:paddingLeft="@dimen/size15"
+	android:paddingRight="@dimen/size15">
+
+	<TextView
+		android:id="@+id/tv_item_name"
+		style="?style_text_medium"
+		android:layout_alignParentLeft="true"
+		android:layout_centerVertical="true"
+		android:textColor="@color/text_white"
+		android:textStyle="bold"/>
+
+	<ImageView
+		android:id="@+id/iv_icon"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_centerVertical="true"
+		android:contentDescription="@string/app_name"
+		android:src="@drawable/icon_arrow"/>
+
+	<TextView
+		android:id="@+id/tv_item_value"
+		style="?style_text_medium"
+		android:layout_toLeftOf="@id/iv_icon"
+		android:layout_centerVertical="true"
+		android:paddingRight="10dp"
+		android:textColor="@color/text_light"/>
+
+	<CheckBox
+		android:id="@+id/rb_checkbox"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignLeft="@id/iv_icon"
+		android:button="@drawable/radio_button"
+		android:clickable="false"
+		android:focusable="false"
+		android:visibility="gone"/>
+
+</RelativeLayout>
