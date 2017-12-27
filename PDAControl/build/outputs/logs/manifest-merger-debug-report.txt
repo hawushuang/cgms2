@@ -1,0 +1,58 @@
+-- Merging decision tree log ---
+manifest
+ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:1:1-30:12
+INJECTED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:1:1-30:12
+INJECTED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:1:1-30:12
+MERGED from [:PDALibrary] E:\Project\cgms2\PDALibrary\build\intermediates\manifests\full\debug\AndroidManifest.xml:2:1-18:12
+INJECTED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:1:1-30:12
+INJECTED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:1:1-30:12
+	package
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:2:5-42
+	android:sharedUserId
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:5:5-46
+	android:versionName
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:4:5-30
+		INJECTED from E:\Project\cgms2\PDAControl\AndroidManifest.xml
+		INJECTED from E:\Project\cgms2\PDAControl\AndroidManifest.xml
+	xmlns:android
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:1:11-69
+	android:versionCode
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:3:5-28
+		INJECTED from E:\Project\cgms2\PDAControl\AndroidManifest.xml
+		INJECTED from E:\Project\cgms2\PDAControl\AndroidManifest.xml
+uses-sdk
+ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:7:5-9:41
+MERGED from [:PDALibrary] E:\Project\cgms2\PDALibrary\build\intermediates\manifests\full\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:PDALibrary] E:\Project\cgms2\PDALibrary\build\intermediates\manifests\full\debug\AndroidManifest.xml:7:5-9:41
+	android:targetSdkVersion
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:9:9-38
+	android:minSdkVersion
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:8:9-34
+uses-permission#android.permission.WAKE_LOCK
+ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:11:5-12:55
+	android:name
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:12:9-52
+application
+ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:14:5-28:19
+MERGED from [:PDALibrary] E:\Project\cgms2\PDALibrary\build\intermediates\manifests\full\debug\AndroidManifest.xml:11:5-16:19
+MERGED from [:PDALibrary] E:\Project\cgms2\PDALibrary\build\intermediates\manifests\full\debug\AndroidManifest.xml:11:5-16:19
+	android:label
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:17:9-41
+	android:icon
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:16:9-45
+	android:allowBackup
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:15:9-35
+	android:theme
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:18:9-40
+service#com.microtechmd.pda.control.ServiceControl
+ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:20:9-26:13
+	android:exported
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:22:10-35
+	android:name
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:21:10-40
+intent-filter#com.microtechmd.pda.control
+ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:23:10-25:23
+action#com.microtechmd.pda.control
+ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:24:11-64
+	android:name
+		ADDED from E:\Project\cgms2\PDAControl\AndroidManifest.xml:24:19-61

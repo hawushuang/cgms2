@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config=":PDALibrary"><source path="E:\Project\cgms2\PDALibrary\build\intermediates\bundles\debug\assets"/></dataSet><dataSet config="main"><source path="E:\Project\cgms2\PDAControl\assets"/><source path="E:\Project\cgms2\PDAControl\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="E:\Project\cgms2\PDAControl\build-types\debug\assets"/></dataSet></merger>

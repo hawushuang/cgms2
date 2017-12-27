@@ -1,0 +1,45 @@
+-- Merging decision tree log ---
+manifest
+ADDED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:24:1-40:12
+INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:24:1-40:12
+INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:24:1-40:12
+INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:24:1-40:12
+INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:24:1-40:12
+INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:24:1-40:12
+INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:24:1-40:12
+	package
+		ADDED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:25:5-38
+		INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml
+		INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml
+	android:versionName
+		ADDED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:27:5-30
+		INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml
+		INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml
+	xmlns:android
+		ADDED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:24:11-69
+	android:versionCode
+		ADDED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:26:5-28
+		INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml
+		INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml
+uses-sdk
+ADDED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:29:5-31:41
+INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:29:5-31:41
+INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:29:5-31:41
+INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:29:5-31:41
+INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:29:5-31:41
+	android:targetSdkVersion
+		ADDED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:31:9-38
+		INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml
+		INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:30:9-34
+		INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml
+		INJECTED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml
+application
+ADDED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:33:5-38:19
+	android:label
+		ADDED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:36:9-41
+	android:icon
+		ADDED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:35:9-45
+	android:allowBackup
+		ADDED from E:\Project\cgms2\SeekArc_library\AndroidManifest.xml:34:9-35
