@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/PDA/PDA.iml" filepath="$PROJECT_DIR$/PDA/PDA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PDAControl/PDAControl.iml" filepath="$PROJECT_DIR$/PDAControl/PDAControl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PDALibrary/PDALibrary.iml" filepath="$PROJECT_DIR$/PDALibrary/PDALibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PDAModel/PDAModel.iml" filepath="$PROJECT_DIR$/PDAModel/PDAModel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SeekArc_library/SeekArc_library.iml" filepath="$PROJECT_DIR$/SeekArc_library/SeekArc_library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cgms2.iml" filepath="$PROJECT_DIR$/cgms2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/javatest/javatest.iml" filepath="$PROJECT_DIR$/javatest/javatest.iml" />
+    </modules>
+  </component>
+</project>

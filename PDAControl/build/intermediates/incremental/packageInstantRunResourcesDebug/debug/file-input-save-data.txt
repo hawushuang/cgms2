@@ -1,0 +1,12 @@
+#Internal package file, do not edit.
+#Tue Dec 12 15:38:07 CST 2017
+1.base=E\:\\Project\\cgms2\\PDAControl\\build\\intermediates\\res\\debug\\resources-debug.ap_
+1.file=E\:\\Project\\cgms2\\PDAControl\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable-xhdpi-v4\\ic_launcher.png
+2.base=E\:\\Project\\cgms2\\PDAControl\\build\\intermediates\\res\\debug\\resources-debug.ap_
+2.set=ANDROID_RESOURCE
+2.file=E\:\\Project\\cgms2\\PDAControl\\build\\intermediates\\res\\debug\\resources-debug.ap_\\resources.arsc
+count=3
+1.set=ANDROID_RESOURCE
+0.set=ANDROID_RESOURCE
+0.base=E\:\\Project\\cgms2\\PDAControl\\build\\intermediates\\res\\debug\\resources-debug.ap_
+0.file=E\:\\Project\\cgms2\\PDAControl\\build\\intermediates\\res\\debug\\resources-debug.ap_\\AndroidManifest.xml

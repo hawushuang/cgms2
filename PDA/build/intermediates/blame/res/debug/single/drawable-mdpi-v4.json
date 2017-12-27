@@ -1,0 +1,606 @@
+[
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_ic_star_half_black_48dp.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_ic_star_half_black_48dp.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_button_tab_main_settings.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_button_tab_main_settings.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_15.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_15.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_button_tab_main_home.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_button_tab_main_home.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_01.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_01.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\notification_bg_normal.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\notification_bg_normal.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_cab_background_top_mtrl_alpha.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_cab_background_top_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_work_drum7.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_work_drum7.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_ic_menu_paste_mtrl_am_alpha.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_ic_menu_paste_mtrl_am_alpha.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_alarm_message.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_alarm_message.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_menu_hardkey_panel_mtrl_mult.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_menu_hardkey_panel_mtrl_mult.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_ab_share_pack_mtrl_alpha.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_ab_share_pack_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_battery0.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_battery0.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_btn_switch_to_on_mtrl_00001.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_btn_switch_to_on_mtrl_00001.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_work_drum8.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_work_drum8.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_work_drum6.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_work_drum6.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\img_unlock.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\img_unlock.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_button_back.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_button_back.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_14.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_14.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_animation_loading_09.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_animation_loading_09.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\btn_animation_right_n.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\btn_animation_right_n.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_17.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_17.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\background_edittext_input.9.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\background_edittext_input.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_button_tab_main_calibration_pressed.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_button_tab_main_calibration_pressed.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_list_pressed_holo_light.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_list_pressed_holo_light.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_ic_star_black_48dp.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_ic_star_black_48dp.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_arrow_purple.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_arrow_purple.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_battery1.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_battery1.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\notification_bg_low_pressed.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\notification_bg_low_pressed.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\notification_bg_low_normal.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\notification_bg_low_normal.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_btn_radio_to_on_mtrl_015.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_btn_radio_to_on_mtrl_015.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_btn_switch_to_on_mtrl_00012.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_btn_switch_to_on_mtrl_00012.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_list_longpressed_holo.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_list_longpressed_holo.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_ic_menu_selectall_mtrl_alpha.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_ic_menu_selectall_mtrl_alpha.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_work_drum_nosignal.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_work_drum_nosignal.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_scrubber_control_to_pressed_mtrl_000.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_scrubber_control_to_pressed_mtrl_000.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\bg_swipe_to_unlock.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\bg_swipe_to_unlock.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_battery8.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_battery8.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_list_selector_disabled_holo_dark.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_list_selector_disabled_holo_dark.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_spinner_mtrl_am_alpha.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_spinner_mtrl_am_alpha.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\status_bluetooth.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\status_bluetooth.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_animation_loading_11.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_animation_loading_11.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_battery2.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_battery2.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_button_back_pressed.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_button_back_pressed.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_04.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_04.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\ic_launcher.png",
+        "source": "E:\\Project\\cgms2\\PDALibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\ic_launcher.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_20.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_20.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_ic_star_half_black_16dp.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_ic_star_half_black_16dp.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_work_drum5.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_work_drum5.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_animation_loading_10.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_animation_loading_10.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_03.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_03.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_popup_background_mtrl_mult.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_popup_background_mtrl_mult.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_pda_battery_charging.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_pda_battery_charging.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_radio.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_radio.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_list_divider_mtrl_alpha.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_list_divider_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_scrubber_primary_mtrl_alpha.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_scrubber_primary_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_text_select_handle_left_mtrl_dark.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_text_select_handle_left_mtrl_dark.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_animation_loading_01.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_animation_loading_01.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\background_button_tab_main_pressed.9.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\background_button_tab_main_pressed.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\background_button_tab_main.9.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\background_button_tab_main.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_ic_star_black_36dp.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_ic_star_black_36dp.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_19.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_19.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_textfield_activated_mtrl_alpha.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_textfield_activated_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_btn_radio_to_on_mtrl_000.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_btn_radio_to_on_mtrl_000.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_textfield_search_activated_mtrl_alpha.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_textfield_search_activated_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\btn_status_down_p.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\btn_status_down_p.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_10.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_10.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\background_edittext_input_selected.9.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\background_edittext_input_selected.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_animation_loading_04.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_animation_loading_04.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_13.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_13.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_signal2.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_signal2.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_radio_s.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_radio_s.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_animation_loading_07.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_animation_loading_07.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_16.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_16.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_pda_battery3.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_pda_battery3.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\calibration_04.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\calibration_04.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_text_select_handle_middle_mtrl_light.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_text_select_handle_middle_mtrl_light.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_animation_loading_05.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_animation_loading_05.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_07.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_07.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\calibration_01.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\calibration_01.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_text_select_handle_left_mtrl_light.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_text_select_handle_left_mtrl_light.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\btn_animation_left_n.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\btn_animation_left_n.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_ic_commit_search_api_mtrl_alpha.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_ic_commit_search_api_mtrl_alpha.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\background_button_small_pressed.9.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\background_button_small_pressed.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_work_drum2.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_work_drum2.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_signal1.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_signal1.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_textfield_search_default_mtrl_alpha.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_textfield_search_default_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_battery5.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_battery5.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_pda_battery2.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_pda_battery2.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_ic_menu_share_mtrl_alpha.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_ic_menu_share_mtrl_alpha.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_work_drum1.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_work_drum1.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_06.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_06.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_textfield_default_mtrl_alpha.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_textfield_default_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_scrubber_control_off_mtrl_alpha.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_scrubber_control_off_mtrl_alpha.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_arrow.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_arrow.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_tab_indicator_mtrl_alpha.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_tab_indicator_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_scrubber_track_mtrl_alpha.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_scrubber_track_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_list_pressed_holo_dark.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_list_pressed_holo_dark.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_battery6.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_battery6.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_11.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_11.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\notification_bg_normal_pressed.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\notification_bg_normal_pressed.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_battery_nosignal.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_battery_nosignal.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_work_drum0.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_work_drum0.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_battery4.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_battery4.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\calibration_02.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\calibration_02.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_pda_battery1.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_pda_battery1.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_button_tab_main_home_pressed.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_button_tab_main_home_pressed.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_09.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_09.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_battery7.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_battery7.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_pda_battery4.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_pda_battery4.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_btn_check_to_on_mtrl_015.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_btn_check_to_on_mtrl_015.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_animation_loading_06.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_animation_loading_06.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_animation_loading_03.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_animation_loading_03.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_scrubber_control_to_pressed_mtrl_005.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_scrubber_control_to_pressed_mtrl_005.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_clock.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_clock.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_ic_menu_cut_mtrl_alpha.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_ic_menu_cut_mtrl_alpha.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_text_select_handle_right_mtrl_dark.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_text_select_handle_right_mtrl_dark.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\notify_panel_notification_icon_bg.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\notify_panel_notification_icon_bg.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_work_drum3.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_work_drum3.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_warning.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_warning.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_animation_loading_08.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_animation_loading_08.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_btn_check_to_on_mtrl_000.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_btn_check_to_on_mtrl_000.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\background_button_small.9.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\background_button_small.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_18.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_18.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_pda_battery5.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_pda_battery5.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_button_tab_main_calibration.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_button_tab_main_calibration.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_signal4.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_signal4.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\btn_animation_right_p.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\btn_animation_right_p.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_12.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_12.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_battery3.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_battery3.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\calibration_03.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\calibration_03.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_work_drum4.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_work_drum4.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_list_focused_holo.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_list_focused_holo.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_signal3.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_signal3.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_alarm.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_alarm.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_list_selector_disabled_holo_light.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_list_selector_disabled_holo_light.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\btn_status_down_n.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\btn_status_down_n.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_animation_loading_02.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_animation_loading_02.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_text_select_handle_middle_mtrl_dark.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_text_select_handle_middle_mtrl_dark.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_animation_loading_12.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_animation_loading_12.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_ic_star_black_16dp.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_ic_star_black_16dp.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_ic_menu_copy_mtrl_am_alpha.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_ic_menu_copy_mtrl_am_alpha.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_text_select_handle_right_mtrl_light.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_text_select_handle_right_mtrl_light.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\btn_animation_left_p.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\btn_animation_left_p.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_05.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_05.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\icon_button_tab_main_settings_pressed.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\icon_button_tab_main_settings_pressed.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_switch_track_mtrl_alpha.9.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_switch_track_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_02.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_02.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\abc_ic_star_half_black_36dp.png",
+        "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\drawable-mdpi-v4\\abc_ic_star_half_black_36dp.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_21.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_21.png"
+    },
+    {
+        "merged": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\load_08.png",
+        "source": "E:\\Project\\cgms2\\PDA\\res\\drawable-mdpi\\load_08.png"
+    }
+]
