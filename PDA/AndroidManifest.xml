@@ -1,75 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	package="com.microtechmd.pda"
-	android:sharedUserId="android.uid.system"
-	android:versionCode="1"
-	android:versionName="1.0">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.microtechmd.pda"
+    android:sharedUserId="android.uid.system"
+    android:versionCode="1"
+    android:versionName="1.0">
 
-	<uses-sdk
-		android:minSdkVersion="9"
-		android:targetSdkVersion="25"/>
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="25" />
 
-	<uses-permission
-		android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-	<uses-permission
-		android:name="android.permission.WRITE_SETTINGS"/>
-	<uses-permission
-		android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-	<uses-permission
-		android:name="android.permission.VIBRATE"/>
-	<uses-permission
-		android:name="android.permission.WAKE_LOCK"/>
-	<uses-permission
-		android:name="android.permission.CHANGE_CONFIGURATION"/>
-	<uses-permission
-		android:name="android.permission.RECEIVE_SHUTDOWN"/>
-	<uses-permission
-		android:name="android.permission.BLUETOOTH_ADMIN"/>
-	<uses-permission
-		android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.RECEIVE_SHUTDOWN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-	<application
-		android:name=".ApplicationPDA"
-		android:icon="@drawable/ic_launcher"
-		android:label="@string/app_name"
-		android:theme="@style/theme_pda"
-		tools:replace="android:theme">
+    <application
+        android:name=".ApplicationPDA"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/theme_pda"
+        tools:replace="android:theme">
 
-		<!-- android:theme="@android:style/Theme.NoTitleBar.Fullscreen" -->
-		<activity
-			android:name=".ui.activity.ActivityMain"
-			android:screenOrientation="portrait">
-			<intent-filter>
-				<action
-					android:name="android.intent.action.MAIN"/>
+        <!-- android:theme="@android:style/Theme.NoTitleBar.Fullscreen" -->
+        <activity
+            android:name=".ui.activity.ActivityMain"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-				<category
-					android:name="android.intent.category.LAUNCHER"/>
-<!--
-                <category android:name="android.intent.category.HOME_REDEFINE" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <!--
+                                <category android:name="android.intent.category.HOME_REDEFINE" />
+                                <category android:name="android.intent.category.DEFAULT" />
+                                <category android:name="android.intent.category.MONKEY" />
+                -->
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activity.ActivityUnlock"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ActivityBgApply"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ActivityBgEnter"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ActivityBgProcessing"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ActivityHistoryLog"
+            android:screenOrientation="portrait" />
+
+        <receiver android:name=".BootBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.MONKEY" />
--->
-			</intent-filter>
-		</activity>
-		<activity
-			android:name=".ui.activity.ActivityUnlock"
-			android:launchMode="singleTask"
-			android:screenOrientation="portrait"/>
-		<activity
-			android:name=".ui.activity.ActivityBgApply"
-			android:screenOrientation="portrait"/>
-		<activity
-			android:name=".ui.activity.ActivityBgEnter"
-			android:screenOrientation="portrait"/>
-		<activity
-			android:name=".ui.activity.ActivityBgProcessing"
-			android:screenOrientation="portrait"/>
-		<activity
-			android:name=".ui.activity.ActivityHistoryLog"
-			android:screenOrientation="portrait"/>
-
-	</application>
+            </intent-filter>
+        </receiver>
+    </application>
 
 </manifest>
