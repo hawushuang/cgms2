@@ -92,12 +92,15 @@ public class FragmentCombinedGraph extends FragmentBase
     private View mRootView = null;
     private CombinedChart mChart;
     private TextView synchronize;
+    private TextView textview_synchronizing;
 
     private XAxis xAxis;
     private String str;
     private long maxTime;
 
     private ArrayList<History> dataListAll = null;
+
+    private boolean isTop;
 
     public void setTimeData(int timeData) {
         mDateTime = new DateTime(Calendar.getInstance());
@@ -141,6 +144,8 @@ public class FragmentCombinedGraph extends FragmentBase
         text_view_unit.setText(getResources().getString(R.string.history_bg) +
                 " (" + getResources().getString(R.string.unit_mmol_l) + ")");
         synchronize = (TextView) mRootView.findViewById(R.id.synchronize);
+        textview_synchronizing = (TextView) mRootView.findViewById(R.id.text_view_synchronizing);
+        textview_synchronizing.setVisibility(View.GONE);
         boolean realtimeFlag = (boolean) SPUtils.get(getActivity(), REALTIMEFLAG, true);
         if (realtimeFlag) {
             synchronize.setVisibility(View.GONE);
@@ -211,21 +216,22 @@ public class FragmentCombinedGraph extends FragmentBase
         mChart.invalidate();
     }
 
+    private void drawScatterData() {
+
+    }
+
     private ScatterData generateScatterData() {
+        ScatterData d = new ScatterData();
         DateTime todayDateTime = getTodayDateTime();
         long todayMills = todayDateTime.getCalendar().getTimeInMillis();
         long maxIndex = new DateTime(Calendar.getInstance()).getCalendar().getTimeInMillis()
                 - todayMills;
         long minIndex = maxIndex - now_millisecond;
-        ScatterData d = new ScatterData();
         List<Entry> entries = new ArrayList<>();
         if (dataListAll.size() > 0) {
             for (History history : dataListAll) {
                 if (history.getEvent().getEvent() == GLUCOSE ||
-                        history.getEvent().getEvent() == GLUCOSE_RECOMMEND_CAL ||
-                        history.getEvent().getEvent() == HYPO ||
-                        history.getEvent().getEvent() == HYPER ||
-                        history.getEvent().getEvent() == IMPENDANCE) {
+                        history.getEvent().getEvent() == GLUCOSE_RECOMMEND_CAL) {
                     Status status = history.getStatus();
                     int value = status.getShortValue1() & 0xFFFF;
                     value /= 100;
@@ -323,6 +329,17 @@ public class FragmentCombinedGraph extends FragmentBase
         updateGraphProfiles();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        isTop = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        isTop = false;
+    }
 
     @Override
     public void onDestroyView() {
@@ -388,16 +405,17 @@ public class FragmentCombinedGraph extends FragmentBase
             if (message
                     .getSourceAddress() == ParameterGlobal.ADDRESS_LOCAL_MODEL) {
                 mLog.Debug(getClass(), "Receive history");
-
                 mIsHistoryQuerying = false;
 //                mHistoryModel.setList(new DataList(message.getData()));
 //                mHistoryModel.update();
-                DataList dataList = new DataList(message.getData());
-                for (int i = 0; i < dataList.getCount(); i++) {
-                    dataListAll.add(new History(dataList.getData(i)));
+                if (isTop) {
+                    DataList dataList = new DataList(message.getData());
+                    for (int i = 0; i < dataList.getCount(); i++) {
+                        dataListAll.add(new History(dataList.getData(i)));
 
+                    }
+                    updateGraphProfiles();
                 }
-                updateGraphProfiles();
             }
         }
 
@@ -415,7 +433,23 @@ public class FragmentCombinedGraph extends FragmentBase
                     dataListAll.add(new History(dataList.getData(i)));
 
                 }
-                updateGraphProfiles();
+//                updateGraphProfiles();
+            }
+        }
+        if ((message.getSourcePort() == ParameterGlobal.PORT_MONITOR) &&
+                (message.getParameter() == ParameterMonitor.SYNCHRONIZEDONE)) {
+            int synchronizeDone = message.getData()[0];
+            switch (synchronizeDone) {
+                case 0:
+                    textview_synchronizing.setVisibility(View.VISIBLE);
+                    break;
+                case 1:
+                    textview_synchronizing.setVisibility(View.GONE);
+                    updateGraphProfiles();
+                    break;
+                default:
+
+                    break;
             }
         }
 
@@ -454,7 +488,11 @@ public class FragmentCombinedGraph extends FragmentBase
     }
 
     private void updateGraphProfiles() {
-
+        long t1 = System.currentTimeMillis();
+        long t2 = System.currentTimeMillis();
+        mLog.Error(getClass(), "画图时间：" + (t2 - t1));
+        mChart.getLineData().clearValues();
+        drawScatterData();
         mChart.getData().setData(generateScatterData());
         mChart.getData().setData(generateLineData());
         mChart.notifyDataSetChanged();
@@ -468,6 +506,14 @@ public class FragmentCombinedGraph extends FragmentBase
 
         float maxIndex = mChart.getScatterData().getXMax();
         float maxValue = mChart.getScatterData().getDataSetByIndex(0).getEntryForXValue(maxIndex, 0).getY();
+
+        if (mChart.getScatterData().getDataSetCount() > 2) {
+            mChart.getScatterData().removeDataSet(2);
+            mChart.getScatterData().removeDataSet(1);
+        } else if (mChart.getScatterData().getDataSetCount() > 1) {
+            mChart.getScatterData().removeDataSet(1);
+        }
+
         addValueTextEntry(maxIndex, maxValue);
         addCalibrationEntry();
         xAxis.removeAllLimitLines();
@@ -475,6 +521,7 @@ public class FragmentCombinedGraph extends FragmentBase
 
         dismissDialogProgress();
     }
+
 
     @NonNull
     private DateTime getTodayDateTime() {
