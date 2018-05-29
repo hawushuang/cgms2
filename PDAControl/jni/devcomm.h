@@ -36,9 +36,10 @@
 
 //Type definition
 
-#ifndef devcomm_int
-#define devcomm_int 					uint8
+#ifndef DEVCOMM_INT
+#define DEVCOMM_INT 					uint8
 #endif
+typedef DEVCOMM_INT devcomm_int;
 
 typedef uint (*devcomm_callback_handle_event)
 (
@@ -84,6 +85,18 @@ typedef uint16 (*devcomm_callback_get_crc16)
 	uint16 u16_Base
 );
 
+typedef void (*devcomm_callback_encrypt)
+(
+    uint8 *u8p_Data,
+    devcomm_int t_Length
+);
+
+typedef void (*devcomm_callback_decrypt)
+(
+    uint8 *u8p_Data,
+    devcomm_int t_Length
+);
+
 typedef void (*devcomm_callback_enter_critical)(void);
 
 typedef void (*devcomm_callback_exit_critical)(void);
@@ -118,6 +131,15 @@ typedef enum
 	DEVCOMM_COUNT_EVENT
 } devcomm_event;
 
+typedef enum
+{
+    DEVCOMM_ENCRYPTION_OFF = 0,
+    DEVCOMM_ENCRYPTION_ON,
+    DEVCOMM_ENCRYPTION_READY,
+    DEVCOMM_ENCRYPTION_TERMINATE,
+    DEVCOMM_COUNT_ENCRYPTION
+} devcomm_encryption;
+
 typedef struct
 {
 	devcomm_int t_Address;
@@ -134,6 +156,8 @@ typedef struct
 	devcomm_callback_memcpy fp_Memcpy;
 	devcomm_callback_get_crc8 fp_GetCRC8;
 	devcomm_callback_get_crc16 fp_GetCRC16;
+	devcomm_callback_encrypt fp_Encrypt;
+	devcomm_callback_decrypt fp_Decrypt;
 	devcomm_callback_enter_critical fp_EnterCritical;
 	devcomm_callback_exit_critical fp_ExitCritical;
 } devcomm_callback;
@@ -163,13 +187,19 @@ uint DevComm_Unlink
 	devcomm_int t_Device,
 	devcomm_int t_Address
 );
+uint DevComm_SwitchEncryption
+(
+    devcomm_int t_Device,
+    devcomm_int t_Address,
+    devcomm_encryption u8_Encryption
+);
 uint DevComm_Send
 (
 	devcomm_int t_Device,
 	devcomm_int t_Address,
 	devcomm_int t_SourcePort,
 	devcomm_int t_TargetPort,
-	const uint8 *u8p_Data,
+	uint8 *u8p_Data,
 	devcomm_int t_Length,
 	devcomm_int t_Mode
 );

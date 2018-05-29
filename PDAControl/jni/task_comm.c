@@ -21,8 +21,8 @@
 
 #define TASK_COMM_BUFFER_SIZE				DEVCOMM_LINK_BUFFER_SIZE
 #define TASK_COMM_PACKET_LENGTH_MAX			128
-#define TASK_COMM_PACKET_LENGTH_MASTER		20
-#define TASK_COMM_PACKET_LENGTH_SLAVE		32
+#define TASK_COMM_PACKET_LENGTH_MASTER		38
+#define TASK_COMM_PACKET_LENGTH_SLAVE		38
 #define TASK_COMM_SEND_RETRY				3
 #define TASK_COMM_SEND_TIMEOUT				1000
 
@@ -142,7 +142,16 @@ static void TaskComm_Delay
 );
 static void* TaskComm_WriteThread(void* arg);
 static void* TaskComm_ReadThread(void* arg);
-
+static void TaskComm_Encrypt
+(
+	uint8 *u8p_Data,
+	devcomm_int t_Length
+);
+static void TaskComm_Decrypt
+(
+	uint8 *u8p_Data,
+	devcomm_int t_Length
+);
 
 //Public function definition
 
@@ -213,7 +222,7 @@ uint TaskComm_SetConfig
 
 			if (*((uint8 *)vp_Value) < TASK_COUNT_ADDRESS)
 			{
-				REG_SET_BIT(m_ui_Flag[*((uint8 *)vp_Value)], 
+				REG_SET_BIT(m_ui_Flag[*((uint8 *)vp_Value)],
 					TASK_COMM_FLAG_SWITCH);
 			}
 			else
@@ -227,7 +236,7 @@ uint TaskComm_SetConfig
 
 			if (*((uint8 *)vp_Value) < TASK_COUNT_ADDRESS)
 			{
-				REG_CLEAR_BIT(m_ui_Flag[*((uint8 *)vp_Value)], 
+				REG_CLEAR_BIT(m_ui_Flag[*((uint8 *)vp_Value)],
 					TASK_COMM_FLAG_SWITCH);
 			}
 			else
@@ -268,7 +277,7 @@ uint TaskComm_SetConfig
 		default:
 			return FUNCTION_FAIL;
 	}
-	
+
 	return FUNCTION_OK;
 }
 
@@ -466,6 +475,19 @@ uint TaskComm_Receive
 }
 
 
+void TaskComm_TurnOffEncryption(void)
+{
+	DevComm_SwitchEncryption(TASK_COMM_DEVICE_SERIAL, TASK_ADDRESS_MASTER, DEVCOMM_ENCRYPTION_OFF);
+}
+
+
+void TaskComm_ReadyForEncryption(const uint8* key)
+{
+    AES_SetKey((const uint8_t *)key, 0);
+    DevComm_SwitchEncryption(TASK_COMM_DEVICE_SERIAL, TASK_ADDRESS_MASTER, DEVCOMM_ENCRYPTION_READY);
+}
+
+
 //Private function definition
 
 static uint TaskComm_InitializeSerial(void)
@@ -498,6 +520,8 @@ static uint TaskComm_InitializeComm(void)
 	t_Callback.fp_Memcpy = TaskComm_Memcpy;
 	t_Callback.fp_GetCRC8 = TaskComm_GetCRC8;
 	t_Callback.fp_GetCRC16 = TaskComm_GetCRC16;
+	t_Callback.fp_Encrypt = TaskComm_Encrypt;
+	t_Callback.fp_Decrypt = TaskComm_Decrypt;
 	t_Callback.fp_EnterCritical = (devcomm_callback_enter_critical)0;
 	t_Callback.fp_ExitCritical = (devcomm_callback_exit_critical)0;
 
@@ -514,12 +538,16 @@ static uint TaskComm_InitializeComm(void)
 		return FUNCTION_FAIL;
 	}
 
+	DevComm_SwitchEncryption(TASK_COMM_DEVICE_SERIAL, TASK_ADDRESS_SLAVE, DEVCOMM_ENCRYPTION_OFF);
+
 	if (DevComm_Link(TASK_COMM_DEVICE_SERIAL, TASK_ADDRESS_MASTER,
 		TASK_COMM_PACKET_LENGTH_MASTER) !=
 		FUNCTION_OK)
 	{
 		return FUNCTION_FAIL;
 	}
+
+	DevComm_SwitchEncryption(TASK_COMM_DEVICE_SERIAL, TASK_ADDRESS_MASTER, DEVCOMM_ENCRYPTION_OFF);
 
 	REG_SET_BIT(m_ui_Flag[TASK_ADDRESS_SLAVE], TASK_COMM_FLAG_SWITCH);
 	REG_SET_BIT(m_ui_Flag[TASK_ADDRESS_MASTER], TASK_COMM_FLAG_SWITCH);
@@ -572,7 +600,7 @@ static uint8 TaskComm_GetCRC8
 	uint8 u8_Base
 )
 {
-	return LibChecksum_GetChecksumPartial8Bit(u8p_Data, (uint16)t_Length, 
+	return LibChecksum_GetChecksumPartial8Bit(u8p_Data, (uint16)t_Length,
 		u8_Base);
 }
 
@@ -584,7 +612,7 @@ static uint16 TaskComm_GetCRC16
 	uint16 u16_Base
 )
 {
-	return LibChecksum_GetChecksumPartial16Bit(u8p_Data, (uint16)t_Length, 
+	return LibChecksum_GetChecksumPartial16Bit(u8p_Data, (uint16)t_Length,
 		u16_Base);
 }
 
@@ -722,9 +750,9 @@ static void TaskComm_ReadDeviceDone
 	uint ui_Length
 )
 {
-	if ((REG_GET_BIT(m_ui_Flag[TASK_ADDRESS_MASTER], 
+	if ((REG_GET_BIT(m_ui_Flag[TASK_ADDRESS_MASTER],
 		TASK_COMM_FLAG_SWITCH) != 0) ||
-		(REG_GET_BIT(m_ui_Flag[TASK_ADDRESS_SLAVE], 
+		(REG_GET_BIT(m_ui_Flag[TASK_ADDRESS_SLAVE],
 		TASK_COMM_FLAG_SWITCH) != 0))
 	{
 		pthread_mutex_lock(&m_t_MutexEvent);
@@ -820,7 +848,7 @@ static devcomm_int TaskComm_SendCommand
 	if (DevComm_Send(TASK_COMM_DEVICE_SERIAL, t_Address,
 		(devcomm_int)t_MessageHead.u8_SourcePort,
 		(devcomm_int)t_MessageHead.u8_TargetPort,
-		(const uint8 *)m_u8_BufferCommand,
+		(uint8 *)m_u8_BufferCommand,
 		(devcomm_int)(t_MessageHead.u8_DataLength +
 		TASK_COMM_COUNT_COMMAND_OFFSET),
 		(devcomm_int)t_MessageHead.u8_Mode) != FUNCTION_OK)
@@ -909,4 +937,16 @@ static void* TaskComm_ReadThread(void* arg)
 	LOGD("Exit read thread");
 
 	return (void *)0;
+}
+
+
+static void TaskComm_Encrypt( uint8 *u8p_Data, devcomm_int t_Length )
+{
+    AES_CFB_encrypt((uint8_t *)u8p_Data, t_Length);
+}
+
+
+static void TaskComm_Decrypt( uint8 *u8p_Data, devcomm_int t_Length )
+{
+    AES_CFB_decrypt((uint8_t *)u8p_Data, t_Length);
 }

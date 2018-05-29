@@ -13,7 +13,7 @@ extern "C" {
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_open
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_microtechmd_pda_control_platform_JNIInterface
@@ -21,7 +21,21 @@ JNIEXPORT void JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_op
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_close
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
+/*
+ * Class:     com_microtechmd_pda_control_platform_JNIInterface
+ * Method:    turnOff
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_turnOff
+        (JNIEnv *, jobject);
+/*
+ * Class:     com_microtechmd_pda_control_platform_JNIInterface
+ * Method:    ready
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_ready
+        (JNIEnv *, jobject, jbyteArray);
 
 /*
  * Class:     com_microtechmd_pda_control_platform_JNIInterface
@@ -29,7 +43,7 @@ JNIEXPORT void JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_cl
  * Signature: (IIIIII[B)I
  */
 JNIEXPORT jint JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_send
-  (JNIEnv *, jobject, jint, jint, jint, jint, jint, jint, jbyteArray);
+        (JNIEnv *, jobject, jint, jint, jint, jint, jint, jint, jbyteArray);
 
 /*
  * Class:     com_microtechmd_pda_control_platform_JNIInterface
@@ -37,7 +51,7 @@ JNIEXPORT jint JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_se
  * Signature: (I)I
  */
 JNIEXPORT jint JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_query
-  (JNIEnv *, jobject, jint);
+        (JNIEnv *, jobject, jint);
 
 /*
  * Class:     com_microtechmd_pda_control_platform_JNIInterface
@@ -45,7 +59,7 @@ JNIEXPORT jint JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_qu
  * Signature: (II)I
  */
 JNIEXPORT jint JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_switchLink
-  (JNIEnv *, jobject, jint, jint);
+        (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     com_microtechmd_pda_control_platform_JNIInterface
@@ -53,7 +67,7 @@ JNIEXPORT jint JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_sw
  * Signature: (II)V
  */
 JNIEXPORT void JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_setLED
-  (JNIEnv *, jobject, jint, jint);
+        (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     com_microtechmd_pda_control_platform_JNIInterface
@@ -61,7 +75,7 @@ JNIEXPORT void JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_se
  * Signature: (I)I
  */
 JNIEXPORT jint JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_getLED
-  (JNIEnv *, jobject, jint);
+        (JNIEnv *, jobject, jint);
 
 #ifdef __cplusplus
 }

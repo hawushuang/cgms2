@@ -9,7 +9,7 @@
 
 
 #include "global.h"
-
+#include "aes.h"
 
 //Constant define
 
@@ -106,5 +106,7 @@ uint TaskComm_Receive
 	task_comm_command *tp_Command,
 	uint8 *u8p_Mode
 );
+void TaskComm_TurnOffEncryption(void);
+void TaskComm_ReadyForEncryption(const uint8* key);
 
 #endif
