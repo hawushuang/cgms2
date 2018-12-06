@@ -20,8 +20,8 @@
 
 typedef enum
 {
-	DRV_LED_COLOR_RED = 0,
-	DRV_LED_COLOR_GREEN
+	DRV_LED_COLOR_YELLOW = 0,
+	DRV_LED_COLOR_RED
 } drv_led_color;
 
 

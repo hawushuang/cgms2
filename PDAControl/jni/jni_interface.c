@@ -305,80 +305,110 @@ static uint JNI_HandleEvent
                 uint8 u8_SourcePort,
                 uint8 u8_TargetPort,
                 uint8 u8_Event
-        ) {
+        )
+{
     jint t_Return;
+    jclass t_Class;
     JNIEnv *tp_Env;
 
 
     LOGD("Attach thread");
 
-    if ((*m_tp_JavaVM)->AttachCurrentThread(m_tp_JavaVM, &tp_Env, NULL) < 0) {
+    if ((*m_tp_JavaVM)->AttachCurrentThread(m_tp_JavaVM, &tp_Env, NULL) < 0)
+    {
         LOGE("Attach thread fail");
         return FUNCTION_FAIL;
     }
 
-    t_Return = (*tp_Env)->CallStaticIntMethod(tp_Env, m_t_Class,
-                                              m_t_MethodIDHandleEvent, (jint) u8_Address,
-                                              (jint) u8_SourcePort,
-                                              (jint) u8_TargetPort, (jint) u8_Event);
+    if ((*tp_Env)->IsSameObject(tp_Env, m_t_Class, NULL))
+    {
+        LOGE("Object release");
+        t_Return = (jint)FUNCTION_FAIL;
+    }
+    else
+    {
+        t_Class = (*tp_Env)->NewLocalRef(tp_Env, m_t_Class);
+        t_Return = (*tp_Env)->CallStaticIntMethod(tp_Env, t_Class,
+                                                  m_t_MethodIDHandleEvent, (jint)u8_Address, (jint)u8_SourcePort,
+                                                  (jint)u8_TargetPort, (jint)u8_Event);
+        (*tp_Env)->DeleteLocalRef(tp_Env, t_Class);
+    }
 
     LOGD("Detach thread");
 
-    if ((*m_tp_JavaVM)->DetachCurrentThread(m_tp_JavaVM) < 0) {
+    if ((*m_tp_JavaVM)->DetachCurrentThread(m_tp_JavaVM) < 0)
+    {
         LOGE("Detach thread fail");
         return FUNCTION_FAIL;
     }
 
-    return (uint) t_Return;
+    return (uint)t_Return;
 }
 
 
 static uint JNI_HandleCommand
-        (
-                uint8 u8_Address,
-                uint8 u8_SourcePort,
-                uint8 u8_TargetPort,
-                const task_comm_command *tp_Command,
-                uint8 u8_Mode
-        ) {
-    JNIEnv *tp_Env;
-    jint t_Return;
-    jbyteArray t_Data;
+(
+	uint8 u8_Address,
+	uint8 u8_SourcePort,
+	uint8 u8_TargetPort,
+	const task_comm_command *tp_Command,
+	uint8 u8_Mode
+)
+{
+	JNIEnv *tp_Env;
+	jint t_Return;
+	jclass t_Class;
+	jbyteArray t_Data;
 
 
-    LOGD("Attach thread");
+	LOGD("Attach thread");
 
-    if ((*m_tp_JavaVM)->AttachCurrentThread(m_tp_JavaVM, &tp_Env, NULL) < 0) {
-        LOGE("Attach thread fail");
-        return FUNCTION_FAIL;
-    }
+	if ((*m_tp_JavaVM)->AttachCurrentThread(m_tp_JavaVM, &tp_Env, NULL) < 0)
+	{
+		LOGE("Attach thread fail");
+		return FUNCTION_FAIL;
+	}
 
-    if (tp_Command->u8_Length > 0) {
-        t_Data = (*tp_Env)->NewByteArray(tp_Env, (jsize) tp_Command->u8_Length);
-        (*tp_Env)->SetByteArrayRegion(tp_Env, t_Data, 0,
-                                      (jsize) tp_Command->u8_Length,
-                                      (const jbyte *) tp_Command->u8p_Data);
-    } else {
-        t_Data = NULL;
-    }
+	if (tp_Command->u8_Length > 0)
+	{
+		t_Data = (*tp_Env)->NewByteArray(tp_Env, (jsize)tp_Command->u8_Length);
+		(*tp_Env)->SetByteArrayRegion(tp_Env, t_Data, 0,
+			(jsize)tp_Command->u8_Length, (const jbyte *)tp_Command->u8p_Data);
+	}
+	else
+	{
+		t_Data = NULL;
+	}
 
-    t_Return = (*tp_Env)->CallStaticIntMethod(tp_Env, m_t_Class,
-                                              m_t_MethodIDHandleCommand, (jint) u8_Address,
-                                              (jint) u8_SourcePort,
-                                              (jint) u8_TargetPort, (jint) u8_Mode,
-                                              (jint) tp_Command->u8_Operation,
-                                              (jint) tp_Command->u8_Parameter, t_Data);
 
-    if (t_Data != NULL) {
-        (*tp_Env)->DeleteLocalRef(tp_Env, t_Data);
-    }
+	if ((*tp_Env)->IsSameObject(tp_Env, m_t_Class, NULL))
+	{
+		LOGE("Object release");
+		t_Return = (jint)FUNCTION_FAIL;
+	}
+	else
+	{
+		t_Class = (*tp_Env)->NewLocalRef(tp_Env, m_t_Class);
+		t_Return = (*tp_Env)->CallStaticIntMethod(tp_Env, t_Class,
+			m_t_MethodIDHandleCommand, (jint) u8_Address, (jint) u8_SourcePort,
+			(jint) u8_TargetPort, (jint) u8_Mode,
+			(jint) tp_Command->u8_Operation, (jint) tp_Command->u8_Parameter,
+			t_Data);
+		(*tp_Env)->DeleteLocalRef(tp_Env, t_Class);
+	}
 
-    LOGD("Detach thread");
+	if (t_Data != NULL)
+	{
+		(*tp_Env)->DeleteLocalRef(tp_Env, t_Data);
+	}
 
-    if ((*m_tp_JavaVM)->DetachCurrentThread(m_tp_JavaVM) < 0) {
-        LOGE("Detach thread fail");
-        return FUNCTION_FAIL;
-    }
+	LOGD("Detach thread");
 
-    return (uint) t_Return;
+	if ((*m_tp_JavaVM)->DetachCurrentThread(m_tp_JavaVM) < 0)
+	{
+		LOGE("Detach thread fail");
+		return FUNCTION_FAIL;
+	}
+
+	return (uint)t_Return;
 }

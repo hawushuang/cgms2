@@ -8,8 +8,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
+
 #include "drv_led.h"
 
 
@@ -22,12 +21,12 @@
 //Private variable definition
 
 static int m_i_RedBrightnessMax = {0};
-static int m_i_GreenBrightnessMax = {0};
+static int m_i_YellowBrightnessMax = {0};
 
-static const char *const m_i8_RedBrightness = "/sys/class/leds/led0-red/brightness";
-static const char *const m_i8_RedBrightnessMax = "/sys/class/leds/led0-red/max_brightness";
-static const char *const m_i8_GreenBrightness = "/sys/class/leds/led0-green/brightness";
-static const char *const m_i8_GreenBrightnessMax = "/sys/class/leds/led0-green/max_brightness";
+static const char *const m_i8_RedBrightness = "/sys/class/leds/red/brightness";
+static const char *const m_i8_RedBrightnessMax = "/sys/class/leds/red/max_brightness";
+static const char *const m_i8_YellowBrightness = "/sys/class/leds/yellow/brightness";
+static const char *const m_i8_YellowBrightnessMax = "/sys/class/leds/yellow/max_brightness";
 
 
 //Private function declaration
@@ -67,11 +66,11 @@ uint DrvLED_Initialize(void)
 		LOGD("max red led brightness %d\n", m_i_RedBrightnessMax);
 	}
 
-	i_FileDescriptor = open(m_i8_GreenBrightnessMax, O_RDONLY);
+	i_FileDescriptor = open(m_i8_YellowBrightnessMax, O_RDONLY);
 
 	if (i_FileDescriptor < 0)
 	{
-		LOGE("failed to open %s\n", m_i8_GreenBrightnessMax);
+		LOGE("failed to open %s\n", m_i8_YellowBrightnessMax);
 
 		return FUNCTION_FAIL;
 	}
@@ -88,8 +87,8 @@ uint DrvLED_Initialize(void)
 	}
 	else
 	{
-		m_i_GreenBrightnessMax = strtol(i8_Buffer, (char **) NULL, 10);
-		LOGD("max green led brightness %d\n", m_i_GreenBrightnessMax);
+		m_i_YellowBrightnessMax = strtol(i8_Buffer, (char **) NULL, 10);
+		LOGD("max green led brightness %d\n", m_i_YellowBrightnessMax);
 	}
 
 	return FUNCTION_OK;
@@ -127,19 +126,19 @@ void DrvLED_Set
 			return;
 		}
 
-		i_LEDBrightness = m_i_RedBrightnessMax * i_Brightness / 100;
+		i_LEDBrightness = m_i_RedBrightnessMax * (100 - i_Brightness) / 100;
 	}
-	else if (i_Color == DRV_LED_COLOR_GREEN)
+	else if (i_Color == DRV_LED_COLOR_YELLOW)
 	{
-		i_FileDescriptor = open(m_i8_GreenBrightness, O_RDWR);
+		i_FileDescriptor = open(m_i8_YellowBrightness, O_RDWR);
 
 		if (i_FileDescriptor < 0)
 		{
-			LOGE("failed to open %s\n", m_i8_GreenBrightness);
+			LOGE("failed to open %s\n", m_i8_YellowBrightness);
 			return;
 		}
 
-		i_LEDBrightness = m_i_GreenBrightnessMax * i_Brightness / 100;
+		i_LEDBrightness = m_i_YellowBrightnessMax * (100 - i_Brightness) / 100;
 	}
 	else
 	{
@@ -179,13 +178,13 @@ int DrvLED_Get
 			return -1;
 		}
 	}
-	else if (i_Color == DRV_LED_COLOR_GREEN)
+	else if (i_Color == DRV_LED_COLOR_YELLOW)
 	{
-		i_FileDescriptor = open(m_i8_GreenBrightness, O_RDONLY);
+		i_FileDescriptor = open(m_i8_YellowBrightness, O_RDONLY);
 
 		if (i_FileDescriptor < 0)
 		{
-			LOGE("failed to open %s\n", m_i8_GreenBrightness);
+			LOGE("failed to open %s\n", m_i8_YellowBrightness);
 			return -1;
 		}
 	}
@@ -213,7 +212,16 @@ int DrvLED_Get
 	}
 	else
 	{
-		i_Brightness = i_Brightness * 100 / m_i_GreenBrightnessMax;
+		i_Brightness = i_Brightness * 100 / m_i_YellowBrightnessMax;
+	}
+
+	if (i_Brightness > 100)
+	{
+		i_Brightness = 0;
+	}
+	else
+	{
+		i_Brightness = 100 - i_Brightness;
 	}
 
 	return i_Brightness;

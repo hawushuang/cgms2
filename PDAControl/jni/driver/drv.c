@@ -31,8 +31,8 @@ uint Drv_Initialize(void)
 		return FUNCTION_FAIL;
 	}
 
+	DrvLED_Set(DRV_LED_COLOR_YELLOW, 0);
 	DrvLED_Set(DRV_LED_COLOR_RED, 0);
-	DrvLED_Set(DRV_LED_COLOR_GREEN, 0);
 
 	return FUNCTION_OK;
 }
@@ -40,8 +40,8 @@ uint Drv_Initialize(void)
 
 void Drv_Finalize(void)
 {
+	DrvLED_Set(DRV_LED_COLOR_YELLOW, 0);
 	DrvLED_Set(DRV_LED_COLOR_RED, 0);
-	DrvLED_Set(DRV_LED_COLOR_GREEN, 0);
 
 	DrvUART_Finalize();
 }
