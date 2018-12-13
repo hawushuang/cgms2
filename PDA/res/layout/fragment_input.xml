@@ -47,7 +47,7 @@
 		<EditText
 			android:id="@+id/edit_text_input_center"
 			style="?style_edit_input"
-			android:selectAllOnFocus="true"
+			android:selectAllOnFocus="false"
 			android:imeOptions="actionDone"
 			android:layout_weight="1"/>
 

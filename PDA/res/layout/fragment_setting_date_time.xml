@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="?style_bar_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@null">
+
+        <ImageButton
+            android:id="@+id/ibt_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_back" />
+
+        <TextView
+            android:id="@+id/text_view_title_bar"
+            style="?style_text_title_bar"
+            android:text="@string/setting_general_date_time" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_date"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
+                android:clickable="true"
+                android:focusable="true"
+                app:itemName="@string/setting_general_set_date"
+                app:itemValue="" />
+
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_time"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
+                android:clickable="true"
+                android:focusable="true"
+                app:itemName="@string/setting_general_set_time"
+                app:itemValue="" />
+
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_timezone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
+                android:clickable="true"
+                android:focusable="true"
+                app:itemName="@string/setting_general_set_timezone"
+                app:itemValue="" />
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

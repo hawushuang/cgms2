@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="?style_bar_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@null">
+
+        <ImageButton
+            android:id="@+id/ibt_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_back" />
+
+        <TextView
+            android:id="@+id/text_view_title_bar"
+            style="?style_text_title_bar"
+            android:text="@string/utilities" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_language"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
+                android:clickable="true"
+                android:focusable="true"
+                app:itemName="@string/setting_general_language"
+                app:itemValue="@string/fragment_settings_language" />
+
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_timeout_lock"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
+                android:clickable="true"
+                android:focusable="true"
+                app:itemName="@string/timeout_lock"
+                app:itemValue="" />
+
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_software_version"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
+                app:itemName="@string/setting_general_version"
+                app:itemValue="1.0.0" />
+
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_data_test"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
+                android:clickable="true"
+                android:focusable="true"
+                app:itemName="@string/data_test"
+                app:itemValue="" />
+
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_recovery"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_setting_item"
+                android:clickable="true"
+                android:focusable="true"
+                app:itemName="@string/recovery"
+                app:itemValue="" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

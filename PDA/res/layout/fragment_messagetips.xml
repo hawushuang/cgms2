@@ -133,6 +133,38 @@
                     toggle:tbOffBorderColor="@color/background_dark"
                     toggle:tbOffColor="@color/background_dark" />
             </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/background_setting_item"
+                android:paddingLeft="@dimen/size15"
+                android:paddingRight="@dimen/size15"
+                android:visibility="gone">
+
+                <TextView
+                    style="?style_text_medium"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/glucose_messagetips"
+                    android:textColor="@color/text_white"
+                    android:textStyle="bold" />
+
+
+                <com.microtechmd.pda.ui.widget.myswitchbutton.LukeSwitchButton
+                    android:id="@+id/glucose_message_switch"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    toggle:tbAsDefaultOn="true"
+                    toggle:tbBorderWidth="1dp"
+                    toggle:tbOffBorderColor="@color/background_dark"
+                    toggle:tbOffColor="@color/background_dark" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

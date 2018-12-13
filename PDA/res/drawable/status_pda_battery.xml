@@ -18,8 +18,8 @@
         android:drawable="@drawable/icon_pda_battery5"
         android:maxLevel="100"/>
 
-    <item
-        android:drawable="@drawable/icon_pda_battery_charging"
-        android:maxLevel="300"/>
+    <!--<item-->
+        <!--android:drawable="@drawable/icon_pda_battery_charging"-->
+        <!--android:maxLevel="300"/>-->
 
 </level-list>

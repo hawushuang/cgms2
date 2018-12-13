@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="?style_bar_title"
+        app:navigationIcon="@null">
+
+        <ImageButton
+            android:id="@+id/ibt_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_back" />
+
+        <TextView
+            android:id="@+id/text_view_title_bar"
+            style="?style_text_title_bar"
+            android:text="@string/alert" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+
+                <com.microtechmd.pda.ui.widget.WidgetSettingTipsItem
+                    android:id="@+id/item_hi_bg"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:background="@drawable/background_setting_item"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:itemName="@string/hi_messagetips"
+                    app:itemValue="" />
+
+                <CheckBox
+                    android:id="@+id/rb_checkbox_hi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/background_light"
+                    android:button="@drawable/radio_button" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+
+                <com.microtechmd.pda.ui.widget.WidgetSettingTipsItem
+                    android:id="@+id/item_lo_bg"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:background="@drawable/background_setting_item"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:itemName="@string/low_messagetips"
+                    app:itemValue="" />
+
+                <CheckBox
+                    android:id="@+id/rb_checkbox_lo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/background_light"
+                    android:button="@drawable/radio_button" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@color/background_light"
+                android:orientation="horizontal">
+
+                <com.microtechmd.pda.ui.widget.WidgetSettingTipsItem
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:background="@drawable/background_setting_item"
+                    app:isWizard="false"
+                    app:itemName="@string/comm_messagetips"
+                    app:itemValue="" />
+
+                <CheckBox
+                    android:id="@+id/rb_checkbox_comm"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:button="@drawable/radio_button"
+                    android:text="@null" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

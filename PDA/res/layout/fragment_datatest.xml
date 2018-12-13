@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="?style_bar_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@null">
+
+        <ImageButton
+            android:id="@+id/ibt_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_back" />
+
+        <TextView
+            android:id="@+id/text_view_title_bar"
+            style="?style_text_title_bar"
+            android:text="数据测试" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/input_testdata"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/size10"
+                android:hint="@string/input_testdata"
+                android:textColorHint="@color/gray_light"
+                android:textSize="@dimen/textSize25" />
+
+            <Button
+                android:id="@+id/send"
+                style="?style_button_small"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/send_testdata" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/size5"
+                android:text="@string/data_request"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textSize20" />
+
+            <TextView
+                android:id="@+id/respond"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/size5"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textSize25"
+                tools:text="dfasdfasdf" />
+
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

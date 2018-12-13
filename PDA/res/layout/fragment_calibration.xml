@@ -7,6 +7,7 @@
 	android:background="@color/background_dark">
 
 	<android.support.v7.widget.Toolbar
+		android:visibility="gone"
 		android:id="@+id/toolbar"
 		style="?style_bar_title"
 		app:navigationIcon="@null">

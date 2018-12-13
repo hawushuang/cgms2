@@ -47,7 +47,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
-			android:text="Monday,January 3,2012"/>
+			android:text="2018"/>
 
 		<ImageView
 			android:id="@+id/btn_right"
@@ -67,7 +67,7 @@
 		android:cacheColorHint="#00000000"
 		android:divider="@null"
 		android:fadingEdge="none"
-		android:listSelector="@null"
+		android:listSelector="#00000000"
 		android:scrollbarStyle="outsideOverlay"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintLeft_toLeftOf="parent"
