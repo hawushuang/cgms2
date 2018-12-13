@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.Messenger;
 
@@ -13,6 +14,7 @@ import com.microtechmd.pda.control.task.TaskGlucose;
 import com.microtechmd.pda.control.task.TaskMonitor;
 import com.microtechmd.pda.control.task.TaskSystem;
 import com.microtechmd.pda.library.entity.EntityMessage;
+import com.microtechmd.pda.library.entity.ParameterComm;
 import com.microtechmd.pda.library.parameter.ParameterGlobal;
 import com.microtechmd.pda.library.service.ServiceBase;
 

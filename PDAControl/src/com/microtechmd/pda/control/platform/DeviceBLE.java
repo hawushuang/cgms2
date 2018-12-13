@@ -1,8 +1,12 @@
 package com.microtechmd.pda.control.platform;
 
 
+import android.util.Log;
+
 import com.microtechmd.pda.library.entity.EntityMessage;
 import com.microtechmd.pda.library.parameter.ParameterGlobal;
+
+import java.util.Arrays;
 
 
 public final class DeviceBLE {
@@ -17,7 +21,6 @@ public final class DeviceBLE {
             if (sMessageListener == null) {
                 return EntityMessage.FUNCTION_FAIL;
             }
-
             sMessageListener.onReceive(new EntityMessage(address, address,
                     sourcePort, targetPort, event));
 
@@ -30,7 +33,6 @@ public final class DeviceBLE {
             if (sMessageListener == null) {
                 return EntityMessage.FUNCTION_FAIL;
             }
-
             sMessageListener.onReceive(new EntityMessage(address, address,
                     sourcePort, targetPort, mode, operation, parameter, data));
 
@@ -64,6 +66,9 @@ public final class DeviceBLE {
             return EntityMessage.FUNCTION_FAIL;
         }
 
+        Log.e("发送数据", "param:" + message.getParameter() +
+                "operation:" + message.getOperation() + "port:" + message.getSourcePort() +
+                "Sourceaddress:" + message.getSourceAddress() + "getTargetAddress" + message.getTargetAddress());
         return JNIInterface.getInstance().send(message.getTargetAddress(),
                 message.getSourcePort(), message.getTargetPort(), message.getMode(),
                 message.getOperation(), message.getParameter(), message.getData());
@@ -77,5 +82,13 @@ public final class DeviceBLE {
 
     public int switchLink(int address, int value) {
         return JNIInterface.getInstance().switchLink(address, value);
+    }
+
+    public void turnOff() {
+        JNIInterface.getInstance().turnOff();
+    }
+
+    public void ready(byte[] data) {
+        JNIInterface.getInstance().ready(data);
     }
 }
