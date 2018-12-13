@@ -39,6 +39,9 @@ public class EntityMessage extends DataBundle
 	public static final int OPERATION_READ = 4;
 	public static final int OPERATION_NOTIFY = 5;
 	public static final int OPERATION_ACKNOWLEDGE = 6;
+	public static final int OPERATION_PAIR = 7;
+	public static final int OPERATION_UNPAIR = 8;
+	public static final int OPERATION_BOND = 9;
 	public static final int COUNT_OPERATION = 7;
 
 	public static final int EVENT_SEND_DONE = 0;

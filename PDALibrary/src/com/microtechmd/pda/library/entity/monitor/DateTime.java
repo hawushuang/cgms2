@@ -1,17 +1,18 @@
 package com.microtechmd.pda.library.entity.monitor;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Calendar;
-
 import com.microtechmd.pda.library.entity.DataBundle;
+import com.microtechmd.pda.library.utility.ByteUtil;
+
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class DateTime extends DataBundle {
-    public static final int BYTE_ARRAY_LENGTH = 6;
 
+    public static final long BASE_TIME = 946656000000L;
+
+    public static final int BYTE_ARRAY_LENGTH = 4;
     public static final int SECOND_PER_HOUR = 864;
     public static final int MILLISECOND_PER_SECOND = 1000;
     public static final int SECOND_PER_MINUTE = 60;
@@ -181,26 +182,29 @@ public class DateTime extends DataBundle {
 
     @Override
     public byte[] getByteArray() {
-        final DataOutputStreamLittleEndian dataOutputStream;
-        final ByteArrayOutputStream byteArrayOutputStream;
+        long time = getCalendar().getTimeInMillis() - BASE_TIME;
 
-        byteArrayOutputStream = new ByteArrayOutputStream();
-        dataOutputStream =
-                new DataOutputStreamLittleEndian(byteArrayOutputStream);
-
-        try {
-            byteArrayOutputStream.reset();
-            dataOutputStream.writeByte((byte) getYear());
-            dataOutputStream.writeByte((byte) getMonth());
-            dataOutputStream.writeByte((byte) getDay());
-            dataOutputStream.writeByte((byte) getHour());
-            dataOutputStream.writeByte((byte) getMinute());
-            dataOutputStream.writeByte((byte) getSecond());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return byteArrayOutputStream.toByteArray();
+        return ByteUtil.intToBytes((int) (time/1000));
+//        final DataOutputStreamLittleEndian dataOutputStream;
+//        final ByteArrayOutputStream byteArrayOutputStream;
+//
+//        byteArrayOutputStream = new ByteArrayOutputStream();
+//        dataOutputStream =
+//                new DataOutputStreamLittleEndian(byteArrayOutputStream);
+//
+//        try {
+//            byteArrayOutputStream.reset();
+//            dataOutputStream.writeByte((byte) getYear());
+//            dataOutputStream.writeByte((byte) getMonth());
+//            dataOutputStream.writeByte((byte) getDay());
+//            dataOutputStream.writeByte((byte) getHour());
+//            dataOutputStream.writeByte((byte) getMinute());
+//            dataOutputStream.writeByte((byte) getSecond());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return byteArrayOutputStream.toByteArray();
     }
 
 
@@ -211,24 +215,19 @@ public class DateTime extends DataBundle {
         }
 
         if (byteArray.length >= BYTE_ARRAY_LENGTH) {
-            final DataInputStreamLittleEndian dataInputStream;
-            final ByteArrayInputStream byteArrayInputStream;
+            long addTime = ByteUtil.bytesToInt(byteArray) * 1000L;
+            Date date = new Date(BASE_TIME + addTime);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
 
-            byteArrayInputStream = new ByteArrayInputStream(byteArray);
-            dataInputStream =
-                    new DataInputStreamLittleEndian(byteArrayInputStream);
-
-            try {
-                clearBundle();
-                setYear((int) dataInputStream.readByte());
-                setMonth((int) dataInputStream.readByte());
-                setDay((int) dataInputStream.readByte());
-                setHour((int) dataInputStream.readByte());
-                setMinute((int) dataInputStream.readByte());
-                setSecond((int) dataInputStream.readByte());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            clearBundle();
+            setYear(calendar.get(Calendar.YEAR) -
+                    ((calendar.get(Calendar.YEAR) / 100) * 100));
+            setMonth(calendar.get(Calendar.MONTH) + 1);
+            setDay(calendar.get(Calendar.DAY_OF_MONTH));
+            setHour(calendar.get(Calendar.HOUR_OF_DAY));
+            setMinute(calendar.get(Calendar.MINUTE));
+            setSecond(calendar.get(Calendar.SECOND));
         }
     }
 }

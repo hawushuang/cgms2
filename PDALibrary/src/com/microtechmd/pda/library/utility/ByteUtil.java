@@ -1,5 +1,7 @@
 package com.microtechmd.pda.library.utility;
 
+import java.util.Arrays;
+
 /**
  * Created by Administrator on 2017/12/28.
  */
@@ -24,16 +26,20 @@ public class ByteUtil {
     /**
      * byte数组中取int数值，本方法适用于(低位在前，高位在后)的顺序，和和intToBytes（）配套使用
      *
-     * @param src    byte数组
-     * @param offset 从数组的第offset位开始
+     * @param src byte数组
      * @return int数值
      */
-    public static int bytesToInt(byte[] src, int offset) {
+    public static int bytesToInt(byte[] src) {
         int value;
-        value = (src[offset] & 0xFF)
-                | ((src[offset + 1] & 0xFF) << 8)
-                | ((src[offset + 2] & 0xFF) << 16)
-                | ((src[offset + 3] & 0xFF) << 24);
+        if (src.length > 2) {
+            value = (src[0] & 0xFF)
+                    | ((src[1] & 0xFF) << 8)
+                    | ((src[2] & 0xFF) << 16)
+                    | ((src[3] & 0xFF) << 24);
+        } else {
+            value = (src[0] & 0xFF)
+                    | ((src[1] & 0xFF) << 8);
+        }
         return value;
     }
 
@@ -108,5 +114,14 @@ public class ByteUtil {
         }
 
         return buf;
+    }
+
+    //合并两个数组
+    public static byte[] concat(byte[] data1, byte[] data2) {
+        byte[] data3 = new byte[data1.length + data2.length];
+        System.arraycopy(data1, 0, data3, 0, data1.length);
+        System.arraycopy(data2, 0, data3, data1.length, data2.length);
+        return data3;
+
     }
 }
