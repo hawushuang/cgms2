@@ -32,9 +32,9 @@
 #define REG_WRITE_FIELD(reg, field, mask, value)	{(reg) = ((reg) & (~((mask) << (field)))) | \
 													((value) << (field));}
 #define REG_READ_FIELD(reg, field, mask)			(((reg) >> (field)) & (mask))
-#define REG_SET_BIT(reg, field)						{(reg) |= (1 << (field));}
-#define REG_CLEAR_BIT(reg, field)					{(reg) &= ~(1 << (field));}
-#define REG_REVERSE_BIT(reg, field)					{(reg) ^= (1 << (field));}
+#define REG_SET_BIT(reg, field)						((reg) |= (1 << (field)))
+#define REG_CLEAR_BIT(reg, field)					((reg) &= ~(1 << (field)))
+#define REG_REVERSE_BIT(reg, field)					((reg) ^= (1 << (field)))
 #define REG_GET_BIT(reg, field)						((reg) & (1 << (field)))
 
 #if LOG_ENABLE != 0

@@ -12,7 +12,8 @@ LOCAL_SRC_FILES	:=	jni_interface.c \
 					lib_checksum.c \
 					lib_queue.c \
 					lib_frame.c \
-					devcomm.c
+					devcomm.c  \
+					aes.c
 LOCAL_LDLIBS	:=	-llog
 
 include $(BUILD_SHARED_LIBRARY)
