@@ -24,20 +24,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	{
 		try
 		{
-			db.execSQL("CREATE TABLE " + DataSetHistory.TABLE_NAME + " (" +
-				DataSetHistory.FIELD_ID +
-				" INTEGER PRIMARY KEY AUTOINCREMENT," +
-				DataSetHistory.FIELD_RF_ADDRESS + " TEXT," +
-				DataSetHistory.FIELD_DATE_TIME + " TEXT," +
-				DataSetHistory.FIELD_STATUS_BYTE0 + " INTEGER," +
-				DataSetHistory.FIELD_STATUS_BYTE1 + " INTEGER," +
-				DataSetHistory.FIELD_STATUS_SHORT0 + " INTEGER," +
-				DataSetHistory.FIELD_STATUS_SHORT1 + " INTEGER," +
-				DataSetHistory.FIELD_EVENT_INDEX + " INTEGER," +
-				DataSetHistory.FIELD_EVENT_PORT + " INTEGER," +
-				DataSetHistory.FIELD_EVENT_TYPE + " INTEGER," +
-				DataSetHistory.FIELD_EVENT_URGENCY + " INTEGER," +
-				DataSetHistory.FIELD_EVENT_VALUE + " INTEGER);");
+//			db.execSQL("CREATE TABLE " + DataSetHistory.TABLE_NAME + " (" +
+//				DataSetHistory.FIELD_ID +
+//				" INTEGER PRIMARY KEY AUTOINCREMENT," +
+//				DataSetHistory.FIELD_RF_ADDRESS + " TEXT," +
+//				DataSetHistory.FIELD_DATE_TIME + " TEXT," +
+//				DataSetHistory.FIELD_STATUS_SHORT0 + " INTEGER," +
+//				DataSetHistory.FIELD_EVENT_INDEX + " INTEGER," +
+//				DataSetHistory.FIELD_EVENT_VALUE + " INTEGER);");
 
 		}
 		catch (SQLException e)
@@ -52,7 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	{
 		try
 		{
-			db.execSQL("DROP TABLE IF EXISTS " + DataSetHistory.TABLE_NAME);
+//			db.execSQL("DROP TABLE IF EXISTS " + DataSetHistory.TABLE_NAME);
 		}
 		catch (SQLException e)
 		{
