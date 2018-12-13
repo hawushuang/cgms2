@@ -1,10 +1,13 @@
 package com.microtechmd.pda.manager;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 
 import com.microtechmd.pda.ui.activity.ActivityPDA;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/2/26.
@@ -23,6 +26,17 @@ public class ActivityStackManager {
 
     public void addActivity(Activity activity) {
         sActivityList.add(activity);
+    }
+
+    public static String getTopActivity(Context context) {
+        android.app.ActivityManager manager = (android.app.ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
+
+        if (runningTaskInfos != null) {
+            return (runningTaskInfos.get(0).topActivity).toString();
+        } else {
+            return null;
+        }
     }
 
     /**

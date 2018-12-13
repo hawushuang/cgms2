@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class LineData extends BarLineScatterCandleBubbleData<ILineDataSet> {
 
-    public LineData(ArrayList<String> xVals, LineDataSet dataSet) {
+    public LineData() {
         super();
     }
 

@@ -10,13 +10,16 @@ import com.microtechmd.pda.library.entity.monitor.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+
+import static com.microtechmd.pda.ui.activity.fragment.FragmentCombinedGraph.pointSpace;
 
 public class FormatterUtil implements IAxisValueFormatter {
 
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        return secToTime((int) (value * 100));
+        return secToTime((int) (value * pointSpace));
     }
 
     @NonNull
@@ -39,8 +42,14 @@ public class FormatterUtil implements IAxisValueFormatter {
         }
     }
 
+    private String timeToDateString(long time) {
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+        Date date = new Date(time);
+        return formatter.format(date);
+    }
+
     private String secToTime(int time) {
-        String timeStr = null;
+        String timeStr;
         int hour;
         int minute;
         int second;
@@ -48,20 +57,21 @@ public class FormatterUtil implements IAxisValueFormatter {
             int index = Math.abs(time) / 86400;
             time += 86400 * (index + 1);
         } else if (time == 0) {
-            return "0:00";
+            return "0";
         }
         minute = time / 60;
-        if (minute < 60) {
-            second = time % 60;
-            timeStr = unitFormat(minute) + ":" + unitFormat(second);
-        } else {
-            hour = minute / 60;
-            if (hour > 99)
-                return "99:59:59";
-            minute = minute % 60;
-            second = time - hour * 3600 - minute * 60;
-            timeStr = unitFormat(hour) + ":" + unitFormat(minute);
+        hour = minute / 60;
+        if (hour > 99) {
+            return "99:59:59";
+        } else if (hour > 24) {
+            hour %= 24;
+        } else if (hour == 24) {
+            hour = 0;
         }
+        minute = minute % 60;
+        second = time - hour * 3600 - minute * 60;
+//        timeStr = unitFormat(hour) + ":" + unitFormat(minute);
+        timeStr = unitFormat(hour);
         return timeStr;
     }
 

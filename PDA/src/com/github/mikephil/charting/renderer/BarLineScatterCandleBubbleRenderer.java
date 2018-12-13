@@ -1,5 +1,7 @@
 package com.github.mikephil.charting.renderer;
 
+import android.util.Log;
+
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;

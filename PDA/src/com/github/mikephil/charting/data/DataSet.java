@@ -213,7 +213,8 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
         calcMinMax(e);
 
         if (mValues.size() > 0 && mValues.get(mValues.size() - 1).getX() > e.getX()) {
-            int closestIndex = getEntryIndex(e.getX(), e.getY(), Rounding.UP);
+//            int closestIndex = getEntryIndex(e.getX(), e.getY(), Rounding.UP);
+            int closestIndex = getEntryIndex(e.getX(), Float.NaN, Rounding.UP);
             mValues.add(closestIndex, e);
         } else {
             mValues.add(e);

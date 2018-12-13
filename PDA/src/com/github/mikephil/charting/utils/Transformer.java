@@ -4,6 +4,7 @@ package com.github.mikephil.charting.utils;
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
@@ -99,9 +100,10 @@ public class Transformer {
                                                     float phaseY, int from, int to) {
 
         final int count = (int) ((to - from) * phaseX + 1) * 2;
-
-        if (valuePointsForGenerateTransformedValuesScatter.length != count) {
-            valuePointsForGenerateTransformedValuesScatter = new float[count];
+        if (count > 0) {
+            if (valuePointsForGenerateTransformedValuesScatter.length != count) {
+                valuePointsForGenerateTransformedValuesScatter = new float[count];
+            }
         }
         float[] valuePoints = valuePointsForGenerateTransformedValuesScatter;
 

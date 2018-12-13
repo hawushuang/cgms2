@@ -126,7 +126,6 @@ public class FragmentGraph extends FragmentBase
                 dateTime.setSecond(0);
                 status = new Status();
                 event = new Event();
-                event.setPort(ParameterGlobal.PORT_MONITOR);
                 history.setDateTime(dateTime);
                 history.setStatus(status);
                 history.setEvent(event);
@@ -138,14 +137,6 @@ public class FragmentGraph extends FragmentBase
                 history.setByteArray(historyList.getData(i));
                 event = history.getEvent();
                 status = history.getStatus();
-                status.setByteValue1(HistoryView.COUNT_TYPE);
-
-                if ((event.getPort() == ParameterGlobal.PORT_MONITOR) ||
-                        (event.getPort() == ParameterGlobal.PORT_GLUCOSE)) {
-                    status.setByteValue1(HistoryView.TYPE_GLUCOSE);
-                    history.setStatus(status);
-                    mModelList.add(new History(history.getByteArray()));
-                }
             }
         }
 
@@ -209,7 +200,7 @@ public class FragmentGraph extends FragmentBase
             mRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    queryHistory(mDateTime);
+//                    queryHistory(mDateTime);
                 }
             };
             mHandler.postDelayed(mRunnable, 100);
@@ -297,7 +288,7 @@ public class FragmentGraph extends FragmentBase
                     mDateTime.setHour(0);
                     mDateTime.setMinute(0);
                     mDateTime.setSecond(0);
-                    queryHistory(mDateTime);
+//                    queryHistory(mDateTime);
                 }
             }
         }
@@ -454,7 +445,7 @@ public class FragmentGraph extends FragmentBase
 
         mIsHistoryQuerying = true;
         History history = new History(new DateTime(dateTime.getByteArray()),
-                new Status(-1, -1, -1, -1), new Event(-1, -1, -1, -1, -1));
+                new Status(-1), new Event(-1, -1, -1));
         DataList dataList = new DataList();
         dataList.pushData(history.getByteArray());
         Calendar calendar = dateTime.getCalendar();
@@ -529,40 +520,10 @@ public class FragmentGraph extends FragmentBase
         for (int i = mHistoryModel.getCount() - 1; i >= 0; i--) {
             History history = mHistoryModel.getHistory(i);
             Status status = history.getStatus();
-            int type = status.getByteValue1();
-            int value;
-
-            switch (type) {
-                case HistoryView.TYPE_GLUCOSE:
-                    value = status.getShortValue1() & 0xFFFF;
-                    value /= 10;
-                    /*
-					 * value *= GLUCOSE_UNIT_MG_STEP;
-					 * 
-					 * if (((ActivityPDA)getActivity()) .getGlucoseUnit() ==
-					 * GLUCOSE_UNIT_MMOL) { value = (value +
-					 * (GLUCOSE_UNIT_MMOL_STEP / 2)) / GLUCOSE_UNIT_MMOL_STEP; }
-					 */
-                    break;
-
-                default:
-                    continue;
-            }
+            int value = status.getShortValue1() & 0xFFFF;
+            value /= 10;
 
             DateTime dateTime = history.getDateTime();
-
-            dataList.get(type)
-                    .add(new PointF((dateTime.getHour() * DateTime.MINUTE_PER_HOUR +
-                            dateTime.getMinute()) * DateTime.SECOND_PER_MINUTE +
-                            dateTime.getSecond(), value));
-
-            if ((range[type].top < 0.0f) || (range[type].top < value)) {
-                range[type].top = value;
-            }
-
-            if ((range[type].bottom < 0.0f) || (range[type].bottom > value)) {
-                range[type].bottom = value;
-            }
         }
 
         for (int i = 0; i <= HistoryView.TYPE_GLUCOSE; i++) {
@@ -708,7 +669,7 @@ public class FragmentGraph extends FragmentBase
             Calendar calendar = mDateTime.getCalendar();
             calendar.setTimeInMillis(time);
             mDateTime.setCalendar(calendar);
-            queryHistory(mDateTime);
+//            queryHistory(mDateTime);
         }
     }
 }

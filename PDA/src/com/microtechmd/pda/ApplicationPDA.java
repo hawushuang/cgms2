@@ -12,13 +12,16 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 
+import com.microtechmd.pda.database.DbHistory;
 import com.microtechmd.pda.library.entity.EntityMessage;
 import com.microtechmd.pda.library.entity.ParameterComm;
+import com.microtechmd.pda.library.entity.monitor.History;
 import com.microtechmd.pda.library.parameter.ParameterGlobal;
 import com.microtechmd.pda.library.utility.LogPDA;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ApplicationPDA extends Application {
@@ -33,6 +36,30 @@ public class ApplicationPDA extends Application {
     private static MessageListenerInternal[] sMessageListenerInternal = null;
 
 
+    private List<History> dataListAll;
+    private ArrayList<DbHistory> dataErrListAll;
+
+    public List<History> getDataListAll() {
+        if (dataListAll == null) {
+            dataListAll = new ArrayList<>();
+        }
+        return dataListAll;
+    }
+
+    public void setDataListAll(List<History> dataListAll) {
+        this.dataListAll = dataListAll;
+    }
+
+    public ArrayList<DbHistory> getDataErrListAll() {
+        if (dataErrListAll == null) {
+            dataErrListAll = new ArrayList<>();
+        }
+        return dataErrListAll;
+    }
+
+    public void setDataErrListAll(ArrayList<DbHistory> dataErrListAll) {
+        this.dataErrListAll = dataErrListAll;
+    }
     // Inner class definition
 
     private static class MessageHandler extends Handler {
@@ -68,18 +95,18 @@ public class ApplicationPDA extends Application {
                     EntityMessage.OPERATION_GET, ParameterComm.PARAM_RF_SIGNAL,
                     null));
             /*
-			 * handleMessage(new
-			 * EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-			 * ParameterGlobal.ADDRESS_LOCAL_CONTROL,
-			 * ParameterGlobal.PORT_MONITOR, ParameterGlobal.PORT_MONITOR,
-			 * EntityMessage.OPERATION_GET, ParameterMonitor.PARAM_STATUS,
-			 * null)); handleMessage(new
-			 * EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-			 * ParameterGlobal.ADDRESS_LOCAL_CONTROL,
-			 * ParameterGlobal.PORT_MONITOR, ParameterGlobal.PORT_GLUCOSE,
-			 * EntityMessage.OPERATION_GET, ParameterGlucose.PARAM_STATUS,
-			 * null));
-			 */
+             * handleMessage(new
+             * EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+             * ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+             * ParameterGlobal.PORT_MONITOR, ParameterGlobal.PORT_MONITOR,
+             * EntityMessage.OPERATION_GET, ParameterMonitor.PARAM_STATUS,
+             * null)); handleMessage(new
+             * EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+             * ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+             * ParameterGlobal.PORT_MONITOR, ParameterGlobal.PORT_GLUCOSE,
+             * EntityMessage.OPERATION_GET, ParameterGlucose.PARAM_STATUS,
+             * null));
+             */
         }
 
 
@@ -148,7 +175,6 @@ public class ApplicationPDA extends Application {
             }
         }
     }
-
 
     public void registerMessageListener(int port,
                                         final EntityMessage.Listener listener) {

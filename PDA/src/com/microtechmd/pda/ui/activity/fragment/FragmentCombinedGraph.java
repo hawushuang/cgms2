@@ -2,15 +2,22 @@ package com.microtechmd.pda.ui.activity.fragment;
 
 
 import android.annotation.SuppressLint;
+import android.app.Service;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,8 +33,11 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.microtechmd.pda.ApplicationPDA;
 import com.microtechmd.pda.R;
+import com.microtechmd.pda.database.DbHistory;
 import com.microtechmd.pda.entity.CalibrationHistory;
 import com.microtechmd.pda.library.entity.DataList;
 import com.microtechmd.pda.library.entity.EntityMessage;
@@ -40,22 +50,29 @@ import com.microtechmd.pda.library.entity.monitor.History;
 import com.microtechmd.pda.library.entity.monitor.Status;
 import com.microtechmd.pda.library.parameter.ParameterGlobal;
 import com.microtechmd.pda.library.utility.SPUtils;
+import com.microtechmd.pda.ui.activity.ActivityFullGraph;
+import com.microtechmd.pda.ui.activity.ActivityMain;
 import com.microtechmd.pda.ui.activity.ActivityPDA;
 import com.microtechmd.pda.util.CalibrationSaveUtil;
 import com.microtechmd.pda.util.FormatterUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import static com.microtechmd.pda.ui.activity.ActivityPDA.BLOOD_GLUCOSE;
+import static com.microtechmd.pda.ui.activity.ActivityPDA.CALIBRATION;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.CALIBRATION_HISTORY;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.GLUCOSE;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.GLUCOSE_RECOMMEND_CAL;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.HYPER;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.HYPO;
-import static com.microtechmd.pda.ui.activity.ActivityPDA.IMPENDANCE;
+import static com.microtechmd.pda.ui.activity.ActivityPDA.PDA_ERROR;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.RFSIGNAL;
+import static com.microtechmd.pda.ui.activity.ActivityPDA.SENSOR_ERROR;
+import static com.microtechmd.pda.ui.activity.ActivityPDA.SENSOR_EXPIRATION;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPER_DEFAULT;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPO_DEFAULT;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.REALTIMEFLAG;
@@ -85,25 +102,38 @@ public class FragmentCombinedGraph extends FragmentBase
     private long max;
 
     private boolean mIsHistoryQuerying = false;
-    private DateTime mDateTime = null;
     private Handler mHandler = null;
     private Runnable mRunnable = null;
 
     private View mRootView = null;
     private CombinedChart mChart;
-    private TextView synchronize;
+    private ImageView synchronize;
     private TextView textview_synchronizing;
 
     private XAxis xAxis;
     private String str;
     private long maxTime;
 
-    private ArrayList<History> dataListAll = null;
+    public static int pointSpace = 30;
+    public static int oneDay_lenth = 86400 / pointSpace;
+    private List<History> dataListAll = null;
+    private ArrayList<DbHistory> dataErrListAll = null;
+    private List<History> dataListCash = new ArrayList<>();
 
     private boolean isTop;
 
+    private boolean dateChange;
+
+
+    private long todayMilisecond;
+
+    private ApplicationPDA applicationPDA;
+    private PowerManager powerManager = null;
+    private PowerManager.WakeLock wakeLock = null;
+
+    private CountDownTimer refreshGraphCountdownTimer;
+
     public void setTimeData(int timeData) {
-        mDateTime = new DateTime(Calendar.getInstance());
         switch (timeData) {
             case FragmentHome.TIME_DATA_6:
                 visible_range_millisecond = MILLISECOND_6;
@@ -117,14 +147,23 @@ public class FragmentCombinedGraph extends FragmentBase
             default:
                 break;
         }
-        mChart.setVisibleXRange(visible_range_millisecond / 100000, visible_range_millisecond / 100000);
-        if ((mChart.getScatterData().getXMax() - visible_range_millisecond / 100000 * 0.8) > mChart.getLineData().getXMin()) {
-            mChart.moveViewToX((float) (mChart.getScatterData().getXMax() - visible_range_millisecond / 100000 * 0.8));
-        } else {
-            mChart.moveViewToX(mChart.getLineData().getXMin());
-        }
-        mChart.invalidate();
+        xAxis.setGranularity(visible_range_millisecond / 6 / 1000 / pointSpace);
+        addTimeLine();
+        moveCharView();
     }
+
+    public void setDataChange() {
+        if (dateChange) {
+            mChart.getScatterData().clearValues();
+            mChart.invalidate();
+            drawScatterData(dataListAll);
+            mChart.notifyDataSetChanged();
+            dateChange = false;
+        }
+    }
+
+    int index = 0;
+    long bcd = getTodayDateTime().getCalendar().getTimeInMillis();
 
     @SuppressLint("SetTextI18n")
     @Nullable
@@ -132,26 +171,32 @@ public class FragmentCombinedGraph extends FragmentBase
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_combinedgraph, container, false);
+        applicationPDA = (ApplicationPDA) getActivity().getApplication();
+        powerManager = (PowerManager) getActivity().getSystemService(Service.POWER_SERVICE);
+        wakeLock = this.powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Lock");
+        wakeLock.setReferenceCounted(false);
         now_millisecond = MILLISECOND_24;
         visible_range_millisecond = MILLISECOND_6;
+        dataErrListAll = applicationPDA.getDataErrListAll();
         if (dataListAll == null) {
             dataListAll = new ArrayList<>();
         }
-        if (mDateTime == null) {
-            mDateTime = new DateTime(Calendar.getInstance());
+        if (dataErrListAll == null) {
+            dataErrListAll = new ArrayList<>();
         }
         TextView text_view_unit = (TextView) mRootView.findViewById(R.id.text_view_unit);
         text_view_unit.setText(getResources().getString(R.string.history_bg) +
                 " (" + getResources().getString(R.string.unit_mmol_l) + ")");
-        synchronize = (TextView) mRootView.findViewById(R.id.synchronize);
+        synchronize = (ImageView) mRootView.findViewById(R.id.synchronize);
         textview_synchronizing = (TextView) mRootView.findViewById(R.id.text_view_synchronizing);
         textview_synchronizing.setVisibility(View.GONE);
-        boolean realtimeFlag = (boolean) SPUtils.get(getActivity(), REALTIMEFLAG, true);
-        if (realtimeFlag) {
-            synchronize.setVisibility(View.GONE);
-        } else {
-            synchronize.setVisibility(View.VISIBLE);
-        }
+
+//        boolean realtimeFlag = (boolean) SPUtils.get(getActivity(), REALTIMEFLAG, true);
+//        if (realtimeFlag) {
+//            synchronize.setVisibility(View.GONE);
+//        } else {
+//            synchronize.setVisibility(View.VISIBLE);
+//        }
         synchronize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,11 +209,91 @@ public class FragmentCombinedGraph extends FragmentBase
                 } else {
                     synchronize_data();
                 }
+//                List<History> list = new ArrayList<>();
+//                long bcd = getTodayDateTime().getBCD();
+//                Status status = new Status(1000 + index * 150);
+//                Event event = new Event(0, 7, 0);
+//                for (int i = 0; i < 300; i++) {
+//                    History history = new History();
+//                    DateTime dateTime = new DateTime();
+//                    dateTime.setBCD(new DateTime(Calendar.getInstance()).getBCD() - 24 * 60 * 100 + 5 * 60 * 10 * i - index * 1000);
+//                    history.setStatus(status);
+//                    history.setDateTime(dateTime);
+//                    history.setEvent(event);
+//                    list.add(history);
+//                }
+//                index++;
+//                drawScatterData(list);
+//
+//                List<History> list = new ArrayList<>();
+//                Status status = new Status(1000);
+//                Event event = new Event(0, 7, 0);
+//                History history = new History();
+//                DateTime dateTime = new DateTime();
+//                Calendar c = dateTime.getCalendar();
+//                c.setTimeInMillis(Calendar.getInstance().getTimeInMillis() - (8 * 24 * 60 * 60 - index * 1200) * 1000);
+//                dateTime.setCalendar(c);
+//                history.setStatus(status);
+//                history.setDateTime(dateTime);
+//                history.setEvent(event);
+//                list.add(history);
+//                dataListAll.add(history);
+//                index++;
+//                drawScatterData(list);
             }
         });
 
         initChart();
+
+        if (applicationPDA != null) {
+            dataListAll = applicationPDA.getDataListAll();
+        }
+
+        updateGraphProfiles();
+
+
         return mRootView;
+    }
+
+//    public FragmentDialog showDialogConfirm(String title,
+//                                            String buttonTextPositive, String buttonTextNegative, Fragment content,
+//                                            boolean isCancelable, FragmentDialog.ListenerDialog listener) {
+//        FragmentDialog fragmentDialog = new FragmentDialog();
+//        fragmentDialog.setTitle(title);
+//        fragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_POSITIVE,
+//                buttonTextPositive);
+//        fragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_NEGATIVE,
+//                buttonTextNegative);
+//        fragmentDialog.setContent(content);
+//        fragmentDialog.setCancelable(isCancelable);
+//        fragmentDialog.setListener(listener);
+//        fragmentDialog.show(getActivity().getSupportFragmentManager(), null);
+//
+//        return fragmentDialog;
+//    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        ((ApplicationPDA) getActivity().getApplication())
+                .registerMessageListener(ParameterGlobal.PORT_MONITOR, this);
+        now_millisecond = MILLISECOND_24;
+        visible_range_millisecond = MILLISECOND_6;
+
+        if (dataListAll == null) {
+            dataListAll = new ArrayList<>();
+        }
+        mHandler = new Handler();
+        mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                queryHistory();
+            }
+        };
+        if (dataListAll.size() <= 0) {
+            mHandler.postDelayed(mRunnable, 100);
+        }
     }
 
     private void initChart() {
@@ -183,7 +308,7 @@ public class FragmentCombinedGraph extends FragmentBase
         mChart.setScaleXEnabled(false);
         mChart.setScaleYEnabled(false);
         mChart.setDoubleTapToZoomEnabled(false);
-        mChart.setDragDecelerationEnabled(false);
+//        mChart.setDragDecelerationEnabled(false);
 // draw LINE behind SCATTER
         mChart.setDrawOrder(new CombinedChart.DrawOrder[]{
                 CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
@@ -196,7 +321,7 @@ public class FragmentCombinedGraph extends FragmentBase
         FormatterUtil formatterUtil = new FormatterUtil();
         xAxis.setValueFormatter(formatterUtil);
         xAxis.setLabelCount(7);
-        xAxis.setGranularity(36);
+        xAxis.setGranularity(visible_range_millisecond / 6 / 1000 / pointSpace);
         xAxis.removeAllLimitLines();
 
         YAxis leftYAxis = mChart.getAxisLeft();
@@ -214,34 +339,128 @@ public class FragmentCombinedGraph extends FragmentBase
 
         mChart.setData(data);
         mChart.invalidate();
+
+
+        mChart.setOnChartGestureListener(new OnChartGestureListener() {
+            @Override
+            public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
+
+            }
+
+            @Override
+            public void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
+                float indexLowest = mChart.getLowestVisibleX();
+                if (lastPerformedGesture == ChartTouchListener.ChartGesture.DRAG) {
+                    addLine(indexLowest);
+                }
+            }
+
+            @Override
+            public void onChartLongPressed(MotionEvent me) {
+
+            }
+
+            @Override
+            public void onChartDoubleTapped(MotionEvent me) {
+//                startActivity(new Intent(getContext(), ActivityFullGraph.class));
+            }
+
+            @Override
+            public void onChartSingleTapped(MotionEvent me) {
+            }
+
+            @Override
+            public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
+            }
+
+            @Override
+            public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
+            }
+
+            @Override
+            public void onChartTranslate(MotionEvent me, float dX, float dY) {
+                float indexLowest = mChart.getLowestVisibleX();
+                float indexHighest = mChart.getHighestVisibleX();
+                float chartMax = mChart.getXChartMax();
+                if (indexHighest < chartMax) {
+                    addLine(indexLowest);
+                }
+            }
+        });
     }
 
-    private void drawScatterData() {
-
+    private void drawScatterData(List<History> dataListCash) {
+        DateTime todayDateTime = getTodayDateTime();
+        long todayMills = todayDateTime.getCalendar().getTimeInMillis();
+        if (todayMills != todayMilisecond) {
+            updateGraphProfiles();
+            return;
+        }
+        ScatterData d = mChart.getScatterData();
+        IScatterDataSet set = d.getDataSetByIndex(0);
+        if (set == null) {
+            set = createSet();
+            d.addDataSet(set);
+        }
+        if (set.getEntryCount() == 1) {
+            if (set.getEntryForIndex(0).getY() == -1) {
+                set.removeEntry(0);
+            }
+        }
+        if (dataListCash.size() > 0) {
+            for (History history : dataListCash) {
+                if (history.getEvent().getEvent() == GLUCOSE ||
+                        history.getEvent().getEvent() == GLUCOSE_RECOMMEND_CAL) {
+                    if (history.getDateTime().getCalendar().getTimeInMillis() < (System.currentTimeMillis() + 60 * 1000)) {
+                        Status status = history.getStatus();
+                        int value = status.getShortValue1() & 0xFFFF;
+                        float value_display = Float.parseFloat(((ActivityPDA) getActivity())
+                                .getGlucoseValue((value) *
+                                        ActivityPDA.GLUCOSE_UNIT_MG_STEP, false).trim());
+                        long time = (history.getDateTime().getCalendar().getTimeInMillis() - todayMilisecond) / 1000;
+                        set.addEntryOrdered(new Entry(time / pointSpace, value_display));
+                    }
+                }
+            }
+        }
+        if (set.getEntryCount() == 0) {
+            set.addEntryOrdered(new Entry(0, -1));
+        }
+        d.notifyDataChanged();
+        drawOthers();
+        mLog.Error(getClass(), "更新血糖曲线");
+        mLog.Error(getClass(), "总数量：：" + set.getEntryCount());
     }
 
     private ScatterData generateScatterData() {
         ScatterData d = new ScatterData();
         DateTime todayDateTime = getTodayDateTime();
-        long todayMills = todayDateTime.getCalendar().getTimeInMillis();
         long maxIndex = new DateTime(Calendar.getInstance()).getCalendar().getTimeInMillis()
-                - todayMills;
-        long minIndex = maxIndex - now_millisecond;
+                - todayMilisecond;
         List<Entry> entries = new ArrayList<>();
+        if (dataListAll == null) {
+            dataListAll = new ArrayList<>();
+        }
         if (dataListAll.size() > 0) {
             for (History history : dataListAll) {
                 if (history.getEvent().getEvent() == GLUCOSE ||
                         history.getEvent().getEvent() == GLUCOSE_RECOMMEND_CAL) {
-                    Status status = history.getStatus();
-                    int value = status.getShortValue1() & 0xFFFF;
-                    value /= 100;
-                    long time = (history.getDateTime().getCalendar().getTimeInMillis() - todayMills) / 1000;
-                    entries.add(new Entry(time / 100, value));
+                    if (history.getDateTime().getCalendar().getTimeInMillis() < System.currentTimeMillis() + 60 * 1000) {
+                        Status status = history.getStatus();
+                        int value = status.getShortValue1() & 0xFFFF;
+                        float value_display = Float.parseFloat(((ActivityPDA) getActivity())
+                                .getGlucoseValue((value) *
+                                        ActivityPDA.GLUCOSE_UNIT_MG_STEP, false).trim());
+                        long time = (history.getDateTime().getCalendar().getTimeInMillis() - todayMilisecond) / 1000;
+                        entries.add(new Entry(time / pointSpace, value_display));
+                    }
                 }
             }
         } else {
-            entries.add(new Entry((minIndex) / 100000, 0));
-            entries.add(new Entry((maxIndex) / 100000, 0));
+            entries.add(new Entry(0, -1));
+        }
+        if (entries.size() == 0) {
+            entries.add(new Entry(0, -1));
         }
         ScatterDataSet set = new ScatterDataSet(entries, null);
         set.setColor(Color.parseColor("#00DEFF"));
@@ -263,28 +482,40 @@ public class FragmentCombinedGraph extends FragmentBase
                 .getInt(FragmentSettings.SETTING_HYPO, HYPO_DEFAULT);
         DateTime todayDateTime = getTodayDateTime();
 
+
+//        DateTime dateNow = new DateTime(Calendar.getInstance());
+//        Calendar calendar = dateNow.getCalendar();
+//        calendar.setTimeInMillis(dateNow.getCalendar().getTimeInMillis() +
+//                60 * 60 * 1000);
+//        DateTime dateNextHour = new DateTime(calendar);
+//        dateNextHour.setMinute(0);
+//        dateNextHour.setSecond(0);
+//        long maxIndex = dateNextHour.getCalendar().getTimeInMillis()
+//                - todayDateTime.getCalendar().getTimeInMillis();
+//
+//        long minIndex = maxIndex - now_millisecond;
         long maxIndex = new DateTime(Calendar.getInstance()).getCalendar().getTimeInMillis()
-                - todayDateTime.getCalendar().getTimeInMillis() + visible_range_millisecond / 7;
-        long minIndex = mDateTime.getCalendar().getTimeInMillis()
+                - todayDateTime.getCalendar().getTimeInMillis() + now_millisecond / 5;
+
+        long minIndex = new DateTime(Calendar.getInstance()).getCalendar().getTimeInMillis()
                 - todayDateTime.getCalendar().getTimeInMillis()
                 - now_millisecond;
 
         if (dataListAll.size() > 0) {
-//            maxIndex = (long) (mChart.getData().getScatterData().getXMax() * 100000 + visible_range_millisecond / 7);
-            if ((maxIndex / 100000 - mChart.getData().getScatterData().getXMin()) > MILLISECOND_24 / 100000) {
-                minIndex = (long) (mChart.getData().getScatterData().getXMin() * 100000);
+            if ((maxIndex / 1000 / pointSpace - mChart.getData().getScatterData().getXMin()) > MILLISECOND_24 / 1000 / pointSpace) {
+                minIndex = (long) (mChart.getData().getScatterData().getXMin() * 1000 * pointSpace);
             }
         }
 
         LineData lineData = new LineData();
 
         List<Entry> yVals1 = new ArrayList<>();
-        yVals1.add(new Entry(minIndex / 100000, mHypo / 100));
-        yVals1.add(new Entry(maxIndex / 100000, mHypo / 100));
+        yVals1.add(new Entry(minIndex / 1000 / pointSpace, mHypo / 10));
+        yVals1.add(new Entry(maxIndex / 1000 / pointSpace, mHypo / 10));
 
         List<Entry> yVals2 = new ArrayList<>();
-        yVals2.add(new Entry(minIndex / 100000, mHyper / 100));
-        yVals2.add(new Entry(maxIndex / 100000, mHyper / 100));
+        yVals2.add(new Entry(minIndex / 1000 / pointSpace, mHyper / 10));
+        yVals2.add(new Entry(maxIndex / 1000 / pointSpace, mHyper / 10));
 
         LineDataSet set1, set2;
         set1 = new LineDataSet(yVals1, null);
@@ -299,35 +530,6 @@ public class FragmentCombinedGraph extends FragmentBase
         return lineData;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        ((ApplicationPDA) getActivity().getApplication())
-                .registerMessageListener(ParameterGlobal.PORT_MONITOR, this);
-        now_millisecond = MILLISECOND_24;
-        visible_range_millisecond = MILLISECOND_6;
-
-        if (dataListAll == null) {
-            dataListAll = new ArrayList<>();
-        }
-
-        if (mDateTime == null) {
-            mDateTime = new DateTime(Calendar.getInstance());
-        }
-
-        if (dataListAll.size() <= 0) {
-            mHandler = new Handler();
-            mRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    queryHistory();
-                }
-            };
-            mHandler.postDelayed(mRunnable, 100);
-        }
-        updateGraphProfiles();
-    }
 
     @Override
     public void onResume() {
@@ -339,6 +541,9 @@ public class FragmentCombinedGraph extends FragmentBase
     public void onStop() {
         super.onStop();
         isTop = false;
+        if (applicationPDA != null) {
+            applicationPDA.setDataListAll(dataListAll);
+        }
     }
 
     @Override
@@ -377,24 +582,41 @@ public class FragmentCombinedGraph extends FragmentBase
     }
 
     private void handleSet(EntityMessage message) {
-        if (message.getParameter() == ParameterComm.BROADCAST_SAVA) {
-            if (message.getData()[0] == 0) {
-                synchronize.setVisibility(View.VISIBLE);
-            } else {
-                synchronize.setVisibility(View.GONE);
-            }
-        }
+//        if (message.getParameter() == ParameterComm.BROADCAST_SAVA) {
+//            if (message.getData()[0] == 0) {
+//                synchronize.setVisibility(View.VISIBLE);
+//            } else {
+//                synchronize.setVisibility(View.GONE);
+//            }
+//        }
         if (message.getParameter() == ParameterGlucose.PARAM_FILL_LIMIT
                 || message.getParameter() == ParameterGlucose.PARAM_BG_LIMIT) {
-            updateGraphProfiles();
+            mChart.getData().setData(generateLineData());
+            mChart.notifyDataSetChanged();
         }
         if (message.getParameter() == ParameterComm.RESET_DATA) {
-            if (message.getData()[0] == 0) {
-                dataListAll.clear();
-                updateGraphProfiles();
-            } else {
-                updateGraphProfiles();
+            switch (message.getData()[0]) {
+                case 0:
+                    dataListAll.clear();
+                    updateGraphProfiles();
+                    break;
+                case 1:
+//                    drawScatterData(dataListAll);
+                    drawOthers();
+                    mChart.notifyDataSetChanged();
+                    break;
+                case 2:
+                    dateChange = true;
+                    break;
+                default:
+
+                    break;
             }
+//            if (message.getData()[0] == 0) {
+//                dataListAll.clear();
+//                textview_synchronizing.setVisibility(View.GONE);
+//            }
+//            updateGraphProfiles();
         }
     }
 
@@ -406,53 +628,159 @@ public class FragmentCombinedGraph extends FragmentBase
                     .getSourceAddress() == ParameterGlobal.ADDRESS_LOCAL_MODEL) {
                 mLog.Debug(getClass(), "Receive history");
                 mIsHistoryQuerying = false;
+                //取消屏幕常亮
+                wakeLock.release();
+                dismissDialogProgress();
 //                mHistoryModel.setList(new DataList(message.getData()));
 //                mHistoryModel.update();
-                if (isTop) {
-                    DataList dataList = new DataList(message.getData());
-                    for (int i = 0; i < dataList.getCount(); i++) {
-                        dataListAll.add(new History(dataList.getData(i)));
-
+                DataList dataList = new DataList(message.getData());
+                for (int i = 0; i < dataList.getCount(); i++) {
+                    History history = new History(dataList.getData(i));
+                    Event event = history.getEvent();
+                    switch (history.getStatus().getShortValue1()) {
+                        case 0:
+                            history.getStatus().setShortValue1(20);
+                            break;
+                        case 255:
+                            history.getStatus().setShortValue1(250);
+                            break;
+                        default:
+                            break;
                     }
-                    updateGraphProfiles();
+                    dataListAll.add(history);
+                    if ((event.getEvent() == SENSOR_ERROR)
+                            || (event.getEvent() == SENSOR_EXPIRATION)
+                            || (event.getEvent() == HYPO)
+                            || (event.getEvent() == HYPER)
+                            || (event.getEvent() == PDA_ERROR)
+//                            || (event.getEvent() == BLOOD_GLUCOSE)
+//                            || (event.getEvent() == CALIBRATION)
+                            ) {
+//                        dataErrListAll.add(history);
+                    }
+
                 }
+                if (applicationPDA != null) {
+                    applicationPDA.setDataListAll(dataListAll);
+                    applicationPDA.setDataErrListAll(dataErrListAll);
+                }
+
+//                updateGraphProfiles();
+                drawScatterData(dataListAll);
+                mChart.notifyDataSetChanged();
             }
         }
 
         if ((message.getSourcePort() == ParameterGlobal.PORT_MONITOR) &&
-                (message.getParameter() == ParameterMonitor.PARAM_STATUS)) {
-            if ((message
-                    .getSourceAddress() == ParameterGlobal.ADDRESS_LOCAL_CONTROL) ||
-                    (message
-                            .getSourceAddress() == ParameterGlobal.ADDRESS_REMOTE_MASTER)) {
-                mLog.Debug(getClass(), "new history");
+                (message.getParameter() == ParameterMonitor.PARAM_HISTORY)) {
+            if ((message.getSourceAddress() == ParameterGlobal.ADDRESS_LOCAL_CONTROL) ||
+                    (message.getSourceAddress() == ParameterGlobal.ADDRESS_REMOTE_MASTER)) {
 //                mDateTime = new DateTime(Calendar.getInstance());
 //                queryHistory(mDateTime);
                 DataList dataList = new DataList(message.getData());
                 for (int i = 0; i < dataList.getCount(); i++) {
-                    dataListAll.add(new History(dataList.getData(i)));
-
+                    History history = new History(dataList.getData(i));
+                    switch (history.getStatus().getShortValue1()) {
+                        case 0:
+                            history.getStatus().setShortValue1(20);
+                            break;
+                        case 255:
+                            history.getStatus().setShortValue1(250);
+                            break;
+                        default:
+                            break;
+                    }
+                    dataListAll.add(history);
+                    dataListCash.add(history);
+                    Event event = history.getEvent();
+                    if ((event.getEvent() == SENSOR_ERROR)
+                            || (event.getEvent() == SENSOR_EXPIRATION)
+                            || (event.getEvent() == HYPO)
+                            || (event.getEvent() == HYPER)
+                            || (event.getEvent() == PDA_ERROR)
+//                            || (event.getEvent() == BLOOD_GLUCOSE)
+//                            || (event.getEvent() == CALIBRATION)
+                            ) {
+                        if (applicationPDA != null) {
+                            dataErrListAll = applicationPDA.getDataErrListAll();
+//                            dataErrListAll.add(history);
+                            applicationPDA.setDataErrListAll(dataErrListAll);
+                        }
+                    }
                 }
-//                updateGraphProfiles();
+                if (dataListCash.size() < 3 || dataListCash.size() > 200) {
+                    drawScatterData(dataListCash);
+                    mChart.notifyDataSetChanged();
+                    dataListCash.clear();
+                }
+
+                if (refreshGraphCountdownTimer != null) {
+                    refreshGraphCountdownTimer.cancel();
+                }
+                refreshGraphCountdownTimer = new CountDownTimer(3000, 3000) {
+                    @Override
+                    public void onTick(long l) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        if (dataListCash.size() > 0) {
+                            drawScatterData(dataListCash);
+                            mChart.notifyDataSetChanged();
+                            dataListCash.clear();
+                        }
+                    }
+                }.start();
             }
         }
-        if ((message.getSourcePort() == ParameterGlobal.PORT_MONITOR) &&
-                (message.getParameter() == ParameterMonitor.SYNCHRONIZEDONE)) {
-            int synchronizeDone = message.getData()[0];
-            switch (synchronizeDone) {
-                case 0:
-                    textview_synchronizing.setVisibility(View.VISIBLE);
-                    break;
-                case 1:
-                    textview_synchronizing.setVisibility(View.GONE);
-                    updateGraphProfiles();
-                    break;
-                default:
+//        if (message.getSourcePort() == ParameterGlobal.PORT_MONITOR) {
+//            switch (message.getParameter()) {
+//                case ParameterMonitor.PARAM_STATUS:
+//                    if (dataListCash.size() > 0) {
+//                        drawScatterData(dataListCash);
+//                        mChart.notifyDataSetChanged();
+//                        dataListCash.clear();
+//                    }
+//                    break;
+//                default:
+//
+//                    break;
+//            }
+//        }
+//        if ((message.getSourcePort() == ParameterGlobal.PORT_MONITOR) &&
+//                (message.getParameter() == ParameterMonitor.SYNCHRONIZEDONE)) {
+//            int synchronizeDone = message.getData()[0];
+//            switch (synchronizeDone) {
+//                case 0:
+//                    textview_synchronizing.setVisibility(View.VISIBLE);
+//                    break;
+//                case 1:
+//                    textview_synchronizing.setVisibility(View.GONE);
+//                    break;
+//                default:
+//
+//                    break;
+//            }
+//        }
 
-                    break;
+    }
+
+    public String getAddress(byte[] addressByte) {
+        if (addressByte != null) {
+            for (int i = 0; i < addressByte.length; i++) {
+                if (addressByte[i] < 10) {
+                    addressByte[i] += '0';
+                } else {
+                    addressByte[i] -= 10;
+                    addressByte[i] += 'A';
+                }
             }
-        }
 
+            return new String(addressByte);
+        } else {
+            return "";
+        }
     }
 
     private void showDialogProgress() {
@@ -469,6 +797,8 @@ public class FragmentCombinedGraph extends FragmentBase
             return;
         }
         mLog.Debug(getClass(), "Query history");
+        //请求屏幕常亮
+        wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/);
         showDialogProgress();
         mIsHistoryQuerying = true;
         DataList dataList = new DataList();
@@ -488,24 +818,14 @@ public class FragmentCombinedGraph extends FragmentBase
     }
 
     private void updateGraphProfiles() {
-        long t1 = System.currentTimeMillis();
-        long t2 = System.currentTimeMillis();
-        mLog.Error(getClass(), "画图时间：" + (t2 - t1));
-        mChart.getLineData().clearValues();
-        drawScatterData();
+        todayMilisecond = getTodayDateTime().getCalendar().getTimeInMillis();
         mChart.getData().setData(generateScatterData());
+        drawOthers();
+    }
+
+    private void drawOthers() {
         mChart.getData().setData(generateLineData());
         mChart.notifyDataSetChanged();
-        mChart.setVisibleXRange(visible_range_millisecond / 100000, visible_range_millisecond / 100000);
-        if ((mChart.getScatterData().getXMax() - visible_range_millisecond / 100000 * 0.8) > mChart.getLineData().getXMin()) {
-            mChart.moveViewToX((float) (mChart.getScatterData().getXMax() - visible_range_millisecond / 100000 * 0.8));
-        } else {
-            mChart.moveViewToX(mChart.getLineData().getXMin());
-        }
-        mChart.invalidate();
-
-        float maxIndex = mChart.getScatterData().getXMax();
-        float maxValue = mChart.getScatterData().getDataSetByIndex(0).getEntryForXValue(maxIndex, 0).getY();
 
         if (mChart.getScatterData().getDataSetCount() > 2) {
             mChart.getScatterData().removeDataSet(2);
@@ -514,14 +834,39 @@ public class FragmentCombinedGraph extends FragmentBase
             mChart.getScatterData().removeDataSet(1);
         }
 
-        addValueTextEntry(maxIndex, maxValue);
+        float maxIndex = mChart.getScatterData().getDataSetByIndex(0).getXMax();
+        int count = mChart.getScatterData().getDataSetByIndex(0).getEntryCount();
+        if (count > 0) {
+            if (maxIndex == 0) {
+                maxIndex = mChart.getScatterData().getDataSetByIndex(0).getEntryForIndex(count - 1).getX();
+            }
+        }
+        if (mChart.getScatterData().getDataSetByIndex(0).getEntryForXValue(maxIndex, 0) != null) {
+            float maxValue = mChart.getScatterData().getDataSetByIndex(0).getEntryForXValue(maxIndex, 0).getY();
+            addValueTextEntry(maxIndex, maxValue);
+        }
         addCalibrationEntry();
-        xAxis.removeAllLimitLines();
         addTimeLine();
-
-        dismissDialogProgress();
+        moveCharView();
     }
 
+    private void moveCharView() {
+        float maxIndex = mChart.getScatterData().getDataSetByIndex(0).getXMax();
+        int count = mChart.getScatterData().getDataSetByIndex(0).getEntryCount();
+        if (count > 0) {
+            if (maxIndex == 0) {
+                maxIndex = mChart.getScatterData().getDataSetByIndex(0).getEntryForIndex(count - 1).getX();
+            }
+        }
+        mChart.setVisibleXRange(visible_range_millisecond / 1000 / pointSpace, visible_range_millisecond / 1000 / pointSpace);
+        if ((maxIndex - (visible_range_millisecond / 1000 / pointSpace) * 0.8) > mChart.getLineData().getXMin()) {
+            mChart.moveViewToX((float) (maxIndex - (visible_range_millisecond / 1000 / pointSpace) * 0.8));
+        } else {
+            mChart.moveViewToX(mChart.getLineData().getXMin());
+        }
+        mChart.invalidate();
+
+    }
 
     @NonNull
     private DateTime getTodayDateTime() {
@@ -551,7 +896,7 @@ public class FragmentCombinedGraph extends FragmentBase
 
         if (list != null) {
             for (CalibrationHistory calibrationHistory : list) {
-                yVals.add(new Entry((calibrationHistory.getTime() - todayMills) / 100000, calibrationHistory.getValue()));
+                yVals.add(new Entry((calibrationHistory.getTime() - todayMills) / 1000 / pointSpace, calibrationHistory.getValue()));
             }
         }
         if (yVals.size() > 0) {
@@ -566,10 +911,65 @@ public class FragmentCombinedGraph extends FragmentBase
     }
 
     private void addTimeLine() {
-        for (int i = 0; -MILLISECOND_24 * i / 100000 > mChart.getLineData().getXMin(); i++) {
-            long time = getTodayDateTime().getCalendar().getTimeInMillis() - MILLISECOND_24 * i;
-            String nowStr = ((ActivityPDA) getActivity()).getDateString(time, null);
-            addLimitLine(nowStr, -MILLISECOND_24 * i / 100000);
+        float t;
+        float maxIndex = mChart.getScatterData().getDataSetByIndex(0).getXMax();
+        int count = mChart.getScatterData().getDataSetByIndex(0).getEntryCount();
+        if (count > 0) {
+            if (maxIndex == 0) {
+                maxIndex = mChart.getScatterData().getDataSetByIndex(0).getEntryForIndex(count - 1).getX();
+            }
+        }
+        if ((maxIndex - (visible_range_millisecond / 1000 / pointSpace) * 0.8) > mChart.getLineData().getXMin()) {
+            t = (float) (maxIndex - (visible_range_millisecond / 1000 / pointSpace) * 0.8);
+        } else {
+            t = mChart.getLineData().getXMin();
+        }
+        addLine(t);
+//        for (int i = 0; -MILLISECOND_24 * i / 100000 > mChart.getLineData().getXMin(); i++) {
+//            long time = getTodayDateTime().getCalendar().getTimeInMillis() - MILLISECOND_24 * i;
+//            String nowStr = ((ActivityPDA) getActivity()).getDateString(time, null);
+//            addLimitLine(nowStr, -MILLISECOND_24 * i / 100000);
+//        }
+    }
+
+    private void addLine(float indexLowest) {
+        xAxis.removeAllLimitLines();
+        long todayMills = todayMilisecond;
+        String s = ((ActivityPDA) getActivity()).getDateString((long) (indexLowest * pointSpace * 1000 + todayMills), null);
+        if (indexLowest % oneDay_lenth == 0) {
+            addLimitLine(s, indexLowest);
+        } else {
+            addCashLimitLine(s, indexLowest);
+        }
+
+        int index0 = (int) (indexLowest / oneDay_lenth);
+        int index1 = (int) ((indexLowest + visible_range_millisecond / 1000 / pointSpace) / oneDay_lenth);
+        if (index0 == 0) {
+            if ((indexLowest + visible_range_millisecond / 1000 / pointSpace) > 0) {
+                if (indexLowest < 0) {
+                    xAxis.removeAllLimitLines();
+                    String s1 = ((ActivityPDA) getActivity()).getDateString((long) ((indexLowest + visible_range_millisecond / 1000 / pointSpace) * pointSpace * 1000 + todayMills), null);
+                    addLimitLine(s1, index0 * oneDay_lenth);
+                    if (visible_range_millisecond == MILLISECOND_24) {
+                        addLimitLine(s, index0 * oneDay_lenth - visible_range_millisecond / 1000 / pointSpace);
+                    } else {
+                        addCashLimitLine(s, index0 * oneDay_lenth - visible_range_millisecond / 1000 / pointSpace);
+                    }
+                }
+            }
+        }
+        if (index0 != index1) {
+//            if (Math.abs(index0 * 864 - indexLowest) < visible_range_millisecond / 100000 / 5) {
+//                xAxis.removeAllLimitLines();
+//            }
+            xAxis.removeAllLimitLines();
+            String s1 = ((ActivityPDA) getActivity()).getDateString((long) ((indexLowest + visible_range_millisecond / 1000 / pointSpace) * pointSpace * 1000 + todayMills), null);
+            addLimitLine(s1, index0 * oneDay_lenth);
+            if (visible_range_millisecond == MILLISECOND_24) {
+                addLimitLine(s, index0 * oneDay_lenth - visible_range_millisecond / 1000 / pointSpace);
+            } else {
+                addCashLimitLine(s, index0 * oneDay_lenth - visible_range_millisecond / 1000 / pointSpace);
+            }
         }
     }
 
@@ -577,10 +977,18 @@ public class FragmentCombinedGraph extends FragmentBase
         return Math.max(min, current) == Math.min(current, max);
     }
 
-    private void addLimitLine(String str, float x) {
-        //可以设置一条警戒线，如下：
+    private void addCashLimitLine(String str, float x) {
         LimitLine ll = new LimitLine(x, str);
-        ll.setLineColor(Color.RED);
+        ll.setLineColor(Color.TRANSPARENT);
+        ll.setLineWidth(1f);
+        ll.setTextColor(Color.WHITE);
+        ll.setTextSize(12f);
+        xAxis.addLimitLine(ll);
+    }
+
+    private void addLimitLine(String str, float x) {
+        LimitLine ll = new LimitLine(x, str);
+        ll.setLineColor(Color.LTGRAY);
         ll.setLineWidth(1f);
         ll.setTextColor(Color.WHITE);
         ll.setTextSize(12f);
@@ -594,8 +1002,8 @@ public class FragmentCombinedGraph extends FragmentBase
         set.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
         set.setScatterShapeSize(8f);
         set.setHighlightEnabled(false);
-        set.setDrawValues(true);
-        set.setValueTextColor(Color.WHITE);
+        set.setDrawValues(false);
+//        set.setValueTextColor(Color.WHITE);
         set.setDrawIcons(true);
         set.setHighlightEnabled(false);
     }
@@ -638,53 +1046,51 @@ public class FragmentCombinedGraph extends FragmentBase
 //        }
 //    }
 
-    private void addEntry(float time, float value) {
-
-        ScatterData data = mChart.getData().getScatterData();
-
-        if (data != null) {
-
-            IScatterDataSet set = data.getDataSetByIndex(0);
-            // set.addEntry(...); // can be called as well
-
-            if (set == null) {
-                set = createSet();
-                data.addDataSet(set);
-            }
-
-//            data.addEntry(new Entry(time, value / 10), 0);
-            set.addEntryOrdered(new Entry(time, value / 10));
-            data.notifyDataChanged();
-
-
-            // let the chart know it's data has changed
-//            mChart.notifyDataSetChanged();
-
-//            mLineChart.setVisibleXRangeMaximum(now_millisecond / 100000);
-
-            // limit the number of visible entries
-//            mLineChart.setVisibleXRangeMaximum(8);
-//            mLineChart.setVisibleYRange(30, AxisDependency.LEFT);
-            // move to the latest entry
-//            mLineChart.moveViewToX(value);
-            mChart.fitScreen();
-            // this automatically refreshes the chart (calls invalidate())
-            // mChart.moveViewTo(data.getXValCount()-7, 55f,
-            // AxisDependency.LEFT);
-
-        }
-    }
+//    private void addEntry(float time, float value) {
+//
+//        ScatterData data = mChart.getData().getScatterData();
+//
+//        if (data != null) {
+//
+//            IScatterDataSet set = data.getDataSetByIndex(0);
+//            // set.addEntry(...); // can be called as well
+//
+//            if (set == null) {
+//                set = createSet();
+//                data.addDataSet(set);
+//            }
+//
+////            data.addEntry(new Entry(time, value / 10), 0);
+//            set.addEntryOrdered(new Entry(time, value / 10));
+//            data.notifyDataChanged();
+//
+//
+//            // let the chart know it's data has changed
+////            mChart.notifyDataSetChanged();
+//
+////            mLineChart.setVisibleXRangeMaximum(now_millisecond / 100000);
+//
+//            // limit the number of visible entries
+////            mLineChart.setVisibleXRangeMaximum(8);
+////            mLineChart.setVisibleYRange(30, AxisDependency.LEFT);
+//            // move to the latest entry
+////            mLineChart.moveViewToX(value);
+//            mChart.fitScreen();
+//            // this automatically refreshes the chart (calls invalidate())
+//            // mChart.moveViewTo(data.getXValCount()-7, 55f,
+//            // AxisDependency.LEFT);
+//
+//        }
+//    }
 
     private ScatterDataSet createSet() {
-
         ScatterDataSet set = new ScatterDataSet(null, null);
         set.setColor(Color.parseColor("#00DEFF"));
         set.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
-        set.setScatterShapeSize(5f);
+        set.setScatterShapeSize(2.5f);
         set.setHighlightEnabled(false);
         set.setDrawValues(false);
         set.setDrawIcons(true);
-//        set.setValueTextColor(Color.WHITE);
         return set;
     }
 
