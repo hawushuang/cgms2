@@ -98,6 +98,9 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
     private long zero;
     private static int pointSpace = 30 * 1000;
 
+    private int high = HYPER_DEFAULT;
+    private int low = HYPO_DEFAULT;
+
     private boolean mIsHistoryQuerying = false;
     private List<DbHistory> dbList;
     private List<PointValue> valuesAll;
@@ -173,6 +176,7 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
             case ParameterGlucose.PARAM_FILL_LIMIT:
             case ParameterGlucose.PARAM_BG_LIMIT:
 //                generateData();
+                generateData(new ArrayList<DbHistory>());
                 break;
             case ParameterComm.RESET_DATA:
                 switch (message.getData()[0]) {
@@ -372,7 +376,6 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
         if (mDataSetHistory == null) {
             mDataSetHistory = new DataSetHistory(getActivity());
         }
-
         //定长线程池，可控制线程最大并发数，超出的线程会在队列中等待
         fixedThreadPool = Executors.newFixedThreadPool(6);
         PowerManager powerManager = (PowerManager) getActivity().getSystemService(Service.POWER_SERVICE);
@@ -752,30 +755,31 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
     }
 
     private Line getLimitLine(String limit) {
-        int high = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+        high = ((ActivityPDA) getActivity())
+                .getDataStorage(FragmentSettingTips.class.getSimpleName())
                 .getInt(FragmentSettings.SETTING_HYPER, HYPER_DEFAULT);
-        int low = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+        low = ((ActivityPDA) getActivity())
+                .getDataStorage(FragmentSettingTips.class.getSimpleName())
                 .getInt(FragmentSettings.SETTING_HYPO, HYPO_DEFAULT);
+
         Line line = new Line();
         List<PointValue> valuesLimit = new ArrayList<>();
         line.setHasPoints(false);
         line.setHasLines(true);
-        line.setFilled(true);
-        line.setCubic(false);
+        line.setColor(Color.GRAY);
+        line.setAreaTransparency(90);
         line.setStrokeWidth(0);
         switch (limit) {
             case "low":
-                valuesLimit.add(new PointValue(minLimit / pointSpace, low / 10));
-                valuesLimit.add(new PointValue(maxLimit / pointSpace, low / 10));
-                line.setAreaTransparency(120);
-                line.setColor(Color.BLACK);
+                valuesLimit.add(new PointValue(minLimit / pointSpace, low / 10f));
+                valuesLimit.add(new PointValue(maxLimit / pointSpace, low / 10f));
+                line.setFilled(false);
                 break;
             case "high":
-                valuesLimit.add(new PointValue(minLimit / pointSpace, high / 10));
-                valuesLimit.add(new PointValue(maxLimit / pointSpace, high / 10));
-                line.setColor(Color.LTGRAY);
+                line.setBaseArea(low / 10f);
+                line.setFilled(true);
+                valuesLimit.add(new PointValue(minLimit / pointSpace, high / 10f));
+                valuesLimit.add(new PointValue(maxLimit / pointSpace, high / 10f));
                 break;
             default:
 

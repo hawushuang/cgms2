@@ -129,11 +129,32 @@ public class LineChartRenderer extends AbstractChartRenderer {
         }
     }
 
+    private void drawFillLine(Canvas canvas, Line line) {
+        for (int i = line.getValues().size() - 1; i >= 0; i--) {
+            PointValue pointValue = line.getValues().get(i);
+            final float rawX = computator.computeRawX(pointValue.getX());
+            final float rawY = computator.computeRawY(pointValue.getY());
+            path.lineTo(rawX, rawY);
+        }
+
+        path.close();
+
+        linePaint.setStyle(Paint.Style.FILL);
+        linePaint.setAlpha(line.getAreaTransparency());
+        linePaint.setShader(line.getGradientToTransparent() ?
+                new LinearGradient(0, 0, 0, canvas.getHeight(), line.getColor(),
+                        line.getColor() & 0x00ffffff, Shader.TileMode.MIRROR) :
+                null);
+        canvas.drawPath(path, linePaint);
+        linePaint.setStyle(Paint.Style.STROKE);
+    }
+
     @Override
     public void drawUnclipped(Canvas canvas) {
         final LineChartData data = dataProvider.getLineChartData();
         int lineIndex = 0;
         for (Line line : data.getLines()) {
+            drawBitmap(canvas, line);
             if (checkIfShouldDrawPoints(line)) {
                 drawPoints(canvas, line, lineIndex, MODE_DRAW);
             }
@@ -233,6 +254,13 @@ public class LineChartRenderer extends AbstractChartRenderer {
         }
 
         canvas.drawPath(path, linePaint);
+
+        if (line.getFillLine() != null) {
+            if (line.getLineFillColor() != 0) {
+                linePaint.setColor(line.getLineFillColor());
+            }
+            drawFillLine(canvas, line.getFillLine());
+        }
 
         if (line.isFilled()) {
             drawArea(canvas, line);
@@ -394,6 +422,23 @@ public class LineChartRenderer extends AbstractChartRenderer {
         }
     }
 
+    private void drawBitmap(Canvas canvas, Line line) {
+        Bitmap bitmap = line.getLabelBitmap();
+        if (bitmap != null) {
+            pointPaint.setColor(line.getPointColor());
+            for (PointValue pointValue : line.getValues()) {
+                final float rawX = computator.computeRawX(pointValue.getX());
+                final float rawY = computator.computeRawY(pointValue.getY());
+                if (computator.isWithinContentRect(rawX, rawY, checkPrecision)) {
+                    // Draw points only if they are within contentRectMinusAllMargins, using contentRectMinusAllMargins
+                    // instead of viewport to avoid some
+                    // float rounding problems.
+                    canvas.drawBitmap(bitmap, rawX - 10, rawY - 8, pointPaint);
+                }
+            }
+        }
+    }
+
     private void drawPoint(Canvas canvas, Line line, PointValue pointValue, float rawX, float rawY,
                            float pointRadius) {
         if (ValueShape.SQUARE.equals(line.getShape())) {
@@ -491,8 +536,14 @@ public class LineChartRenderer extends AbstractChartRenderer {
         final float right = Math.min(computator.computeRawX(line.getValues().get(lineSize - 1).getX()),
                 contentRect.right);
 
-        path.lineTo(right, baseRawValue);
-        path.lineTo(left, baseRawValue);
+        if (line.getBaseArea() == -100f) {
+            path.lineTo(right, computator.computeRawY(baseRawValue));
+            path.lineTo(left, computator.computeRawY(baseRawValue));
+        } else {
+            path.lineTo(right, computator.computeRawY(line.getBaseArea()));
+            path.lineTo(left, computator.computeRawY(line.getBaseArea()));
+        }
+
         path.close();
 
         linePaint.setStyle(Paint.Style.FILL);

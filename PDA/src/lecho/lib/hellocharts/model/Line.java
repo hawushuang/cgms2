@@ -1,5 +1,6 @@
 package lecho.lib.hellocharts.model;
 
+import android.graphics.Bitmap;
 import android.graphics.PathEffect;
 
 import java.util.ArrayList;
@@ -40,6 +41,11 @@ public class Line {
     private LineChartValueFormatter formatter = new SimpleLineChartValueFormatter();
     private List<PointValue> values = new ArrayList<PointValue>();
 
+    private Bitmap labelBitmap;
+    private float baseArea = -100f;
+    private Line fillLine;
+    private int lineFillColor;
+
     public Line() {
 
     }
@@ -66,6 +72,8 @@ public class Line {
         this.shape = line.shape;
         this.pathEffect = line.pathEffect;
         this.formatter = line.formatter;
+        this.labelBitmap = line.labelBitmap;
+        this.baseArea = line.baseArea;
 
         for (PointValue pointValue : line.values) {
             this.values.add(new PointValue(pointValue));
@@ -302,5 +310,37 @@ public class Line {
             this.formatter = formatter;
         }
         return this;
+    }
+
+    public Bitmap getLabelBitmap() {
+        return labelBitmap;
+    }
+
+    public void setLabelBitmap(Bitmap labelBitmap) {
+        this.labelBitmap = labelBitmap;
+    }
+
+    public float getBaseArea() {
+        return baseArea;
+    }
+
+    public void setBaseArea(float baseArea) {
+        this.baseArea = baseArea;
+    }
+
+    public Line getFillLine() {
+        return fillLine;
+    }
+
+    public void setFillLine(Line fillLine) {
+        this.fillLine = fillLine;
+    }
+
+    public int getLineFillColor() {
+        return lineFillColor;
+    }
+
+    public void setLineFillColor(int lineFillColor) {
+        this.lineFillColor = lineFillColor;
     }
 }

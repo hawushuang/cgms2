@@ -1200,14 +1200,20 @@ public class FragmentSettings extends FragmentBase
                                     if (((address.trim().length() == 6) || (address.trim().length() == 7)) && !(address.trim()
                                             .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
                                         mIsProgressNotDismiss = true;
-                                        showDialogProgress();
                                         if (address.trim().length() == 7) {
                                             address = address.substring(1);
                                         }
-                                        pair(address.trim());
-                                        if (pairFragmentDialog != null) {
-                                            pairFragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_POSITIVE,
-                                                    getResources().getString(R.string.retry));
+                                        if (!address.matches("[\\da-zA-Z]+")) {
+                                            Toast.makeText(getActivity(),
+                                                    R.string.transmitter_id_err,
+                                                    Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            showDialogProgress();
+                                            pair(address.trim());
+                                            if (pairFragmentDialog != null) {
+                                                pairFragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_POSITIVE,
+                                                        getResources().getString(R.string.retry));
+                                            }
                                         }
                                         return false;
                                     } else {

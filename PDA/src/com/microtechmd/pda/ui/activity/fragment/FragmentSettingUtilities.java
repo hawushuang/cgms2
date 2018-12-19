@@ -5,11 +5,14 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +36,7 @@ import com.microtechmd.pda.library.utility.SPUtils;
 import com.microtechmd.pda.ui.activity.ActivityDataTest;
 import com.microtechmd.pda.ui.activity.ActivityMain;
 import com.microtechmd.pda.ui.activity.ActivityPDA;
+import com.microtechmd.pda.ui.widget.WidgetSettingItem;
 import com.microtechmd.pda.util.DataCleanUtil;
 
 import java.lang.reflect.Method;
@@ -50,6 +54,7 @@ public class FragmentSettingUtilities extends FragmentBase
         implements
         EntityMessage.Listener {
 
+    private View mRootView;
     private static final String SCREEN_OFF_TIMEOUT = "screen_off_timeout";
     private static final int SCREEN_OFF_TIMEOUT_10S = 10 * 1000;
     private static final int SCREEN_OFF_TIMEOUT_1M = 60 * 1000;
@@ -57,11 +62,40 @@ public class FragmentSettingUtilities extends FragmentBase
     private static final int SCREEN_OFF_TIMEOUT_10M = 10 * 60 * 1000;
     private static final int SCREEN_OFF_TIMEOUT_1H = 60 * 60 * 1000;
     private int screen_off_timeout;
+    private String[] items;
+    private int checkIndex = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_setting_utilities, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_setting_utilities, container, false);
+        screen_off_timeout = (int) SPUtils.get(getActivity(), SCREEN_OFF_TIMEOUT, SCREEN_OFF_TIMEOUT_10S);
+        items = getResources().getStringArray(R.array.screen_timeout_array);
+        updateVersion();
+        switch (screen_off_timeout) {
+            case SCREEN_OFF_TIMEOUT_10S:
+                checkIndex = 0;
+                break;
+            case SCREEN_OFF_TIMEOUT_1M:
+                checkIndex = 1;
+                break;
+            case SCREEN_OFF_TIMEOUT_5M:
+                checkIndex = 2;
+                break;
+            case SCREEN_OFF_TIMEOUT_10M:
+                checkIndex = 3;
+                break;
+            case SCREEN_OFF_TIMEOUT_1H:
+                checkIndex = 4;
+                break;
+            default:
+                break;
+        }
+        WidgetSettingItem settingItem = (WidgetSettingItem) mRootView.findViewById(R.id.item_timeout_lock);
+        if (settingItem != null) {
+            settingItem.setItemValue(items[checkIndex]);
+        }
+        return mRootView;
     }
 
 
@@ -76,6 +110,24 @@ public class FragmentSettingUtilities extends FragmentBase
         super.onDestroyView();
     }
 
+
+    private void updateVersion() {
+        //获取当前版本号getPackageName()是你当前类的包名，0代表是获取版本信息版本名称
+        PackageInfo pi = null;
+        try {
+            pi = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String name = pi != null ? pi.versionName : null;
+        if (TextUtils.isEmpty(name)) {
+            return;
+        }
+        WidgetSettingItem settingItem = (WidgetSettingItem) mRootView.findViewById(R.id.item_software_version);
+        if (settingItem != null) {
+            settingItem.setItemValue(name);
+        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -230,28 +282,6 @@ public class FragmentSettingUtilities extends FragmentBase
     }
 
     private void setTimeOutLock() {
-        screen_off_timeout = (int) SPUtils.get(getActivity(), SCREEN_OFF_TIMEOUT, SCREEN_OFF_TIMEOUT_10S);
-        int checkIndex = 0;
-        switch (screen_off_timeout) {
-            case SCREEN_OFF_TIMEOUT_10S:
-                checkIndex = 0;
-                break;
-            case SCREEN_OFF_TIMEOUT_1M:
-                checkIndex = 1;
-                break;
-            case SCREEN_OFF_TIMEOUT_5M:
-                checkIndex = 2;
-                break;
-            case SCREEN_OFF_TIMEOUT_10M:
-                checkIndex = 3;
-                break;
-            case SCREEN_OFF_TIMEOUT_1H:
-                checkIndex = 4;
-                break;
-            default:
-                break;
-        }
-        final String[] items = getResources().getStringArray(R.array.screen_timeout_array);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.timeout_lock)
                 .setCancelable(true)
