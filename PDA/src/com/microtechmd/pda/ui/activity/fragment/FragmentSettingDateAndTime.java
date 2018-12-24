@@ -95,6 +95,7 @@ public class FragmentSettingDateAndTime extends FragmentBase
                 .get(Calendar.YEAR) < ActivityPDA.YEAR_MIN) {
             setTime();
             setDate();
+            setTimezone();
         }
     }
 
@@ -263,8 +264,21 @@ public class FragmentSettingDateAndTime extends FragmentBase
     }
 
     private void setTimezone() {
+        String zone = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT);
+        if (zone.contains("格林尼治标准时间")) {
+            zone = zone.replace("格林尼治标准时间", "GMT");
+        }
+        char[] strs = zone.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < strs.length; i++) {
+            sb.append(strs[i]);
+            if (i == 5) {
+                sb.append(":");
+            }
+        }
+        zone = sb.toString();
         TimezonePickerDialog.Builder builder = new TimezonePickerDialog.Builder(getActivity())
-                .setsSlectValue(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT));
+                .setsSlectValue(zone);
         timezoneDialog = builder.setOnTimeSelectedListener(new TimezonePickerDialog.OnTimeSelectedListener() {
             @Override
             public void onTimeSelected(String value) {
@@ -274,7 +288,6 @@ public class FragmentSettingDateAndTime extends FragmentBase
                 dateOrTimeChanged();
             }
         }).create();
-
         timezoneDialog.show();
         timezoneDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
@@ -289,6 +302,12 @@ public class FragmentSettingDateAndTime extends FragmentBase
         });
         timezoneDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
 
+        timezoneDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+//                mLog.Error(FragmentSettingDateAndTime.this.getClass(), "时区dialog消失");
+            }
+        });
     }
 
     private void dateOrTimeChanged() {

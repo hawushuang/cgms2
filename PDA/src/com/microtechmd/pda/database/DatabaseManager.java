@@ -62,10 +62,14 @@ public class DatabaseManager {
      * @return
      */
     public <T> List<T> getQueryAllByColumns(Class<T> cla) {
+        long current = System.currentTimeMillis();
         return liteOrm.query(new QueryBuilder<>(cla)
 //                        .whereEquals("event_type", 7)
 //                        .whereAppendOr()
 //                        .whereEquals("event_type", 8)
+                        .whereGreaterThan("date_time", current - 60 * 60 * 24 * 30 * 1000L)
+                        .whereAppendAnd()
+                        .whereLessThan("date_time", current)
                         .columns(new String[]{"date_time", "event_type", "value"})
 //                .appendOrderAscBy("date_time")
         );
@@ -124,7 +128,7 @@ public class DatabaseManager {
                     .whereEquals("rf_address", adress)
                     .appendOrderDescBy("id")
                     .limit(0, 1));
-        }else {
+        } else {
             return null;
         }
     }

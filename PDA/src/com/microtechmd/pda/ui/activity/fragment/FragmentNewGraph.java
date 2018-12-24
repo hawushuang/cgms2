@@ -690,10 +690,10 @@ public class FragmentNewGraph extends FragmentBase
 
     private void addRangLine(float minIndex, float maxIndex) {
         int mHyper = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(FragmentSettings.SETTING_HYPER, 0);
         int mHypo = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(FragmentSettings.SETTING_HYPO, 0);
 
         ArrayList<Entry> yVals1 = new ArrayList<>();

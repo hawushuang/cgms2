@@ -475,10 +475,10 @@ public class FragmentCombinedGraph extends FragmentBase
 
     private LineData generateLineData() {
         int mHyper = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(FragmentSettings.SETTING_HYPER, HYPER_DEFAULT);
         int mHypo = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(FragmentSettings.SETTING_HYPO, HYPO_DEFAULT);
         DateTime todayDateTime = getTodayDateTime();
 

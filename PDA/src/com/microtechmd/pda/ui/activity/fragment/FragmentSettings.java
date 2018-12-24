@@ -57,6 +57,7 @@ import java.util.List;
 import static com.microtechmd.pda.library.entity.ParameterComm.CLOSE_COMM;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.COMMMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.COMM_CLOSE;
+import static com.microtechmd.pda.ui.activity.ActivityPDA.YEAR_MIN;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_DATE_TIME;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_HISTORY_LOG;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_TIPS;
@@ -137,14 +138,18 @@ public class FragmentSettings extends FragmentBase
         ((WidgetSettingItem) mRootView.findViewById(R.id.item_pairing))
                 .setItemValue(mRFAddress);
         mHyper = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(SETTING_HYPER, HYPER_DEFAULT);
         mHypo = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(SETTING_HYPO, HYPO_DEFAULT);
         updateHyper(mHyper);
         updateHypo(mHypo);
 
+//        if (Calendar.getInstance()
+//                .get(Calendar.YEAR) < YEAR_MIN) {
+//            changeSettingType(TYPE_DATE_TIME);
+//        }
 //        rootViewGetFocus();
         return mRootView;
     }
@@ -1293,7 +1298,7 @@ public class FragmentSettings extends FragmentBase
 
     private void setHyper() {
         mHyper = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(SETTING_HYPER, HYPER_DEFAULT);
         final FragmentInput fragmentInput = new FragmentInput();
         fragmentInput.setInputText(FragmentInput.POSITION_CENTER,
@@ -1354,7 +1359,7 @@ public class FragmentSettings extends FragmentBase
 
     private void setHypo() {
         mHypo = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(SETTING_HYPO, HYPO_DEFAULT);
         final FragmentInput fragmentInput = new FragmentInput();
         fragmentInput.setInputText(FragmentInput.POSITION_CENTER,
@@ -1448,7 +1453,7 @@ public class FragmentSettings extends FragmentBase
         }
 
         ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .setInt(SETTING_HYPER, hyper);
 
 
@@ -1465,7 +1470,7 @@ public class FragmentSettings extends FragmentBase
         }
 
         ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .setInt(SETTING_HYPO, hypo);
     }
 
@@ -1584,7 +1589,7 @@ public class FragmentSettings extends FragmentBase
         DataCleanUtil.cleanSharedPreference(getActivity());
         SPUtils.clear(getActivity());
         ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .clear();
         ((ActivityPDA) getActivity())
                 .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,

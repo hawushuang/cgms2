@@ -308,6 +308,9 @@ public class FragmentHome extends FragmentBase
             setCountDownVisible(true);
             if (((value * 60 - countdownView.getRemainTime() / 1000) < -30) ||
                     ((value * 60 - countdownView.getRemainTime() / 1000) > 90)) {
+                if (value == 60) {
+                    value++;
+                }
                 countdownView.start(value * 60 * 1000);
                 countdownView.restart();
             }

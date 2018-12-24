@@ -355,7 +355,7 @@ public class FragmentSettingHistoryLog extends FragmentBase
                 break;
 
             case SENSOR_EXPIRATION:
-                content = getString(R.string.alarm_expiration);
+                content = getString(R.string.alarm_expiration2);
                 break;
 
             case HYPO:

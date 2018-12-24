@@ -8,14 +8,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
-import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +20,6 @@ import com.microtechmd.pda.entity.CalibrationHistory;
 import com.microtechmd.pda.library.entity.EntityMessage;
 import com.microtechmd.pda.library.entity.ParameterComm;
 import com.microtechmd.pda.library.entity.ParameterGlucose;
-import com.microtechmd.pda.library.entity.ValueByte;
 import com.microtechmd.pda.library.entity.ValueShort;
 import com.microtechmd.pda.library.entity.monitor.DateTime;
 import com.microtechmd.pda.library.parameter.ParameterGlobal;
@@ -32,18 +27,14 @@ import com.microtechmd.pda.ui.activity.fragment.FragmentDialog;
 import com.microtechmd.pda.ui.activity.fragment.FragmentInput;
 import com.microtechmd.pda.ui.activity.fragment.FragmentMessage;
 import com.microtechmd.pda.ui.widget.ConfirmDialog;
-import com.microtechmd.pda.ui.widget.keyboard.VirtualKeyboardView;
 import com.microtechmd.pda.util.CalibrationSaveUtil;
 import com.microtechmd.pda.util.MediaUtil;
 import com.triggertrap.seekarc.SeekArc;
 
-import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
-import java.util.Timer;
 
 
 public class ActivityBgEnter extends ActivityPDA {
@@ -80,31 +71,65 @@ public class ActivityBgEnter extends ActivityPDA {
         initAnim();
         mSeekArc = (SeekArc) findViewById(R.id.seekArc);
         calibrate_time_tv = (TextView) findViewById(R.id.calibrate_time_tv);
+        editTextGlucose = (EditText) findViewById(R.id.edit_text_glucose);
         initialize(getIntent());
 //        valueList = virtualKeyboardView.getValueList();
         mSeekArc.setTouchInSide(false);
-        mSeekArc.setArcWidth(30);
-        mSeekArc.setProgressWidth(28);
+        mSeekArc.setArcWidth(8);
+        mSeekArc.setProgressWidth(8);
         mSeekArc.setArcColor(Color.GRAY);
+        mSeekArc.setEnabled(false);
         mSeekArc.setMax(300);
         mSeekArc.setProgress(mGlucose);
-        mSeekArc.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
-
+//        mSeekArc.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekArc seekArc) {
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekArc seekArc) {
+//            }
+//
+//            @Override
+//            public void onProgressChanged(SeekArc seekArc, int progress,
+//                                          boolean fromUser) {
+//                DecimalFormat df = new DecimalFormat("0.0");
+//                editTextGlucose.setText(df.format((float) progress / (float) 10));
+//            }
+//        });
+        editTextGlucose.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onStopTrackingTouch(SeekArc seekArc) {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
             @Override
-            public void onStartTrackingTouch(SeekArc seekArc) {
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
             @Override
-            public void onProgressChanged(SeekArc seekArc, int progress,
-                                          boolean fromUser) {
-                DecimalFormat df = new DecimalFormat("0.0");
-                editTextGlucose.setText(df.format((float) progress / (float) 10));
+            public void afterTextChanged(Editable editable) {
+                String progress = editable.toString();
+                if (!TextUtils.isEmpty(progress)) {
+                    try {
+                        int glucose = (int) (Float.valueOf(progress) * GLUCOSE_UNIT_MG_STEP);
+                        if (glucose <= 300) {
+                            mSeekArc.setProgress(glucose);
+                        } else {
+                            editTextGlucose.setText(getGlucoseValue(300 * 10, false));
+                            Toast.makeText(mBaseActivity, R.string.input_calibration_err, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(mBaseActivity, R.string.input_err, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(mBaseActivity, R.string.input_empty, Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
     }
 
     /**
@@ -265,7 +290,6 @@ public class ActivityBgEnter extends ActivityPDA {
 
     @SuppressLint("SetTextI18n")
     private void initialize(Intent intent) {
-        editTextGlucose = (EditText) findViewById(R.id.edit_text_glucose);
         editTextGlucose.setLongClickable(false);
         // 设置不调用系统键盘
 //        if (android.os.Build.VERSION.SDK_INT <= 10) {
@@ -349,7 +373,7 @@ public class ActivityBgEnter extends ActivityPDA {
 
         if (mIsManual) {
             editTextGlucose.setEnabled(true);
-            mSeekArc.setEnabled(true);
+            mSeekArc.setEnabled(false);
             mGlucose = 5;
             mGlucose *= GLUCOSE_UNIT_MG_STEP;
             calibrate_time_tv.setVisibility(View.GONE);
@@ -405,38 +429,52 @@ public class ActivityBgEnter extends ActivityPDA {
 
 
     private void sendRecord() {
-        EditText editTextGlucose = (EditText) findViewById(R.id.edit_text_glucose);
-        mGlucose = (int) (Float.parseFloat(editTextGlucose.getText().toString()) *
-                100.0f);
-        ValueShort value = new ValueShort((short) (mGlucose / GLUCOSE_UNIT_MG_STEP));
-        DateTime dateTime;
-        if (mIsManual) {
-            dateTime = new DateTime(Calendar.getInstance());
-        } else {
-            dateTime = new DateTime(mCalendar);
+        if (TextUtils.isEmpty(editTextGlucose.getText().toString())) {
+            Toast.makeText(mBaseActivity, R.string.input_empty, Toast.LENGTH_SHORT).show();
+            return;
         }
-        byte[] send = new byte[6];
-        System.arraycopy(dateTime.getByteArray(), 0, send, 0, 4);
-        System.arraycopy(value.getByteArray(), 0, send, 4, 2);
-        record();
-        handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                ParameterGlobal.ADDRESS_REMOTE_MASTER, ParameterGlobal.PORT_MONITOR,
-                ParameterGlobal.PORT_GLUCOSE, EntityMessage.OPERATION_SET,
-                ParameterGlucose.TASK_GLUCOSE_PARAM_GLUCOSE, send));
+        try {
+            mGlucose = (int) (Float.parseFloat(editTextGlucose.getText().toString()) *
+                    100.0f);
+            ValueShort value = new ValueShort((short) (mGlucose / GLUCOSE_UNIT_MG_STEP));
+            DateTime dateTime;
+            if (mIsManual) {
+                dateTime = new DateTime(Calendar.getInstance());
+            } else {
+                dateTime = new DateTime(mCalendar);
+            }
+            byte[] send = new byte[6];
+            System.arraycopy(dateTime.getByteArray(), 0, send, 0, 4);
+            System.arraycopy(value.getByteArray(), 0, send, 4, 2);
+            record();
+            handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                    ParameterGlobal.ADDRESS_REMOTE_MASTER, ParameterGlobal.PORT_MONITOR,
+                    ParameterGlobal.PORT_GLUCOSE, EntityMessage.OPERATION_SET,
+                    ParameterGlucose.TASK_GLUCOSE_PARAM_GLUCOSE, send));
+        } catch (Exception e) {
+            Toast.makeText(mBaseActivity, R.string.input_err, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void sendCalibrate() {
-        EditText editTextGlucose = (EditText) findViewById(R.id.edit_text_glucose);
-        mGlucose = (int) (Float.parseFloat(editTextGlucose.getText().toString()) *
-                100.0f);
-        ValueShort value = new ValueShort((short) (mGlucose / GLUCOSE_UNIT_MG_STEP));
-        DateTime dateTime = new DateTime(Calendar.getInstance());
-        byte[] send = new byte[6];
-        System.arraycopy(dateTime.getByteArray(), 0, send, 0, 4);
-        System.arraycopy(value.getByteArray(), 0, send, 4, 2);
-        handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                ParameterGlobal.ADDRESS_REMOTE_MASTER, ParameterGlobal.PORT_MONITOR,
-                ParameterGlobal.PORT_GLUCOSE, EntityMessage.OPERATION_SET,
-                ParameterGlucose.TASK_GLUCOSE_PARAM_CALIBRATON, send));
+        if (TextUtils.isEmpty(editTextGlucose.getText().toString())) {
+            Toast.makeText(mBaseActivity, R.string.input_empty, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            mGlucose = (int) (Float.parseFloat(editTextGlucose.getText().toString()) *
+                    100.0f);
+            ValueShort value = new ValueShort((short) (mGlucose / GLUCOSE_UNIT_MG_STEP));
+            DateTime dateTime = new DateTime(Calendar.getInstance());
+            byte[] send = new byte[6];
+            System.arraycopy(dateTime.getByteArray(), 0, send, 0, 4);
+            System.arraycopy(value.getByteArray(), 0, send, 4, 2);
+            handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                    ParameterGlobal.ADDRESS_REMOTE_MASTER, ParameterGlobal.PORT_MONITOR,
+                    ParameterGlobal.PORT_GLUCOSE, EntityMessage.OPERATION_SET,
+                    ParameterGlucose.TASK_GLUCOSE_PARAM_CALIBRATON, send));
+        } catch (Exception e) {
+            Toast.makeText(mBaseActivity, R.string.input_err, Toast.LENGTH_SHORT).show();
+        }
     }
 }

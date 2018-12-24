@@ -127,7 +127,10 @@ public class ActivityMain extends ActivityPDA {
                                 switchContent(mFragmentHome);
                                 mFragmentHome.setDataChange();
 
-                                changToMainSetting();
+                                if (Calendar.getInstance()
+                                        .get(Calendar.YEAR) >= YEAR_MIN) {
+                                    changToMainSetting();
+                                }
                                 break;
 
                             case R.id.radio_button_tab_calibration:
@@ -138,7 +141,11 @@ public class ActivityMain extends ActivityPDA {
 
                                 fragMent = mFragmentCalibration;
                                 switchContent(mFragmentCalibration);
-                                changToMainSetting();
+
+                                if (Calendar.getInstance()
+                                        .get(Calendar.YEAR) >= YEAR_MIN) {
+                                    changToMainSetting();
+                                }
                                 break;
 
                             case R.id.radio_button_tab_settings:
@@ -149,7 +156,7 @@ public class ActivityMain extends ActivityPDA {
 
                                 fragMent = mFragmentSettings;
                                 switchContent(mFragmentSettings);
-                                changToMainSetting();
+//                                changToMainSetting();
                                 break;
 
                             default:
@@ -164,12 +171,18 @@ public class ActivityMain extends ActivityPDA {
                     }
                 });
 
-        if (radioGroup.getCheckedRadioButtonId() < 0) {
+        if (radioGroup.getCheckedRadioButtonId() < 0)
+
+        {
             radioGroup.check(R.id.radio_button_tab_home);
         }
 
-        ((ApplicationPDA) getApplication()).registerMessageListener(
-                ParameterGlobal.PORT_GLUCOSE, mMessageListener);
+        ((ApplicationPDA)
+
+                getApplication()).
+
+                registerMessageListener(
+                        ParameterGlobal.PORT_GLUCOSE, mMessageListener);
 
     }
 

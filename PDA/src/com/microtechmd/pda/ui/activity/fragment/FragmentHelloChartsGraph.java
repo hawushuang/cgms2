@@ -227,7 +227,7 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
         wakeLock.release();
         dismissDialogProgress();
         mLog.Error(FragmentHelloChartsGraph.this.getClass(), "UI数据库数量" + dbList.size());
-
+        dataErrListAll.clear();
         for (DbHistory dbHistory : dbList) {
             int eventType = dbHistory.getEvent_type();
             if ((eventType == SENSOR_ERROR)
@@ -520,11 +520,11 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
         }
         zero = calendar.getTimeInMillis();
 
-        if (offset > 0) {
-            maxLimit = now_zero - zero + 5 * 60 * 60 * 1000 + offset;
-        } else {
+//        if (offset > 0) {
+//            maxLimit = now_zero - zero + 5 * 60 * 60 * 1000 + offset;
+//        } else {
             maxLimit = now_zero - zero + 5 * 60 * 60 * 1000;
-        }
+//        }
 
         minLimit = now_zero - zero - ((24 + hour % 4) * 60 * 60 * 1000);
 
@@ -534,6 +534,9 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
             valuesAll.addAll(dbToPoint(dataList));
         }
         if (valuesAll.size() > 0) {
+            while (valuesAll.size() > 12 * 24 * 40) {
+                valuesAll.remove(0);
+            }
             setMinPoint();
             Line glucoseLine = getGlucoseLine(valuesAll);
             lines.add(glucoseLine);
@@ -756,10 +759,10 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
 
     private Line getLimitLine(String limit) {
         high = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettingTips.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(FragmentSettings.SETTING_HYPER, HYPER_DEFAULT);
         low = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettingTips.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(FragmentSettings.SETTING_HYPO, HYPO_DEFAULT);
 
         Line line = new Line();

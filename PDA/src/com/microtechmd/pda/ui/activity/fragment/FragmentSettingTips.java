@@ -4,6 +4,7 @@ package com.microtechmd.pda.ui.activity.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.microtechmd.pda.R;
 import com.microtechmd.pda.library.entity.EntityMessage;
 import com.microtechmd.pda.library.entity.ParameterComm;
 import com.microtechmd.pda.library.entity.ParameterGlucose;
+import com.microtechmd.pda.library.entity.ParameterMonitor;
 import com.microtechmd.pda.library.entity.ValueByte;
 import com.microtechmd.pda.library.entity.comm.RFAddress;
 import com.microtechmd.pda.library.parameter.ParameterGlobal;
@@ -30,6 +32,8 @@ import static com.microtechmd.pda.ui.activity.ActivityPDA.COMMMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.HIMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.LOMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_SETTING;
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPER_DEFAULT;
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPO_DEFAULT;
 
 public class FragmentSettingTips extends FragmentBase
         implements
@@ -81,10 +85,10 @@ public class FragmentSettingTips extends FragmentBase
                 .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getExtras(ActivityPDA.SETTING_RF_ADDRESS, null));
         mHyper = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettingTips.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(SETTING_HYPER, HYPER_DEFAULT);
         mHypo = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettingTips.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(SETTING_HYPO, HYPO_DEFAULT);
         updateHyper(mHyper);
         updateHypo(mHypo);
@@ -228,6 +232,7 @@ public class FragmentSettingTips extends FragmentBase
     }
 
     private void handleSet(EntityMessage message) {
+
     }
 
     protected void handleEvent(EntityMessage message) {
@@ -264,6 +269,9 @@ public class FragmentSettingTips extends FragmentBase
                         return;
                     }
                     mLog.Debug(getClass(), "Set hypo success!");
+                    Toast.makeText(getActivity(), getResources().getString(R.string.setting_success),
+                            Toast.LENGTH_SHORT)
+                            .show();
                     updateHypo(mHypo);
                     if (lowFragmentDialog != null) {
                         lowFragmentDialog.dismissAllowingStateLoss();
@@ -287,6 +295,9 @@ public class FragmentSettingTips extends FragmentBase
                         return;
                     }
                     mLog.Debug(getClass(), "Set hyper success!");
+                    Toast.makeText(getActivity(), getResources().getString(R.string.setting_success),
+                            Toast.LENGTH_SHORT)
+                            .show();
                     updateHyper(mHyper);
                     if (highFragmentDialog != null) {
                         highFragmentDialog.dismissAllowingStateLoss();
@@ -323,7 +334,7 @@ public class FragmentSettingTips extends FragmentBase
 
     private void setHyper() {
         mHyper = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettingTips.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(SETTING_HYPER, HYPER_DEFAULT);
         final FragmentInput fragmentInput = new FragmentInput();
         fragmentInput.setInputText(FragmentInput.POSITION_CENTER,
@@ -339,35 +350,45 @@ public class FragmentSettingTips extends FragmentBase
                     public boolean onButtonClick(int buttonID, Fragment content) {
                         switch (buttonID) {
                             case FragmentDialog.BUTTON_ID_POSITIVE:
-                                mHyper = (int) (Float.parseFloat(fragmentInput
-                                        .getInputText(FragmentInput.POSITION_CENTER)) * 10.0f);
-
-                                if ((mHyper > HYPER_MAX) || (mHyper < HYPER_MIN)) {
-                                    Toast.makeText(getActivity(),
-                                            R.string.fragment_settings_hyper_error,
-                                            Toast.LENGTH_SHORT).show();
+                                if (TextUtils.isEmpty(fragmentInput
+                                        .getInputText(FragmentInput.POSITION_CENTER))) {
+                                    Toast.makeText(getActivity(), R.string.input_empty, Toast.LENGTH_SHORT).show();
                                     return false;
-                                } else {
-                                    if ((!mRFAddress.equals("")) && (!mRFAddress
-                                            .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
-                                        ((ActivityPDA) getActivity())
-                                                .handleMessage(new EntityMessage(
-                                                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                        ParameterGlobal.ADDRESS_REMOTE_MASTER,
-                                                        ParameterGlobal.PORT_GLUCOSE,
-                                                        ParameterGlobal.PORT_GLUCOSE,
-                                                        EntityMessage.OPERATION_SET,
-                                                        ParameterGlucose.PARAM_BG_LIMIT,
-                                                        new ValueByte(mHyper).getByteArray()
-                                                ));
-                                        if (highFragmentDialog != null) {
-                                            highFragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_POSITIVE,
-                                                    getResources().getString(R.string.retry));
-                                        }
+                                }
+                                try {
+                                    mHyper = (int) (Float.parseFloat(fragmentInput
+                                            .getInputText(FragmentInput.POSITION_CENTER)) * 10.0f);
+
+                                    if ((mHyper > HYPER_MAX) || (mHyper < HYPER_MIN)) {
+                                        Toast.makeText(getActivity(),
+                                                R.string.fragment_settings_hyper_error,
+                                                Toast.LENGTH_SHORT).show();
                                         return false;
                                     } else {
-                                        updateHyper(mHyper);
+                                        if ((!mRFAddress.equals("")) && (!mRFAddress
+                                                .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
+                                            ((ActivityPDA) getActivity())
+                                                    .handleMessage(new EntityMessage(
+                                                            ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                            ParameterGlobal.ADDRESS_REMOTE_MASTER,
+                                                            ParameterGlobal.PORT_GLUCOSE,
+                                                            ParameterGlobal.PORT_GLUCOSE,
+                                                            EntityMessage.OPERATION_SET,
+                                                            ParameterGlucose.PARAM_BG_LIMIT,
+                                                            new ValueByte(mHyper).getByteArray()
+                                                    ));
+                                            if (highFragmentDialog != null) {
+                                                highFragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_POSITIVE,
+                                                        getResources().getString(R.string.retry));
+                                            }
+                                            return false;
+                                        } else {
+                                            updateHyper(mHyper);
+                                        }
                                     }
+                                } catch (Exception e) {
+                                    Toast.makeText(getContext(), R.string.input_err, Toast.LENGTH_SHORT).show();
+                                    return false;
                                 }
 
                                 break;
@@ -384,7 +405,7 @@ public class FragmentSettingTips extends FragmentBase
 
     private void setHypo() {
         mHypo = ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettingTips.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(SETTING_HYPO, HYPO_DEFAULT);
         final FragmentInput fragmentInput = new FragmentInput();
         fragmentInput.setInputText(FragmentInput.POSITION_CENTER,
@@ -400,37 +421,46 @@ public class FragmentSettingTips extends FragmentBase
                     public boolean onButtonClick(int buttonID, Fragment content) {
                         switch (buttonID) {
                             case FragmentDialog.BUTTON_ID_POSITIVE:
-                                mHypo = (int) (Float.parseFloat(fragmentInput
-                                        .getInputText(FragmentInput.POSITION_CENTER)) * 10.0f);
-
-                                if ((mHypo > HYPO_MAX) || (mHypo < HYPO_MIN)) {
-                                    Toast.makeText(getActivity(),
-                                            R.string.fragment_settings_hypo_error,
-                                            Toast.LENGTH_SHORT).show();
+                                if (TextUtils.isEmpty(fragmentInput
+                                        .getInputText(FragmentInput.POSITION_CENTER))) {
+                                    Toast.makeText(getActivity(), R.string.input_empty, Toast.LENGTH_SHORT).show();
                                     return false;
-                                } else {
-                                    if ((!mRFAddress.equals("")) && (!mRFAddress
-                                            .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
-                                        ((ActivityPDA) getActivity())
-                                                .handleMessage(new EntityMessage(
-                                                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                        ParameterGlobal.ADDRESS_REMOTE_MASTER,
-                                                        ParameterGlobal.PORT_GLUCOSE,
-                                                        ParameterGlobal.PORT_GLUCOSE,
-                                                        EntityMessage.OPERATION_SET,
-                                                        ParameterGlucose.PARAM_FILL_LIMIT,
-                                                        new ValueByte(mHypo).getByteArray()
-                                                ));
-                                        if (lowFragmentDialog != null) {
-                                            lowFragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_POSITIVE,
-                                                    getResources().getString(R.string.retry));
-                                        }
+                                }
+                                try {
+                                    mHypo = (int) (Float.parseFloat(fragmentInput
+                                            .getInputText(FragmentInput.POSITION_CENTER)) * 10.0f);
+
+                                    if ((mHypo > HYPO_MAX) || (mHypo < HYPO_MIN)) {
+                                        Toast.makeText(getActivity(),
+                                                R.string.fragment_settings_hypo_error,
+                                                Toast.LENGTH_SHORT).show();
                                         return false;
                                     } else {
-                                        updateHypo(mHypo);
+                                        if ((!mRFAddress.equals("")) && (!mRFAddress
+                                                .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
+                                            ((ActivityPDA) getActivity())
+                                                    .handleMessage(new EntityMessage(
+                                                            ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                            ParameterGlobal.ADDRESS_REMOTE_MASTER,
+                                                            ParameterGlobal.PORT_GLUCOSE,
+                                                            ParameterGlobal.PORT_GLUCOSE,
+                                                            EntityMessage.OPERATION_SET,
+                                                            ParameterGlucose.PARAM_FILL_LIMIT,
+                                                            new ValueByte(mHypo).getByteArray()
+                                                    ));
+                                            if (lowFragmentDialog != null) {
+                                                lowFragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_POSITIVE,
+                                                        getResources().getString(R.string.retry));
+                                            }
+                                            return false;
+                                        } else {
+                                            updateHypo(mHypo);
+                                        }
                                     }
+                                } catch (Exception e) {
+                                    Toast.makeText(getContext(), R.string.input_err, Toast.LENGTH_SHORT).show();
+                                    return false;
                                 }
-
                                 break;
 
                             default:
@@ -452,7 +482,7 @@ public class FragmentSettingTips extends FragmentBase
         }
 
         ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettingTips.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .setInt(SETTING_HYPER, hyper);
 
 
@@ -469,7 +499,7 @@ public class FragmentSettingTips extends FragmentBase
         }
 
         ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettingTips.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .setInt(SETTING_HYPO, hypo);
     }
 

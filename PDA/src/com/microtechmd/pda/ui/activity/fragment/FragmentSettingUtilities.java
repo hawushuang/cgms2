@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -41,9 +42,12 @@ import com.microtechmd.pda.util.DataCleanUtil;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import static com.microtechmd.pda.ui.activity.ActivityPDA.DATE_CHANGE;
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_DATE_TIME;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_SETTING;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPER_DEFAULT;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPO_DEFAULT;
@@ -387,6 +391,15 @@ public class FragmentSettingUtilities extends FragmentBase
                                                 ParameterMonitor.COUNTDOWNVIEW_VISIBLE,
                                                 new ValueInt(0).getByteArray()));
                                 clearPair();
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.set(Calendar.YEAR, 1971);
+                                SystemClock.setCurrentTimeMillis(calendar.getTimeInMillis());
+                                ((ActivityPDA) getActivity())
+                                        .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
+                                                ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
+                                                ParameterComm.SETTING_TYPE,
+                                                new byte[]{(byte) TYPE_DATE_TIME}));
                                 break;
 
                             default:
@@ -445,10 +458,9 @@ public class FragmentSettingUtilities extends FragmentBase
                             ParameterGlucose.PARAM_FILL_LIMIT,
                             new ValueByte(HYPO_DEFAULT).getByteArray()
                     ));
-        } else {
-            updateHyper(HYPER_DEFAULT);
-            updateHypo(HYPO_DEFAULT);
         }
+        updateHyper(HYPER_DEFAULT);
+        updateHypo(HYPO_DEFAULT);
     }
 
     private void cleanCache() {
@@ -461,7 +473,7 @@ public class FragmentSettingUtilities extends FragmentBase
         DataCleanUtil.cleanSharedPreference(getActivity());
         SPUtils.clear(getActivity());
         ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .clear();
         ((ActivityPDA) getActivity())
                 .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
@@ -497,13 +509,13 @@ public class FragmentSettingUtilities extends FragmentBase
 
     private void updateHyper(int hyper) {
         ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .setInt(SETTING_HYPER, hyper);
     }
 
     private void updateHypo(int hypo) {
         ((ActivityPDA) getActivity())
-                .getDataStorage(FragmentSettings.class.getSimpleName())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
                 .setInt(SETTING_HYPO, hypo);
     }
 
