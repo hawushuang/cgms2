@@ -37,10 +37,10 @@ public class FragmentSettingTips extends FragmentBase
     public static final String SETTING_HYPO = "hypo";
     public static final String REALTIMEFLAG = "realtimeFlag";
 
-    public static final int HYPER_DEFAULT = 120;
+    public static final int HYPER_DEFAULT = 111;
     private static final int HYPER_MAX = 250;
     private static final int HYPER_MIN = 80;
-    public static final int HYPO_DEFAULT = 35;
+    public static final int HYPO_DEFAULT = 44;
     private static final int HYPO_MAX = 50;
     private static final int HYPO_MIN = 22;
 
