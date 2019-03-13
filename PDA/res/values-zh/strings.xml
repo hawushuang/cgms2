@@ -61,11 +61,12 @@
     <string name="calibrate_confirm">确定记录该次校准?</string>
     <string name="record_calibrate_confirm">确定校准?</string>
     <string name="calibration_done">校准完成</string>
-    <string name="record_done">校准完成</string>
+    <string name="record_done">记录完成</string>
     <string name="fragment_settings_pairing">发射器配对</string>
+    <string name="fragment_settings_unpairing">发射器解配</string>
     <string name="fragment_settings_unpair">对该发射器控制权将被取消，是否继续？</string>
     <string name="recovery_pair">如果重置，对该发射器控制权将被取消并且清除日志，是否继续？</string>
-    <string name="recovery_clear">如果重置，将清除日志，是否继续？</string>
+    <string name="recovery_clear">如果重置，清除所有历史及数据记录，是否继续？</string>
     <string name="fragment_settings_hi_bg_threshold">高血糖阈值</string>
     <string name="fragment_settings_lo_bg_threshold">低血糖阈值</string>
     <string name="fragment_settings_language">中文</string>
@@ -84,6 +85,7 @@
     <string name="blood_glucose">指血血糖测量！</string>
     <string name="alarm_new_sensor">检测到新传感器，请确认！</string>
     <string name="alarm_expiration">传感器到达使用期限！</string>
+    <string name="alarm_expiration2">传感器过期！</string>
     <string name="alarm_sensor_error">传感器故障！</string>
     <string name="alarm_pda_error">便携式显示器故障！</string>
     <string name="alarm_pda_comm_error">通信异常！</string>
@@ -604,6 +606,37 @@
         <item>10 分钟</item>
         <item>1 小时</item>
     </string-array>
+
+    <string-array name="language_array">
+        <item>中文</item>
+        <item>英文</item>
+    </string-array>
+    <string-array name="app_timezone_array">
+        <item>帕果帕果</item>
+        <item>火奴鲁鲁</item>
+        <item>安克雷奇</item>
+        <item>洛杉矶</item>
+        <item>丹佛</item>
+        <item>芝加哥</item>
+        <item>纽约</item>
+        <item>圣地亚哥</item>
+        <item>里约热内卢</item>
+        <item>费尔南多·迪诺罗尼亚</item>
+        <item>普拉亚</item>
+        <item>伦敦</item>
+        <item>巴黎</item>
+        <item>雅典</item>
+        <item>吉达</item>
+        <item>迪拜</item>
+        <item>卡拉奇</item>
+        <item>达卡</item>
+        <item>曼谷</item>
+        <item>北京</item>
+        <item>东京</item>
+        <item>悉尼</item>
+        <item>努美阿</item>
+        <item>惠灵顿</item>
+    </string-array>
     <!-- blue tooth -->
     <string name="bluetooth_setting_title">蓝牙</string>
     <string name="bluetooth_setting_name">蓝牙</string>
@@ -692,7 +725,9 @@
     <string name="Toast_shutdown">正在关机…</string>
     <string name="Toast_shutdown_fail">关机失败。</string>
     <string name="shutdown_title">关机确认</string>
+    <string name="time_sure_title">时间确认</string>
     <string name="shutdown_content">你确定要关机吗？</string>
+    <string name="time_sure_content">你确定时间是正确的吗？</string>
 
     <!-- lockSceen
        * @author qian.zhou
@@ -769,6 +804,7 @@
     <string name="setting_failed">设置失败</string>
     <string name="pair_data_err">数据错误需重新配对</string>
     <string name="force_unpair_info">未连接到发射器，可强制解配，若如此操作则该发射器将不能与其他设备配对，是否继续？</string>
+    <string name="force_unpair_info2">若勾选该选项则强制解配，该发射器将不能与其他设备配对</string>
     <string name="fragment_settings_force_unpair">强制解配</string>
     <string name="timeout_lock">亮屏时间</string>
     <string name="glucose_messagetips">血糖检测提醒</string>
@@ -780,5 +816,16 @@
     <string name="utilities">通用</string>
     <string name="alert">提示</string>
     <string name="ensure">请确认</string>
+    <string name="transmitter_id_err">发射器序列号格式错误</string>
+    <string name="input_err">输入格式错误</string>
+    <string name="setting_success">设置成功</string>
+    <string name="input_calibration_err">校准范围是2mmol/L到30mmol/L</string>
+    <string name="minutebefore">分钟前</string>
+    <string name="bluetooth_unmatch_success">解配成功</string>
+    <string name="remove_success">删除成功</string>
+    <string name="unpair_recovery">尚未与发射器解配，是否先取消对该发射器的控制？</string>
+    <string name="sure_cancel">确认取消吗？</string>
+    <string name="set_highorlow_failed">设置阈值失败,是否手动设置？</string>
+    <string name="history_mode_forbidden">回顾模式下禁止校准</string>
 
 </resources>

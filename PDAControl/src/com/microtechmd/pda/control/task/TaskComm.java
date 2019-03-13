@@ -254,6 +254,20 @@ public final class TaskComm extends TaskBase {
                 mService.onReceive(message);
             }
         });
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                EntityMessage message =
+//                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+//                                ParameterGlobal.ADDRESS_REMOTE_SLAVE, ParameterGlobal.PORT_COMM,
+//                                ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
+//                                ParameterComm.PARAM_BROADCAST_OFFSET, new byte[]
+//                                {
+//                                        ParameterComm.BROADCAST_OFFSET_STATUS
+//                                });
+//                mService.onReceive(message);
+//            }
+//        }, 2 * 60 * 1000);
     }
 
 
@@ -534,8 +548,14 @@ public final class TaskComm extends TaskBase {
                 case ParameterComm.PARAM_RF_STATE:
                     mLog.Debug(getClass(),
                             "Notify RF state: " + message.getData()[0]);
-
-
+                    //通信异常
+                    if (message.getData()[0] == ParameterComm.RF_STATE_CONNECTED_ERR) {
+                        handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                                ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
+                                ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_NOTIFY,
+                                ParameterComm.COMM_ERR, null));
+                        return;
+                    }
                     if (mRFState != message.getData()[0]) {
                         mRFState = message.getData()[0];
                         EntityMessage messageRequest;
@@ -549,28 +569,6 @@ public final class TaskComm extends TaskBase {
                                     ParameterGlobal.ADDRESS_REMOTE_MASTER) == EntityMessage.FUNCTION_OK)) {
                                 sendRemoteMessage(messageRequest);
                             }
-//                            if (timer != null) {
-//                                timer.cancel();
-//                                Event event = new Event(0, PDA_COMM_ERROR, 0);
-//                                History history = new History(
-//                                        new DateTime(Calendar.getInstance()), new Status(), event);
-//                                handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_CONTROL,
-//                                        ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_MONITOR,
-//                                        ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_EVENT,
-//                                        ParameterMonitor.PARAM_EVENT_COMM, history.getByteArray()));
-//                            }
-
-//                            if (countDownTimer != null) {
-//                                countDownTimer.cancel();
-//                                countDownTimer = null;
-//                                Event event = new Event(0, PDA_COMM_ERROR, 0);
-//                                History history = new History(
-//                                        new DateTime(Calendar.getInstance()), new Status(), event);
-//                                handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_CONTROL,
-//                                        ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_MONITOR,
-//                                        ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_EVENT,
-//                                        ParameterMonitor.PARAM_EVENT_COMM, history.getByteArray()));
-//                            }
                         } else {
                             messageRequest =
                                     mMessageList[ParameterGlobal.ADDRESS_REMOTE_MASTER]
@@ -918,67 +916,11 @@ public final class TaskComm extends TaskBase {
                         signal
                 }));
 
-        if (((int) signal) <= 0) {
-            Intent intent = new Intent();
-            // 设置Intent action属性
-            intent.setAction("comm_err");
-            // 实例化PendingIntent
-            if (sender == null) {
-                sender = PendingIntent.getBroadcast(mService, 123,
-                        intent, 0);
-            }
-
-            assert manager != null;
-            manager.set(AlarmManager.RTC_WAKEUP,
-                    System.currentTimeMillis() + COMM_ERR_TIMEOUT, sender);
-
-
-//            if (comm_handler == null) {
-//                comm_handler = new Handler(Looper.getMainLooper());
-//                mRunnable = new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        countDownTimer = new CountDownTimer(COMM_ERR_TIMEOUT, 5 * 1000) {
-//                            @Override
-//                            public void onTick(long l) {
-//                                i++;
-//                                mLog.Error(TaskComm.this.getClass(), ("到时+" + i));
-//                            }
-//
-//                            @Override
-//                            public void onFinish() {
-//                                mLog.Error(TaskComm.this.getClass(), "执行");
-//                                handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_CONTROL,
-//                                        ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
-//                                        ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_NOTIFY,
-//                                        ParameterComm.COMM_ERR, null));
-//                                i = 0;
-//                            }
-//                        };
-//                        countDownTimer.start();
-//
-//                    }
-//                };
-//            }
-//            comm_handler.post(mRunnable);
-        } else {
-            if (sender != null) {
-                manager.cancel(sender);
-                sender = null;
-            }
+        if (((int) signal) > 0) {
             handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_CONTROL,
                     ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
                     ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_NOTIFY,
                     ParameterComm.COMM_ERR_RECOVERY, null));
-            i = 0;
-            if (comm_handler != null) {
-                comm_handler.removeCallbacks(mRunnable);
-                comm_handler = null;
-                if (countDownTimer != null) {
-                    countDownTimer.cancel();
-                    countDownTimer = null;
-                }
-            }
         }
 
     }

@@ -4,14 +4,15 @@ package com.microtechmd.pda.ui.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,15 +27,19 @@ import com.microtechmd.pda.library.parameter.ParameterGlobal;
 import com.microtechmd.pda.ui.activity.fragment.FragmentDialog;
 import com.microtechmd.pda.ui.activity.fragment.FragmentInput;
 import com.microtechmd.pda.ui.activity.fragment.FragmentMessage;
-import com.microtechmd.pda.ui.widget.ConfirmDialog;
+import com.microtechmd.pda.ui.widget.RuleView;
+import com.microtechmd.pda.ui.widget.contrarywind.adapter.ArrayWheelAdapter;
+import com.microtechmd.pda.ui.widget.contrarywind.listener.OnItemSelectedListener;
+import com.microtechmd.pda.ui.widget.contrarywind.view.WheelView;
 import com.microtechmd.pda.util.CalibrationSaveUtil;
 import com.microtechmd.pda.util.MediaUtil;
-import com.triggertrap.seekarc.SeekArc;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class ActivityBgEnter extends ActivityPDA {
@@ -45,100 +50,135 @@ public class ActivityBgEnter extends ActivityPDA {
     private static final int GLUCOSE_MIN = GLUCOSE_UNIT_MMOL_STEP;
 
     private int mGlucose = 0;
-    private EditText editTextGlucose;
-    private SeekArc mSeekArc;
     private TextView calibrate_time_tv;
 
-    private ConfirmDialog confirmDialog;
     private boolean mIsManual;
     private Calendar mCalendar;
-//
-//    private VirtualKeyboardView virtualKeyboardView;
-//
-//    private GridView gridView;
-//
-//    private ArrayList<Map<String, String>> valueList;
-//
-//    private Animation enterAnim;
-//
-//    private Animation exitAnim;
 
+    private RuleView ruleView;
+    private TextView tv_glucose;
+    private Button button_add;
+    private Button button_sub;
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_bg_enter);
-//        setContentView(R.layout.seekbar);
-        initAnim();
-        mSeekArc = (SeekArc) findViewById(R.id.seekArc);
-        calibrate_time_tv = (TextView) findViewById(R.id.calibrate_time_tv);
-        editTextGlucose = (EditText) findViewById(R.id.edit_text_glucose);
-        initialize(getIntent());
-//        valueList = virtualKeyboardView.getValueList();
-        mSeekArc.setTouchInSide(false);
-        mSeekArc.setArcWidth(8);
-        mSeekArc.setProgressWidth(8);
-        mSeekArc.setArcColor(Color.GRAY);
-        mSeekArc.setEnabled(false);
-        mSeekArc.setMax(300);
-        mSeekArc.setProgress(mGlucose);
-//        mSeekArc.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekArc seekArc) {
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekArc seekArc) {
-//            }
-//
-//            @Override
-//            public void onProgressChanged(SeekArc seekArc, int progress,
-//                                          boolean fromUser) {
-//                DecimalFormat df = new DecimalFormat("0.0");
-//                editTextGlucose.setText(df.format((float) progress / (float) 10));
-//            }
-//        });
-        editTextGlucose.addTextChangedListener(new TextWatcher() {
+
+        ruleView = (RuleView) findViewById(R.id.ruleView);
+        tv_glucose = (TextView) findViewById(R.id.tv_glucose);
+        button_add = (Button) findViewById(R.id.button_add);
+        button_sub = (Button) findViewById(R.id.button_sub);
+        ruleView.setValue(0, 30, 5, 0.1F, 10);
+        ruleView.setOnValueChangedListener(new RuleView.OnValueChangedListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String progress = editable.toString();
-                if (!TextUtils.isEmpty(progress)) {
-                    try {
-                        int glucose = (int) (Float.valueOf(progress) * GLUCOSE_UNIT_MG_STEP);
-                        if (glucose <= 300) {
-                            mSeekArc.setProgress(glucose);
-                        } else {
-                            editTextGlucose.setText(getGlucoseValue(300 * 10, false));
-                            Toast.makeText(mBaseActivity, R.string.input_calibration_err, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(mBaseActivity, R.string.input_err, Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(mBaseActivity, R.string.input_empty, Toast.LENGTH_SHORT).show();
-                }
+            public void onValueChanged(float value) {
+                tv_glucose.setText(String.valueOf(value));
+                mGlucose = (int) (value * 100);
             }
         });
+//        button_add.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        button_add.setBackgroundResource(R.drawable.jia_2);
+//                        updateAddOrSubtract(v.getId());    //手指按下时触发不停的发送消息
+//                        break;
+//                    case MotionEvent.ACTION_MOVE:
+////                        if (!isInView(v, event)) {
+////                            button_add.setBackgroundResource(R.drawable.jia);
+////                            stopAddOrSubtract();    //停止发送
+////                        }
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//                        button_add.setBackgroundResource(R.drawable.jia);
+//                        stopAddOrSubtract();    //手指抬起时停止发送
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
+//        button_sub.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//                    button_sub.setBackgroundResource(R.drawable.jian_2);
+//                    updateAddOrSubtract(v.getId());    //手指按下时触发不停的发送消息
+//                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+//                    button_sub.setBackgroundResource(R.drawable.jian);
+//                    stopAddOrSubtract();    //手指抬起时停止发送
+//                }
+//                return true;
+//            }
+//        });
+        calibrate_time_tv = (TextView) findViewById(R.id.calibrate_time_tv);
+
+        initialize(getIntent());
 
     }
 
     /**
-     * 数字键盘显示动画
+     * 判断触摸的点是否在View范围内
      */
-    private void initAnim() {
+    private boolean isInView(View v, MotionEvent event) {
+        Rect frame = new Rect();
+        v.getHitRect(frame);
+        float eventX = event.getX();
+        float eventY = event.getY();
+        return frame.contains((int) eventX, (int) eventY);
+    }
 
-//        enterAnim = AnimationUtils.loadAnimation(this, R.anim.bottomview_anim_enter);
-//        exitAnim = AnimationUtils.loadAnimation(this, R.anim.bottomview_anim_exit);
+    private ScheduledExecutorService scheduledExecutor;
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case R.id.button_add:
+                    float current = ruleView.getCurrentValue();
+                    current = (current * 10 + 1) / 10;
+                    if (current >= 30) {
+                        current = 30;
+                    }
+                    ruleView.setCurrentValue(current);
+                    break;
+                case R.id.button_sub:
+                    float current2 = ruleView.getCurrentValue();
+                    current2 = (current2 * 10 - 1) / 10;
+                    if (current2 <= 0) {
+                        current2 = 0;
+                    }
+                    ruleView.setCurrentValue(current2);
+                    break;
+                default:
+
+                    break;
+            }
+        }
+    };
+
+    private void updateAddOrSubtract(int viewId) {
+        final int vid = viewId;
+        scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutor.scheduleWithFixedDelay(new Runnable() {
+            @Override
+            public void run() {
+                Message msg = new Message();
+                msg.what = vid;
+                handler.sendMessage(msg);
+            }
+        }, 0, 300, TimeUnit.MILLISECONDS);    //每间隔100ms发送Message
+    }
+
+    private void stopAddOrSubtract() {
+        if (scheduledExecutor != null) {
+            scheduledExecutor.shutdownNow();
+            scheduledExecutor = null;
+        }
     }
 
     @Override
@@ -154,6 +194,22 @@ public class ActivityBgEnter extends ActivityPDA {
                 break;
             case R.id.button_record:
                 showRecordConfirmDialog();
+                break;
+            case R.id.button_add:
+                float current = ruleView.getCurrentValue();
+                current = (current * 10 + 1) / 10;
+                if (current >= 30) {
+                    current = 30;
+                }
+                ruleView.setCurrentValue(current);
+                break;
+            case R.id.button_sub:
+                float current2 = ruleView.getCurrentValue();
+                current2 = (current2 * 10 - 1) / 10;
+                if (current2 <= 0) {
+                    current2 = 0;
+                }
+                ruleView.setCurrentValue(current2);
                 break;
 
             default:
@@ -237,7 +293,7 @@ public class ActivityBgEnter extends ActivityPDA {
             list = new ArrayList<>();
         }
         long time = Calendar.getInstance().getTimeInMillis();
-        float value = Float.parseFloat(editTextGlucose.getText().toString());
+        float value = Float.parseFloat(tv_glucose.getText().toString());
         CalibrationHistory calibrationHistory = new CalibrationHistory(time, value);
         list.add(calibrationHistory);
         CalibrationSaveUtil.save(this, CALIBRATION_HISTORY, list);
@@ -259,7 +315,11 @@ public class ActivityBgEnter extends ActivityPDA {
 
     @Override
     protected void onHomePressed() {
-
+        finish();
+        handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_GLUCOSE,
+                ParameterGlobal.PORT_GLUCOSE, EntityMessage.OPERATION_EVENT,
+                ParameterGlucose.HOME_PRESS, null));
     }
 
     @Override
@@ -290,97 +350,20 @@ public class ActivityBgEnter extends ActivityPDA {
 
     @SuppressLint("SetTextI18n")
     private void initialize(Intent intent) {
-        editTextGlucose.setLongClickable(false);
-        // 设置不调用系统键盘
-//        if (android.os.Build.VERSION.SDK_INT <= 10) {
-//            editTextGlucose.setInputType(InputType.TYPE_NULL);
-//        } else {
-//            this.getWindow().setSoftInputMode(
-//                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-//            try {
-//                Class<EditText> cls = EditText.class;
-//                Method setShowSoftInputOnFocus;
-//                setShowSoftInputOnFocus = cls.getMethod("setShowSoftInputOnFocus",
-//                        boolean.class);
-//                setShowSoftInputOnFocus.setAccessible(true);
-//                setShowSoftInputOnFocus.invoke(editTextGlucose, false);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        virtualKeyboardView = (VirtualKeyboardView) findViewById(R.id.virtualKeyboardView);
-//        virtualKeyboardView.setVisibility(View.GONE);
-//        virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                virtualKeyboardView.startAnimation(exitAnim);
-//                virtualKeyboardView.setVisibility(View.GONE);
-//            }
-//        });
-//
-//        gridView = virtualKeyboardView.getGridView();
-//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                if (position < 11 && position != 9) {    //点击0~9按钮
-//
-//                    String amount = editTextGlucose.getText().toString().trim();
-//                    amount = amount + valueList.get(position).get("name");
-//
-//                    editTextGlucose.setText(amount);
-//
-//                    Editable ea = editTextGlucose.getText();
-//                    editTextGlucose.setSelection(ea.length());
-//                } else {
-//
-//                    if (position == 9) {      //点击退格键
-//                        String amount = editTextGlucose.getText().toString().trim();
-//                        if (!amount.contains(".")) {
-//                            amount = amount + valueList.get(position).get("name");
-//                            editTextGlucose.setText(amount);
-//
-//                            Editable ea = editTextGlucose.getText();
-//                            editTextGlucose.setSelection(ea.length());
-//                        }
-//                    }
-//
-//                    if (position == 11) {      //点击退格键
-//                        String amount = editTextGlucose.getText().toString().trim();
-//                        if (amount.length() > 0) {
-//                            amount = amount.substring(0, amount.length() - 1);
-//                            editTextGlucose.setText(amount);
-//
-//                            Editable ea = editTextGlucose.getText();
-//                            editTextGlucose.setSelection(ea.length());
-//                        }
-//                    }
-//                }
-//            }
-//        });
-//
-//        editTextGlucose.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                virtualKeyboardView.setFocusable(true);
-//                virtualKeyboardView.setFocusableInTouchMode(true);
-//
-//                virtualKeyboardView.startAnimation(enterAnim);
-//                virtualKeyboardView.setVisibility(View.VISIBLE);
-//            }
-//        });
         mIsManual = intent.getBooleanExtra(EXTRA_IS_MANUAL, true);
 
         if (mIsManual) {
-            editTextGlucose.setEnabled(true);
-            mSeekArc.setEnabled(false);
             mGlucose = 5;
             mGlucose *= GLUCOSE_UNIT_MG_STEP;
             calibrate_time_tv.setVisibility(View.GONE);
         } else {
+            button_add.setEnabled(false);
+            button_add.setBackgroundResource(R.drawable.jia_2);
+            button_sub.setEnabled(false);
+            button_sub.setBackgroundResource(R.drawable.jian_2);
+            ruleView.setCanScroll(false);
+
             mCalendar = Calendar.getInstance();
-            editTextGlucose.setEnabled(false);
-            mSeekArc.setEnabled(false);
             mGlucose = intent.getIntExtra(EXTRA_BG_AMT, 0);
             if ((mGlucose > GLUCOSE_MAX) || (mGlucose < GLUCOSE_MIN)) {
                 MediaUtil.playMp3ByType(this, "beep_ack.mp3", false);
@@ -418,24 +401,28 @@ public class ActivityBgEnter extends ActivityPDA {
 
             mGlucose *= GLUCOSE_UNIT_MG_STEP;
             mGlucose /= GLUCOSE_UNIT_MMOL_STEP;
-            calibrate_time_tv.setText(getDateString(System.currentTimeMillis(),
-                    null) + " " + getTimeString(System.currentTimeMillis(),
-                    null));
+            calibrate_time_tv.setText(getDateString(System.currentTimeMillis(), null)
+                    + " "
+                    + getTimeString(System.currentTimeMillis(), null));
             calibrate_time_tv.setVisibility(View.VISIBLE);
         }
-
-        editTextGlucose.setText(getGlucoseValue(mGlucose * 10, false));
+        String glucose = getGlucoseValue(mGlucose * 10, false);
+        try {
+            ruleView.setCurrentValue(Float.parseFloat(glucose));
+        } catch (Exception e) {
+            Toast.makeText(mBaseActivity, R.string.input_err, Toast.LENGTH_SHORT).show();
+        }
     }
 
 
     private void sendRecord() {
-        if (TextUtils.isEmpty(editTextGlucose.getText().toString())) {
-            Toast.makeText(mBaseActivity, R.string.input_empty, Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (TextUtils.isEmpty(editTextGlucose.getText().toString())) {
+//            Toast.makeText(mBaseActivity, R.string.input_empty, Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         try {
-            mGlucose = (int) (Float.parseFloat(editTextGlucose.getText().toString()) *
-                    100.0f);
+            float value_s = Float.parseFloat(tv_glucose.getText().toString());
+            mGlucose = (int) (value_s * 100.0f);
             ValueShort value = new ValueShort((short) (mGlucose / GLUCOSE_UNIT_MG_STEP));
             DateTime dateTime;
             if (mIsManual) {
@@ -457,13 +444,13 @@ public class ActivityBgEnter extends ActivityPDA {
     }
 
     private void sendCalibrate() {
-        if (TextUtils.isEmpty(editTextGlucose.getText().toString())) {
-            Toast.makeText(mBaseActivity, R.string.input_empty, Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (TextUtils.isEmpty(editTextGlucose.getText().toString())) {
+//            Toast.makeText(mBaseActivity, R.string.input_empty, Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         try {
-            mGlucose = (int) (Float.parseFloat(editTextGlucose.getText().toString()) *
-                    100.0f);
+            float value_s = Float.parseFloat(tv_glucose.getText().toString());
+            mGlucose = (int) (value_s * 100.0f);
             ValueShort value = new ValueShort((short) (mGlucose / GLUCOSE_UNIT_MG_STEP));
             DateTime dateTime = new DateTime(Calendar.getInstance());
             byte[] send = new byte[6];

@@ -27,6 +27,8 @@ import com.microtechmd.pda.ui.activity.ActivityPDA;
 import com.microtechmd.pda.ui.widget.WidgetSettingTipsItem;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.microtechmd.pda.ui.activity.ActivityPDA.COMMMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.HIMESSAGETIPS;
@@ -137,10 +139,24 @@ public class FragmentSettingTips extends FragmentBase
                 .registerMessageListener(ParameterGlobal.PORT_GLUCOSE, this);
         ((ApplicationPDA) getActivity().getApplication())
                 .registerMessageListener(ParameterGlobal.PORT_MONITOR, this);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
         initCheckBox();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (lowFragmentDialog != null) {
+            lowFragmentDialog.dismissAllowingStateLoss();
+        }
+        if (highFragmentDialog != null) {
+            highFragmentDialog.dismissAllowingStateLoss();
+        }
+    }
 
     @Override
     public void onDestroyView() {
@@ -162,20 +178,20 @@ public class FragmentSettingTips extends FragmentBase
         rb_checkbox_lo.setChecked(low_messageFlag);
         rb_checkbox_comm.setChecked(comm_messageFlag);
 
-        setCheckChange(HIMESSAGETIPS, rb_checkbox_hi);
-        setCheckChange(LOMESSAGETIPS, rb_checkbox_lo);
-        setCheckChange(COMMMESSAGETIPS, rb_checkbox_comm);
+//        setCheckChange(HIMESSAGETIPS, rb_checkbox_hi);
+//        setCheckChange(LOMESSAGETIPS, rb_checkbox_lo);
+//        setCheckChange(COMMMESSAGETIPS, rb_checkbox_comm);
     }
 
-    private void setCheckChange(final String key, CheckBox checkBox) {
-        //开关切换事件
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SPUtils.put(getActivity(), key, b);
-            }
-        });
-    }
+//    private void setCheckChange(final String key, final CheckBox checkBox) {
+//        //开关切换事件
+//        checkBox.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                SPUtils.put(getActivity(), key, checkBox.isChecked());
+//            }
+//        });
+//    }
 
     @Override
     public void onClick(View v) {
@@ -199,6 +215,15 @@ public class FragmentSettingTips extends FragmentBase
                 setHypo();
                 break;
 
+            case R.id.rb_checkbox_hi:
+                SPUtils.put(getActivity(), HIMESSAGETIPS, rb_checkbox_hi.isChecked());
+                break;
+            case R.id.rb_checkbox_lo:
+                SPUtils.put(getActivity(), LOMESSAGETIPS, rb_checkbox_lo.isChecked());
+                break;
+            case R.id.rb_checkbox_comm:
+                SPUtils.put(getActivity(), COMMMESSAGETIPS, rb_checkbox_comm.isChecked());
+                break;
             default:
                 break;
         }
@@ -336,13 +361,14 @@ public class FragmentSettingTips extends FragmentBase
         mHyper = ((ActivityPDA) getActivity())
                 .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(SETTING_HYPER, HYPER_DEFAULT);
-        final FragmentInput fragmentInput = new FragmentInput();
-        fragmentInput.setInputText(FragmentInput.POSITION_CENTER,
-                new DecimalFormat("0.0").format((double) mHyper / 10));
-        fragmentInput.setInputType(FragmentInput.POSITION_CENTER,
-                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        fragmentInput.setSeparatorText(FragmentInput.POSITION_RIGHT,
-                getString(R.string.unit_mmol_l));
+        float[] items = new float[]{8, 25};
+        String high = new DecimalFormat("0.0").format((double) mHyper / 10);
+        final FragmentGlucose fragmentInput = new FragmentGlucose();
+        Bundle bundle = new Bundle();
+        bundle.putFloatArray("items", items);
+        bundle.putString("glucose", high);
+        fragmentInput.setArguments(bundle);
+
         highFragmentDialog = new FragmentDialog();
         showRetryDialog(highFragmentDialog, getString(R.string.fragment_settings_hi_bg_threshold),
                 "", "", fragmentInput, new FragmentDialog.ListenerDialog() {
@@ -350,14 +376,13 @@ public class FragmentSettingTips extends FragmentBase
                     public boolean onButtonClick(int buttonID, Fragment content) {
                         switch (buttonID) {
                             case FragmentDialog.BUTTON_ID_POSITIVE:
-                                if (TextUtils.isEmpty(fragmentInput
-                                        .getInputText(FragmentInput.POSITION_CENTER))) {
-                                    Toast.makeText(getActivity(), R.string.input_empty, Toast.LENGTH_SHORT).show();
-                                    return false;
-                                }
+//                                if (TextUtils.isEmpty(fragmentInput
+//                                        .getInputText(FragmentInput.POSITION_CENTER))) {
+//                                    Toast.makeText(getActivity(), R.string.input_empty, Toast.LENGTH_SHORT).show();
+//                                    return false;
+//                                }
                                 try {
-                                    mHyper = (int) (Float.parseFloat(fragmentInput
-                                            .getInputText(FragmentInput.POSITION_CENTER)) * 10.0f);
+                                    mHyper = (int) (Float.parseFloat(fragmentInput.getGlucose()) * 10.0f);
 
                                     if ((mHyper > HYPER_MAX) || (mHyper < HYPER_MIN)) {
                                         Toast.makeText(getActivity(),
@@ -407,13 +432,14 @@ public class FragmentSettingTips extends FragmentBase
         mHypo = ((ActivityPDA) getActivity())
                 .getDataStorage(ActivityPDA.class.getSimpleName())
                 .getInt(SETTING_HYPO, HYPO_DEFAULT);
-        final FragmentInput fragmentInput = new FragmentInput();
-        fragmentInput.setInputText(FragmentInput.POSITION_CENTER,
-                new DecimalFormat("0.0").format((double) mHypo / 10));
-        fragmentInput.setInputType(FragmentInput.POSITION_CENTER,
-                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        fragmentInput.setSeparatorText(FragmentInput.POSITION_RIGHT,
-                getString(R.string.unit_mmol_l));
+        float[] items = new float[]{2.2F, 5};
+        String low = new DecimalFormat("0.0").format((double) mHypo / 10);
+        final FragmentGlucose fragmentInput = new FragmentGlucose();
+        Bundle bundle = new Bundle();
+        bundle.putFloatArray("items", items);
+        bundle.putString("glucose", low);
+        fragmentInput.setArguments(bundle);
+
         lowFragmentDialog = new FragmentDialog();
         showRetryDialog(lowFragmentDialog, getString(R.string.fragment_settings_lo_bg_threshold),
                 "", "", fragmentInput, new FragmentDialog.ListenerDialog() {
@@ -421,14 +447,13 @@ public class FragmentSettingTips extends FragmentBase
                     public boolean onButtonClick(int buttonID, Fragment content) {
                         switch (buttonID) {
                             case FragmentDialog.BUTTON_ID_POSITIVE:
-                                if (TextUtils.isEmpty(fragmentInput
-                                        .getInputText(FragmentInput.POSITION_CENTER))) {
-                                    Toast.makeText(getActivity(), R.string.input_empty, Toast.LENGTH_SHORT).show();
-                                    return false;
-                                }
+//                                if (TextUtils.isEmpty(fragmentInput
+//                                        .getInputText(FragmentInput.POSITION_CENTER))) {
+//                                    Toast.makeText(getActivity(), R.string.input_empty, Toast.LENGTH_SHORT).show();
+//                                    return false;
+//                                }
                                 try {
-                                    mHypo = (int) (Float.parseFloat(fragmentInput
-                                            .getInputText(FragmentInput.POSITION_CENTER)) * 10.0f);
+                                    mHypo = (int) (Float.parseFloat(fragmentInput.getGlucose()) * 10.0f);
 
                                     if ((mHypo > HYPO_MAX) || (mHypo < HYPO_MIN)) {
                                         Toast.makeText(getActivity(),

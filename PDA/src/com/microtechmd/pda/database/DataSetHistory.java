@@ -168,6 +168,9 @@ public class DataSetHistory {
     public List<DbHistory> getDbList() {
         return databaseManager.getQueryAllByColumns(DbHistory.class);
     }
+    public List<DbHistory> getErrDbList() {
+        return databaseManager.getQueryErrByColumns(DbHistory.class);
+    }
 
     public DataList queryHistory(final DataList filter) {
         DataList dataList = new DataList();

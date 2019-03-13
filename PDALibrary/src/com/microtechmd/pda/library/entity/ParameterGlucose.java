@@ -40,4 +40,6 @@ public class ParameterGlucose {
     public static final int FLAG_EXERCISE = 4;
     public static final int FLAG_AFTER_EXERCISE = 5;
     public static final int COUNT_FLAG = 6;
+
+    public static final int HOME_PRESS = 1000;
 }

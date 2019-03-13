@@ -145,7 +145,7 @@ public class LoopView extends View {
             paintB.getTextBounds("0000", 0, "0000".length(), rect);
             int j1 = rect.width();
             // wangpeng:调整区域增大2倍，提升体验。
-            j1 = (int) (j1 * 2.0f);
+            j1 = (int) (j1 * 5.0f);
             if (j1 > g) {
                 g = j1;
             }
@@ -286,8 +286,8 @@ public class LoopView extends View {
                 k1++;
             }
             k1 = (v - g) / 2;
-            canvas.drawLine(0.0F, n, v, n, paintC);
-            canvas.drawLine(0.0F, o, v, o, paintC);
+//            canvas.drawLine(0.0F, n, v, n, paintC);
+//            canvas.drawLine(0.0F, o, v, o, paintC);
             int j1 = 0;
             while (j1 < r) {
                 canvas.save();
@@ -302,14 +302,14 @@ public class LoopView extends View {
 
                     String str = as[j1];
 
-                    int zoomTextSize = textSize;
-                    double zoom = ((double) textSize - str.length() * 2) / textSize * 1.2;
-                    zoomTextSize = (int) (textSize * zoom);
-                    if (zoomTextSize < 10) {
-                        zoomTextSize = 10;
-                    }
-                    paintA.setTextSize(zoomTextSize);
-                    paintB.setTextSize(zoomTextSize);
+//                    int zoomTextSize;
+//                    double zoom = ((double) textSize - str.length() * 2) / textSize * 1.2;
+//                    zoomTextSize = (int) (textSize * zoom);
+//                    if (zoomTextSize < 10) {
+//                        zoomTextSize = 10;
+//                    }
+//                    paintA.setTextSize(zoomTextSize);
+//                    paintB.setTextSize(zoomTextSize);
 
                     int startX = (int) (n + (getLeft() * 0.5));
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background_light">
+
+    <TextView
+        android:id="@+id/text_view_comment"
+        style="?style_text_medium"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:padding="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <CheckBox
+        android:id="@+id/cb_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size10"
+        android:layout_marginLeft="@dimen/size10"
+        android:gravity="top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_comment" />
+
+    <TextView
+        android:id="@+id/tv_remove_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size4"
+        android:paddingBottom="@dimen/size15"
+        android:text="@string/force_unpair_info2"
+        app:layout_constraintLeft_toRightOf="@id/cb_remove"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_comment" />
+
+</android.support.constraint.ConstraintLayout>

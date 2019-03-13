@@ -63,7 +63,7 @@ public class ServiceBase extends Service
 	{
 		if (!sWakeLock.isHeld())
 		{
-			sWakeLock.acquire();
+//			sWakeLock.acquire();
 		}
 	}
 

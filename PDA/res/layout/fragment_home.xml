@@ -10,7 +10,8 @@
         android:id="@+id/toolbar"
         style="?style_bar_title"
         android:visibility="gone"
-        app:navigationIcon="@null">
+        app:navigationIcon="@null"
+        tools:ignore="MissingConstraints">
 
         <TextView
             android:id="@+id/text_view_title_bar"
@@ -30,7 +31,7 @@
             android:id="@+id/text_view_glucose"
             style="?style_text_large"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="70dp"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:textColor="@color/green"
@@ -93,16 +94,34 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rl_glucose" />
 
-    <TextView
-        android:id="@+id/text_view_date_time"
-        style="?style_text_medium"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/ll_time_content"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="2010-10-10 13:00:00"
+        android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_unit" />
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_unit">
+
+        <TextView
+            android:id="@+id/text_view_date_time"
+            style="?style_text_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tv_minutes"
+            style="?style_text_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size5"
+            android:layout_marginLeft="@dimen/size5"
+            android:gravity="center"
+            android:text="@string/minutebefore"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/text_view_countdown"
@@ -115,7 +134,7 @@
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_date_time" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_time_content" />
 
     <com.microtechmd.pda.ui.widget.countdownview.CountdownView
         android:id="@+id/countdown_view"
@@ -155,7 +174,7 @@
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_date_time" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_time_content" />
 
     <RadioGroup
         android:id="@+id/radio_group"

@@ -14,12 +14,16 @@ import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.microtechmd.pda.ApplicationPDA;
 import com.microtechmd.pda.R;
@@ -46,7 +50,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import static com.microtechmd.pda.ui.activity.ActivityPDA.COMMMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.DATE_CHANGE;
+import static com.microtechmd.pda.ui.activity.ActivityPDA.HIMESSAGETIPS;
+import static com.microtechmd.pda.ui.activity.ActivityPDA.LOMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_DATE_TIME;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_SETTING;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPER_DEFAULT;
@@ -68,6 +75,10 @@ public class FragmentSettingUtilities extends FragmentBase
     private int screen_off_timeout;
     private String[] items;
     private int checkIndex = 0;
+    private WidgetSettingItem settingItem;
+    private AlertDialog dialog;
+
+    private String versionName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,7 +106,7 @@ public class FragmentSettingUtilities extends FragmentBase
             default:
                 break;
         }
-        WidgetSettingItem settingItem = (WidgetSettingItem) mRootView.findViewById(R.id.item_timeout_lock);
+        settingItem = (WidgetSettingItem) mRootView.findViewById(R.id.item_timeout_lock);
         if (settingItem != null) {
             settingItem.setItemValue(items[checkIndex]);
         }
@@ -106,12 +117,31 @@ public class FragmentSettingUtilities extends FragmentBase
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ((ApplicationPDA) getActivity().getApplication())
+                .registerMessageListener(ParameterGlobal.PORT_COMM, this);
+        ((ApplicationPDA) getActivity().getApplication())
+                .registerMessageListener(ParameterGlobal.PORT_GLUCOSE, this);
+        ((ApplicationPDA) getActivity().getApplication())
+                .registerMessageListener(ParameterGlobal.PORT_MONITOR, this);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        ((ApplicationPDA) getActivity().getApplication())
+                .unregisterMessageListener(ParameterGlobal.PORT_COMM, this);
+        ((ApplicationPDA) getActivity().getApplication())
+                .unregisterMessageListener(ParameterGlobal.PORT_GLUCOSE, this);
+        ((ApplicationPDA) getActivity().getApplication())
+                .unregisterMessageListener(ParameterGlobal.PORT_MONITOR, this);
     }
 
 
@@ -127,10 +157,11 @@ public class FragmentSettingUtilities extends FragmentBase
         if (TextUtils.isEmpty(name)) {
             return;
         }
-        WidgetSettingItem settingItem = (WidgetSettingItem) mRootView.findViewById(R.id.item_software_version);
-        if (settingItem != null) {
-            settingItem.setItemValue(name);
-        }
+        versionName = name;
+//        WidgetSettingItem settingItem = (WidgetSettingItem) mRootView.findViewById(R.id.item_software_version);
+//        if (settingItem != null) {
+//            settingItem.setItemValue(name);
+//        }
     }
 
     @Override
@@ -161,6 +192,9 @@ public class FragmentSettingUtilities extends FragmentBase
             case R.id.item_data_test:
                 startActivity(new Intent(getActivity(), ActivityDataTest.class));
                 break;
+            case R.id.item_about:
+                showVersionMsg();
+                break;
             default:
                 break;
         }
@@ -188,6 +222,9 @@ public class FragmentSettingUtilities extends FragmentBase
                 handleAcknowledgement(message);
                 break;
 
+            case EntityMessage.OPERATION_UNPAIR:
+                handleUnPair(message);
+                break;
             default:
                 break;
         }
@@ -198,6 +235,14 @@ public class FragmentSettingUtilities extends FragmentBase
 
 
     protected void handleEvent(EntityMessage message) {
+        switch (message.getEvent()) {
+            case EntityMessage.EVENT_TIMEOUT:
+                dismissDialogProgress();
+                break;
+
+            default:
+                break;
+        }
     }
 
     protected void handleNotification(EntityMessage message) {
@@ -207,29 +252,76 @@ public class FragmentSettingUtilities extends FragmentBase
     protected void handleAcknowledgement(final EntityMessage message) {
     }
 
+    private void handleUnPair(EntityMessage message) {
+        byte[] data = message.getData();
+        if (data[0] == EntityMessage.FUNCTION_OK) {
+            dismissDialogProgress();
+            pair(RFAddress.RF_ADDRESS_UNPAIR);
+            ((ActivityPDA) getActivity())
+                    .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                            ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_MONITOR,
+                            ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_SET,
+                            ParameterComm.RESET_DATA,
+                            new byte[]{(byte) 3}));
+            ((ActivityPDA) getActivity())
+                    .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                            ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
+                            ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
+                            ParameterComm.UNPAIRNOSIGNAL,
+                            null));
+            ((ActivityPDA) getActivity()).handleMessage(
+                    new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                            ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                            ParameterGlobal.PORT_MONITOR,
+                            ParameterGlobal.PORT_MONITOR,
+                            EntityMessage.OPERATION_SET,
+                            ParameterComm.UNPAIR_SUCCESS,
+                            null));
+            recovery();
+        }
+    }
 
     private void setLanguage() {
-        FragmentInput fragmentInput = new FragmentInput();
-        fragmentInput
-                .setComment(getString(R.string.setting_general_language_switch));
-        fragmentInput.setInputText(FragmentInput.POSITION_LEFT, null);
-        fragmentInput.setInputText(FragmentInput.POSITION_RIGHT, null);
-        fragmentInput.setInputText(FragmentInput.POSITION_CENTER, null);
-        fragmentInput.setSeparatorText(FragmentInput.POSITION_LEFT, null);
-        fragmentInput.setSeparatorText(FragmentInput.POSITION_RIGHT, null);
+        String[] languageItems = getResources().getStringArray(R.array.language_array);
+        final int languageIndex;
+        String language = Locale.getDefault().getLanguage();
+        switch (language) {
+            case "zh":
+                languageIndex = 0;
+                break;
+            case "en":
+                languageIndex = 1;
+                break;
+            default:
+                languageIndex = 0;
+                break;
+        }
+        final FragmentSingleChoice fragmentInput = new FragmentSingleChoice();
+        Bundle bundle = new Bundle();
+        bundle.putStringArray("items", languageItems);
+        bundle.putInt("checkIndex", languageIndex);
+        fragmentInput.setArguments(bundle);
         showDialogConfirm(getString(R.string.setting_general_language), "", "",
                 fragmentInput, new FragmentDialog.ListenerDialog() {
                     @Override
                     public boolean onButtonClick(int buttonID, Fragment content) {
                         switch (buttonID) {
                             case FragmentDialog.BUTTON_ID_POSITIVE:
-
-                                if (Locale.getDefault().getLanguage().equals("zh")) {
-                                    updateLanguage(Locale.ENGLISH);
-                                } else {
-                                    updateLanguage(Locale.SIMPLIFIED_CHINESE);
+                                int index = fragmentInput.getCheckIndex();
+                                if (languageIndex == index) {
+                                    return true;
                                 }
+                                switch (index) {
+                                    case 0:
+                                        updateLanguage(Locale.SIMPLIFIED_CHINESE);
+                                        break;
+                                    case 1:
+                                        updateLanguage(Locale.ENGLISH);
+                                        break;
+                                    default:
 
+                                        break;
+                                }
                                 break;
 
                             default:
@@ -285,51 +377,27 @@ public class FragmentSettingUtilities extends FragmentBase
         }
     }
 
-    private void setTimeOutLock() {
+    @SuppressLint("SetTextI18n")
+    private void showVersionMsg() {
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View v = inflater.inflate(R.layout.layout_version, null);
+        TextView title = (TextView) v.findViewById(R.id.title);
+        TextView message = (TextView) v.findViewById(R.id.message);
+        TextView ok = (TextView) v.findViewById(R.id.ok);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.timeout_lock)
-                .setCancelable(true)
-                .setSingleChoiceItems(items, checkIndex, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int index) {
-                        switch (index) {
-                            case 0:
-                                screen_off_timeout = SCREEN_OFF_TIMEOUT_10S;
-                                break;
-                            case 1:
-                                screen_off_timeout = SCREEN_OFF_TIMEOUT_1M;
-                                break;
-                            case 2:
-                                screen_off_timeout = SCREEN_OFF_TIMEOUT_5M;
-                                break;
-                            case 3:
-                                screen_off_timeout = SCREEN_OFF_TIMEOUT_10M;
-                                break;
-                            case 4:
-                                screen_off_timeout = SCREEN_OFF_TIMEOUT_1H;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                })
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        SPUtils.put(getActivity(), SCREEN_OFF_TIMEOUT, screen_off_timeout);
-                        Settings.System.putInt(getActivity().getContentResolver(),
-                                android.provider.Settings.System.SCREEN_OFF_TIMEOUT, screen_off_timeout);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                .setCancelable(true);
 
-                    }
-                });
-        final AlertDialog dialog = builder.create();
+        dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
-        setCustomDialogStyle(dialog);
+        Window window = dialog.getWindow();
+        assert window != null;
+        WindowManager.LayoutParams lp = window.getAttributes();
+
+        lp.width = 260;
+        window.setGravity(Gravity.CENTER);
+        window.setAttributes(lp);
+        window.setContentView(v);
         dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
@@ -342,6 +410,140 @@ public class FragmentSettingUtilities extends FragmentBase
             }
         });
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+
+        title.setText(R.string.about);
+        message.setText(getResources().getString(R.string.setting_general_version) + versionName);
+        ok.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void setTimeOutLock() {
+        final FragmentSingleChoice fragmentInput = new FragmentSingleChoice();
+        Bundle bundle = new Bundle();
+        bundle.putStringArray("items", items);
+        bundle.putInt("checkIndex", checkIndex);
+        fragmentInput.setArguments(bundle);
+        showDialogConfirm(getString(R.string.timeout_lock), "", "",
+                fragmentInput, new FragmentDialog.ListenerDialog() {
+                    @Override
+                    public boolean onButtonClick(int buttonID, Fragment content) {
+                        switch (buttonID) {
+                            case FragmentDialog.BUTTON_ID_POSITIVE:
+                                checkIndex = fragmentInput.getCheckIndex();
+                                switch (checkIndex) {
+                                    case 0:
+                                        screen_off_timeout = SCREEN_OFF_TIMEOUT_10S;
+                                        break;
+                                    case 1:
+                                        screen_off_timeout = SCREEN_OFF_TIMEOUT_1M;
+                                        break;
+                                    case 2:
+                                        screen_off_timeout = SCREEN_OFF_TIMEOUT_5M;
+                                        break;
+                                    case 3:
+                                        screen_off_timeout = SCREEN_OFF_TIMEOUT_10M;
+                                        break;
+                                    case 4:
+                                        screen_off_timeout = SCREEN_OFF_TIMEOUT_1H;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                SPUtils.put(getActivity(), SCREEN_OFF_TIMEOUT, screen_off_timeout);
+                                Settings.System.putInt(getActivity().getContentResolver(),
+                                        android.provider.Settings.System.SCREEN_OFF_TIMEOUT, screen_off_timeout);
+                                settingItem.setItemValue(items[checkIndex]);
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        return true;
+                    }
+                });
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+//                .setTitle(R.string.timeout_lock)
+//                .setCancelable(true)
+//                .setSingleChoiceItems(items, checkIndex, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface arg0, int index) {
+//                        switch (index) {
+//                            case 0:
+//                                screen_off_timeout = SCREEN_OFF_TIMEOUT_10S;
+//                                break;
+//                            case 1:
+//                                screen_off_timeout = SCREEN_OFF_TIMEOUT_1M;
+//                                break;
+//                            case 2:
+//                                screen_off_timeout = SCREEN_OFF_TIMEOUT_5M;
+//                                break;
+//                            case 3:
+//                                screen_off_timeout = SCREEN_OFF_TIMEOUT_10M;
+//                                break;
+//                            case 4:
+//                                screen_off_timeout = SCREEN_OFF_TIMEOUT_1H;
+//                                break;
+//                            default:
+//                                break;
+//                        }
+//                    }
+//                })
+//                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        SPUtils.put(getActivity(), SCREEN_OFF_TIMEOUT, screen_off_timeout);
+//                        Settings.System.putInt(getActivity().getContentResolver(),
+//                                android.provider.Settings.System.SCREEN_OFF_TIMEOUT, screen_off_timeout);
+//                        switch (screen_off_timeout) {
+//                            case SCREEN_OFF_TIMEOUT_10S:
+//                                checkIndex = 0;
+//                                break;
+//                            case SCREEN_OFF_TIMEOUT_1M:
+//                                checkIndex = 1;
+//                                break;
+//                            case SCREEN_OFF_TIMEOUT_5M:
+//                                checkIndex = 2;
+//                                break;
+//                            case SCREEN_OFF_TIMEOUT_10M:
+//                                checkIndex = 3;
+//                                break;
+//                            case SCREEN_OFF_TIMEOUT_1H:
+//                                checkIndex = 4;
+//                                break;
+//                            default:
+//                                break;
+//                        }
+//                        settingItem.setItemValue(items[checkIndex]);
+//                    }
+//                })
+//                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                    }
+//                });
+//        dialog = builder.create();
+//        dialog.show();
+//        setCustomDialogStyle(dialog);
+//        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+//            @Override
+//            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
+//                switch (keyCode) {
+//                    case KeyEvent.KEYCODE_HOME:
+//                        dialog.dismiss();
+//                        return true;
+//                }
+//                return false;
+//            }
+//        });
+//        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
     }
 
     public static void setCustomDialogStyle(AlertDialog dialog) {
@@ -353,61 +555,119 @@ public class FragmentSettingUtilities extends FragmentBase
     }
 
     private void recovery() {
-        FragmentInput fragmentInput = new FragmentInput();
-        showDialogConfirm(getString(R.string.recovery_pair), "",
-                "", fragmentInput, new FragmentDialog.ListenerDialog() {
-                    @Override
-                    public boolean onButtonClick(int buttonID, Fragment content) {
-                        switch (buttonID) {
-                            case FragmentDialog.BUTTON_ID_POSITIVE:
-                                restoreHg();
-                                cleanCache();
-                                ((ActivityPDA) getActivity()).handleMessage(
-                                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                ParameterGlobal.PORT_MONITOR,
-                                                ParameterGlobal.PORT_MONITOR,
-                                                EntityMessage.OPERATION_SET,
-                                                ParameterComm.BROADCAST_SAVA, new byte[]
-                                                {
-                                                        (byte) 1
-                                                }));
-                                ((ActivityPDA) getActivity()).handleMessage(
-                                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                ParameterGlobal.ADDRESS_LOCAL_CONTROL,
-                                                ParameterGlobal.PORT_MONITOR,
-                                                ParameterGlobal.PORT_MONITOR,
-                                                EntityMessage.OPERATION_SET,
-                                                ParameterComm.BROADCAST_SAVA, new byte[]
-                                                {
-                                                        (byte) 1
-                                                }));
-                                ((ActivityPDA) getActivity()).handleMessage(
-                                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                ParameterGlobal.PORT_MONITOR,
-                                                ParameterGlobal.PORT_MONITOR,
-                                                EntityMessage.OPERATION_SET,
-                                                ParameterMonitor.COUNTDOWNVIEW_VISIBLE,
-                                                new ValueInt(0).getByteArray()));
-                                clearPair();
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.set(Calendar.YEAR, 1971);
-                                SystemClock.setCurrentTimeMillis(calendar.getTimeInMillis());
-                                ((ActivityPDA) getActivity())
-                                        .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
-                                                ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
-                                                ParameterComm.SETTING_TYPE,
-                                                new byte[]{(byte) TYPE_DATE_TIME}));
-                                break;
+        String mRFAddress = getAddress(((ActivityPDA) getActivity())
+                .getDataStorage(ActivityPDA.class.getSimpleName())
+                .getExtras(ActivityPDA.SETTING_RF_ADDRESS, null));
 
-                            default:
-                                break;
+        if ((mRFAddress.equals("")) || (mRFAddress.equals(RFAddress.RF_ADDRESS_UNPAIR))) {
+            FragmentInput fragmentInput = new FragmentInput();
+            fragmentInput.setComment(getString(R.string.recovery_clear));
+            showDialogConfirm(getString(R.string.recovery), "",
+                    "", fragmentInput, new FragmentDialog.ListenerDialog() {
+                        @Override
+                        public boolean onButtonClick(int buttonID, Fragment content) {
+                            switch (buttonID) {
+                                case FragmentDialog.BUTTON_ID_POSITIVE:
+                                    restoreHg();
+                                    cleanCache();
+                                    ((ActivityPDA) getActivity()).handleMessage(
+                                            new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                    ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                    ParameterGlobal.PORT_MONITOR,
+                                                    ParameterGlobal.PORT_MONITOR,
+                                                    EntityMessage.OPERATION_SET,
+                                                    ParameterComm.BROADCAST_SAVA, new byte[]
+                                                    {
+                                                            (byte) 1
+                                                    }));
+                                    ((ActivityPDA) getActivity()).handleMessage(
+                                            new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                    ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                                                    ParameterGlobal.PORT_MONITOR,
+                                                    ParameterGlobal.PORT_MONITOR,
+                                                    EntityMessage.OPERATION_SET,
+                                                    ParameterComm.BROADCAST_SAVA, new byte[]
+                                                    {
+                                                            (byte) 1
+                                                    }));
+                                    ((ActivityPDA) getActivity()).handleMessage(
+                                            new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                    ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                    ParameterGlobal.PORT_MONITOR,
+                                                    ParameterGlobal.PORT_MONITOR,
+                                                    EntityMessage.OPERATION_SET,
+                                                    ParameterMonitor.COUNTDOWNVIEW_VISIBLE,
+                                                    new ValueInt(0).getByteArray()));
+                                    clearPair();
+                                    Calendar calendar = Calendar.getInstance();
+                                    calendar.set(Calendar.YEAR, 2000);
+                                    calendar.set(Calendar.MONTH, 0);
+                                    calendar.set(Calendar.DAY_OF_MONTH, 1);
+                                    SystemClock.setCurrentTimeMillis(calendar.getTimeInMillis());
+                                    ((ActivityPDA) getActivity())
+                                            .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                    ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
+                                                    ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
+                                                    ParameterComm.SETTING_TYPE,
+                                                    new byte[]{(byte) TYPE_DATE_TIME}));
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                            return true;
                         }
-                        return true;
-                    }
-                });
+                    });
+        } else {
+            final FragmentUnPair fragmentUnPair = new FragmentUnPair();
+            fragmentUnPair
+                    .setComment(getString(R.string.unpair_recovery));
+            showDialogConfirm(getString(R.string.recovery), "",
+                    "", fragmentUnPair, new FragmentDialog.ListenerDialog() {
+                        @Override
+                        public boolean onButtonClick(int buttonID, Fragment content) {
+                            switch (buttonID) {
+                                case FragmentDialog.BUTTON_ID_POSITIVE:
+                                    if (fragmentUnPair.getIsRemove()) {
+                                        ((ActivityPDA) getActivity())
+                                                .getDataStorage(
+                                                        ActivityPDA.class.getSimpleName())
+                                                .setExtras(ActivityPDA.SETTING_RF_ADDRESS,
+                                                        null);
+                                        ((ActivityPDA) getActivity())
+                                                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                        ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_MONITOR,
+                                                        ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_SET,
+                                                        ParameterComm.RESET_DATA,
+                                                        new byte[]{(byte) 3}));
+                                        ((ActivityPDA) getActivity())
+                                                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                        ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
+                                                        ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
+                                                        ParameterComm.UNPAIRNOSIGNAL,
+                                                        null));
+                                        recovery();
+                                    } else {
+                                        showDialogProgress();
+                                        ((ActivityPDA) getActivity())
+                                                .handleMessage(new EntityMessage(
+                                                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                        ParameterGlobal.ADDRESS_REMOTE_MASTER,
+                                                        ParameterGlobal.PORT_COMM,
+                                                        ParameterGlobal.PORT_COMM,
+                                                        EntityMessage.OPERATION_UNPAIR,
+                                                        ParameterComm.PARAM_MAC,
+                                                        new byte[]{}));
+                                    }
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
+        }
     }
 
     private void clearPair() {
@@ -433,32 +693,32 @@ public class FragmentSettingUtilities extends FragmentBase
     }
 
     private void restoreHg() {
-        String mRFAddress = getAddress(((ActivityPDA) getActivity())
-                .getDataStorage(ActivityPDA.class.getSimpleName())
-                .getExtras(ActivityPDA.SETTING_RF_ADDRESS, null));
-        if ((!mRFAddress.equals("")) && (!mRFAddress
-                .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
-            ((ActivityPDA) getActivity())
-                    .handleMessage(new EntityMessage(
-                            ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                            ParameterGlobal.ADDRESS_REMOTE_MASTER,
-                            ParameterGlobal.PORT_GLUCOSE,
-                            ParameterGlobal.PORT_GLUCOSE,
-                            EntityMessage.OPERATION_SET,
-                            ParameterGlucose.PARAM_BG_LIMIT,
-                            new ValueByte(HYPER_DEFAULT).getByteArray()
-                    ));
-            ((ActivityPDA) getActivity())
-                    .handleMessage(new EntityMessage(
-                            ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                            ParameterGlobal.ADDRESS_REMOTE_MASTER,
-                            ParameterGlobal.PORT_GLUCOSE,
-                            ParameterGlobal.PORT_GLUCOSE,
-                            EntityMessage.OPERATION_SET,
-                            ParameterGlucose.PARAM_FILL_LIMIT,
-                            new ValueByte(HYPO_DEFAULT).getByteArray()
-                    ));
-        }
+//        String mRFAddress = getAddress(((ActivityPDA) getActivity())
+//                .getDataStorage(ActivityPDA.class.getSimpleName())
+//                .getExtras(ActivityPDA.SETTING_RF_ADDRESS, null));
+//        if ((!mRFAddress.equals("")) && (!mRFAddress
+//                .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
+//            ((ActivityPDA) getActivity())
+//                    .handleMessage(new EntityMessage(
+//                            ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                            ParameterGlobal.ADDRESS_REMOTE_MASTER,
+//                            ParameterGlobal.PORT_GLUCOSE,
+//                            ParameterGlobal.PORT_GLUCOSE,
+//                            EntityMessage.OPERATION_SET,
+//                            ParameterGlucose.PARAM_BG_LIMIT,
+//                            new ValueByte(HYPER_DEFAULT).getByteArray()
+//                    ));
+//            ((ActivityPDA) getActivity())
+//                    .handleMessage(new EntityMessage(
+//                            ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                            ParameterGlobal.ADDRESS_REMOTE_MASTER,
+//                            ParameterGlobal.PORT_GLUCOSE,
+//                            ParameterGlobal.PORT_GLUCOSE,
+//                            EntityMessage.OPERATION_SET,
+//                            ParameterGlucose.PARAM_FILL_LIMIT,
+//                            new ValueByte(HYPO_DEFAULT).getByteArray()
+//                    ));
+//        }
         updateHyper(HYPER_DEFAULT);
         updateHypo(HYPO_DEFAULT);
     }
@@ -549,5 +809,46 @@ public class FragmentSettingUtilities extends FragmentBase
         } else {
             return "";
         }
+    }
+
+    private void pair(String addressString) {
+
+        if (addressString.equals(RFAddress.RF_ADDRESS_UNPAIR)) {
+            ((ActivityPDA) getActivity())
+                    .getDataStorage(
+                            ActivityPDA.class.getSimpleName())
+                    .setExtras(ActivityPDA.SETTING_RF_ADDRESS,
+                            null);
+        } else {
+            ((ActivityPDA) getActivity())
+                    .getDataStorage(
+                            ActivityPDA.class.getSimpleName())
+                    .setExtras(ActivityPDA.SETTING_RF_ADDRESS,
+                            new RFAddress(addressString).getByteArray());
+        }
+
+        // Set remote address
+        ((ActivityPDA) getActivity())
+                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                        ParameterGlobal.ADDRESS_REMOTE_SLAVE, ParameterGlobal.PORT_COMM,
+                        ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
+                        ParameterComm.PARAM_RF_LOCAL_ADDRESS,
+                        new RFAddress(addressString).getByteArray()));
+
+        ((ActivityPDA) getActivity())
+                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                        ParameterGlobal.ADDRESS_LOCAL_MODEL, ParameterGlobal.PORT_COMM,
+                        ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
+                        ParameterComm.PARAM_RF_REMOTE_ADDRESS,
+                        new RFAddress(addressString).getByteArray()));
+    }
+
+    private void showDialogProgress() {
+        ((ActivityPDA) getActivity()).showDialogProgress();
+    }
+
+
+    private void dismissDialogProgress() {
+        ((ActivityPDA) getActivity()).dismissDialogProgress();
     }
 }

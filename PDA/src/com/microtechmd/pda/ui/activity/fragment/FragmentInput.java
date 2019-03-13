@@ -4,6 +4,7 @@ package com.microtechmd.pda.ui.activity.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,18 +26,21 @@ public class FragmentInput extends FragmentBase {
     private String mInputText[] = null;
     private int mInputWidth[] = null;
     private int mInputType[] = null;
+    private InputFilter mInputFilter[] = null;
 
 
     public FragmentInput() {
         mInputText = new String[COUNT_POSITION];
         mInputWidth = new int[COUNT_POSITION];
         mInputType = new int[COUNT_POSITION];
+        mInputFilter = new InputFilter[COUNT_POSITION];
         mSeparatorText = new String[COUNT_POSITION];
 
         for (int position = 0; position < COUNT_POSITION; position++) {
             mInputText[position] = null;
             mInputWidth[position] = 0;
             mInputType[position] = -1;
+            mInputFilter[position] = null;
             mSeparatorText[position] = null;
         }
     }
@@ -54,6 +58,7 @@ public class FragmentInput extends FragmentBase {
             setInputText(view, position, mInputText[position]);
             setInputWidth(view, position, mInputWidth[position]);
             setInputType(view, position, mInputType[position]);
+            setInputFilter(view, position, mInputFilter[position]);
 
             if (position != POSITION_CENTER) {
                 setSeparatorText(view, position, mSeparatorText[position]);
@@ -159,6 +164,16 @@ public class FragmentInput extends FragmentBase {
         }
     }
 
+    public void setInputFilter(int position, InputFilter filter) {
+        if (position < COUNT_POSITION) {
+            mInputFilter[position] = filter;
+            View view = getView();
+            if (view != null) {
+                setInputFilter(view, position, filter);
+            }
+        }
+    }
+
 
     public void setSeparatorText(int position, String text) {
         if ((position == POSITION_LEFT) || (position == POSITION_RIGHT)) {
@@ -223,6 +238,20 @@ public class FragmentInput extends FragmentBase {
 
         if (type >= 0) {
             editText.setInputType(type);
+        }
+    }
+
+    private void setInputFilter(View view, int position, InputFilter filter) {
+        EditText editText = getEditText(view, position);
+
+        if (editText == null) {
+            return;
+        }
+
+        if (filter != null) {
+            editText.setFilters(new InputFilter[]{
+                    filter
+            });
         }
     }
 

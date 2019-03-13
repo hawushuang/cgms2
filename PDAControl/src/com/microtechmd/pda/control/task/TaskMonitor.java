@@ -70,13 +70,15 @@ public final class TaskMonitor extends TaskBase {
     private boolean forceSynchronizeFlag = false;
     private boolean sendFlag = true;
     private boolean timeSet = false;
+    private boolean canSend = false;
+    private int canSendCount = 0;
 
     // Method definition
     private TaskMonitor(ServiceBase service) {
         super(service);
         mBroadcastSave = (boolean) SPUtils.get(mService, SETTING_BROADCAST_SAVE, true);
         synchronizeDone = true;
-        sensorIndex = (int) SPUtils.get(mService, SENSORINDEX, 0);
+        sensorIndex = (int) SPUtils.get(mService, SENSORINDEX, -1);
         mEventIndexModel = (int) SPUtils.get(mService, MEVENT_INDEX_MODEL, 0) + 1;
         History mStatusLastHistory = new History(
                 mService.getDataStorage(null).getExtras(SETTING_STATUS_LAST, null));
@@ -175,9 +177,9 @@ public final class TaskMonitor extends TaskBase {
             case ParameterComm.SYNCHRONIZE_DATA:
                 synchronizeHistoryManual();
                 break;
-            case ParameterComm.ADDCHANGE:
-                mEventIndexModel = 1;
-                break;
+//            case ParameterComm.ADDCHANGE:
+//                mEventIndexModel = 1;
+//                break;
             case ParameterComm.CLEAN_DATABASES:
                 mEventIndexModel = 1;
                 break;
@@ -188,7 +190,19 @@ public final class TaskMonitor extends TaskBase {
                     byte[] eventBytes = Arrays.copyOfRange(message.getData(), 4, 8);
                     sensorIndex = ByteUtil.bytesToInt(sensorBytes);
                     mEventIndexModel = ByteUtil.bytesToInt(eventBytes) + 1;
+                    SPUtils.put(mService, SENSORINDEX, sensorIndex);
                 }
+            case ParameterComm.BEGIN_SUCCESS:
+                canSend = true;
+                canSendCount = 0;
+                break;
+//            case ParameterComm.UNPAIR_SUCCESS:
+//                canSend = true;
+//                canSendCount = 0;
+//                break;
+            case ParameterComm.CANSEND_SUCCESS:
+                canSend = false;
+                canSendCount = 0;
                 break;
         }
     }
@@ -425,6 +439,7 @@ public final class TaskMonitor extends TaskBase {
                     break;
                 }
                 history_byte[10] = data[pointer];
+                history_byte[11] = 0;
                 pointer += 1;
             } else if (type == BLOOD_GLUCOSE || type == CALIBRATION) {
                 if (pointer + 2 > data.length) {
@@ -436,6 +451,7 @@ public final class TaskMonitor extends TaskBase {
                 pointer += 2;
             } else {
                 history_byte[10] = 0;
+                history_byte[11] = 0;
             }
 
 
@@ -677,7 +693,6 @@ public final class TaskMonitor extends TaskBase {
     private void onNotifyHistoryControl(final EntityMessage message) {
         mLog.Debug(getClass(), "Notify history control begin");
 
-
         byte[] broadcastBytes = new byte[12];
         if (message.getData().length >= 12) {
             System.arraycopy(message.getData(), 0, broadcastBytes, 0, 11);
@@ -686,9 +701,14 @@ public final class TaskMonitor extends TaskBase {
         mLog.Error(getClass(), "广播包：" + history.getDateTime().getBCD() +
                 "type:" + history.getEvent().getEvent() +
                 "index: " + history.getEvent().getIndex() +
+                "sensorIndex_last: " + history.getEvent().getSensorIndex() +
                 "value" + history.getStatus().getShortValue1());
         mLog.Error(getClass(), "广播包：" + Arrays.toString(broadcastBytes));
-
+        mLog.Error(getClass(), "sensorIndex1: " + sensorIndex);
+        if (sensorIndex == -1) {
+            sensorIndex = history.getEvent().getSensorIndex();
+            SPUtils.put(mService, SENSORINDEX, sensorIndex);
+        }
         if ((history.getDateTime().getYear() == 2000)
                 && (history.getEvent().getEvent() == 0)
                 && (history.getEvent().getIndex() == 0)
@@ -698,6 +718,37 @@ public final class TaskMonitor extends TaskBase {
         history_broadcast = new History(history.getByteArray());
 
         mEventIndexRemote = history.getEvent().getIndex();
+
+//        if (history.getEvent().getEvent() == HYPO || history.getEvent().getEvent() == HYPER) {
+//            if (message.getData().length >= 12) {
+//                int supplement = message.getData()[11] & 0x000000FF;
+//                mLog.Error(getClass(), "阈值：" + supplement);
+//            }
+//        }
+        //发送高低血糖阈值
+        if (canSend) {
+            if (canSendCount >= 3) {
+                canSendCount = 0;
+                canSend = false;
+                handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                        ParameterGlobal.PORT_MONITOR,
+                        ParameterGlobal.PORT_MONITOR,
+                        EntityMessage.OPERATION_SET,
+                        ParameterMonitor.CAN_SEND_FAILD,
+                        null));
+            } else {
+                handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                        ParameterGlobal.PORT_MONITOR,
+                        ParameterGlobal.PORT_MONITOR,
+                        EntityMessage.OPERATION_SET,
+                        ParameterMonitor.CAN_SEND,
+                        null));
+                canSendCount++;
+                return;
+            }
+        }
 
         //接收发射器重启设置为可校准时间
         if (history.getEvent().getEvent() == 0) {
@@ -741,7 +792,7 @@ public final class TaskMonitor extends TaskBase {
         } else if ((forceSynchronizeFlag ||
                 (history.getEvent().getEvent() != SENSOR_EXPIRATION && history.getBattery().getElapsedtime() <= 120))
 //                && !timeSet
-                ) {
+        ) {
             synchronizeDateTime(history);
             return;
         }
@@ -765,8 +816,10 @@ public final class TaskMonitor extends TaskBase {
             mIsHistorySync = true;
         } else {
             mLog.Error(getClass(), "mEventIndexRemote: " + mEventIndexRemote);
+            mLog.Error(getClass(), "mEventIndexModel: " + mEventIndexModel);
             mLog.Error(getClass(), "BROADCAST_SAVE: " + mBroadcastSave);
             mLog.Error(getClass(), "synchronizeDone: " + synchronizeDone);
+            mLog.Error(getClass(), "sensorIndex2: " + sensorIndex);
             DataList dataList = new DataList();
             dataList.pushData(history.getByteArray());
             if (mBroadcastSave) {

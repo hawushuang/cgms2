@@ -1,166 +1,228 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
-	<attr name="style_text_base" format="reference"/>
-	<attr name="style_text_white" format="reference"/>
-	<attr name="style_text_black" format="reference"/>
-	<attr name="style_text_tiny" format="reference"/>
-	<attr name="style_text_small" format="reference"/>
-	<attr name="style_text_medium" format="reference"/>
-	<attr name="style_text_big" format="reference"/>
-	<attr name="style_text_large" format="reference"/>
-	<attr name="style_text_title_bar" format="reference"/>
-	<attr name="style_text_panel_title" format="reference"/>
-	<attr name="style_text_panel_subtitle" format="reference"/>
-	<attr name="style_text_panel_comment" format="reference"/>
-	<attr name="style_text_input" format="reference"/>
-	<attr name="style_button_base" format="reference"/>
-	<attr name="style_button_small" format="reference"/>
-	<attr name="style_button_tab_main" format="reference"/>
-	<attr name="style_bar_title" format="reference"/>
-	<attr name="style_image_divider" format="reference"/>
-	<attr name="style_edit_input" format="reference"/>
+    <attr name="style_text_base" format="reference" />
+    <attr name="style_text_white" format="reference" />
+    <attr name="style_text_black" format="reference" />
+    <attr name="style_text_tiny" format="reference" />
+    <attr name="style_text_small" format="reference" />
+    <attr name="style_text_medium" format="reference" />
+    <attr name="style_text_big" format="reference" />
+    <attr name="style_text_large" format="reference" />
+    <attr name="style_text_title_bar" format="reference" />
+    <attr name="style_text_panel_title" format="reference" />
+    <attr name="style_text_panel_subtitle" format="reference" />
+    <attr name="style_text_panel_comment" format="reference" />
+    <attr name="style_text_input" format="reference" />
+    <attr name="style_button_base" format="reference" />
+    <attr name="style_button_small" format="reference" />
+    <attr name="style_button_tab_main" format="reference" />
+    <attr name="style_bar_title" format="reference" />
+    <attr name="style_image_divider" format="reference" />
+    <attr name="style_edit_input" format="reference" />
 
-	<!-- Style name -->
-	<attr name="style_button_green" format="reference"/>
-	<attr name="style_radio_button" format="reference"/>
-	<attr name="style_shortcut_item" format="reference"/>
-	<attr name="style_title_dialog" format="reference"/>
-	<attr name="style_background_dialog_bottom" format="reference"/>
+    <!-- Style name -->
+    <attr name="style_button_green" format="reference" />
+    <attr name="style_radio_button" format="reference" />
+    <attr name="style_shortcut_item" format="reference" />
+    <attr name="style_title_dialog" format="reference" />
+    <attr name="style_background_dialog_bottom" format="reference" />
 
-	<declare-styleable name="WidgetPickerSingle">
-		<attr name="pickerSingleHeader" format="string"/>
-		<attr name="pickerSingleFooter" format="string"/>
-		<attr name="pickerSingleFormat" format="enum">
-			<enum name="decimal" value="0"/>
-			<enum name="time" value="1"/>
-			<enum name="integer" value="2"/>
-			<enum name="fraction" value="3"/>
-		</attr>
-		<attr name="pickerSingleRatio" format="integer"/>
-		<attr name="pickerSingleMax" format="integer"/>
-		<attr name="pickerSingleMin" format="integer"/>
-		<attr name="pickerSingleStep" format="integer"/>
-		<attr name="pickerSingleValue" format="integer"/>
-		<attr name="pickerSingleOrientation" format="enum">
-			<enum name="portrait" value="0"/>
-			<enum name="landscape" value="1"/>
-		</attr>
-	</declare-styleable>
-	<declare-styleable name="WidgetPickerDouble">
-		<attr name="pickerDoubleHeader" format="string"/>
-		<attr name="pickerDoubleFooter" format="string"/>
-		<attr name="pickerDoubleFormat" format="enum">
-			<enum name="decimal" value="0"/>
-			<enum name="time" value="1"/>
-		</attr>
-		<attr name="pickerDoubleRatio" format="integer"/>
-		<attr name="pickerDoubleMax" format="integer"/>
-		<attr name="pickerDoubleMin" format="integer"/>
-		<attr name="pickerDoubleStep" format="integer"/>
-		<attr name="pickerDoubleValue" format="integer"/>
-	</declare-styleable>
-	<declare-styleable name="WidgetSettingItem">
-		<attr name="itemName" format="string"/>
-		<attr name="itemValue" format="string"/>
-		<attr name="isWizard" format="boolean"/>
-		<attr name="isCheckBox" format="boolean"/>
-	</declare-styleable>
-	<declare-styleable name="HistoryChartView">
-		<attr name="his_coordinate_drawable" format="reference"/>
-		<attr name="his_up_drawable" format="reference"/>
-		<attr name="his_right_drawable" format="reference"/>
-		<attr name="his_carbs_bg_drawable" format="reference"/>
-		<attr name="his_normal_bg_drawable" format="reference"/>
-		<attr name="his_unnormal_bg_drawable" format="reference"/>
-	</declare-styleable>
-	<declare-styleable name="RuleView">
-		<attr name="arrow" format="reference"/>
-		<attr name="unit" format="reference"/>
-		<attr name="line" format="reference"/>
-		<attr name="alarm" format="reference"/>
-	</declare-styleable>
-	<declare-styleable name="CustomProgressBar">
-		<attr name="progress_bg" format="reference"/>
-		<attr name="progress_pbg" format="reference"/>
-		<attr name="progress_arrow" format="reference"/>
-	</declare-styleable>
-	<declare-styleable name="CustomHProgressBar">
-		<attr name="hprogress_bg" format="reference"/>
-		<attr name="hprogress_pbg" format="reference"/>
-		<attr name="hprogress_arrow" format="reference"/>
-	</declare-styleable>
-	<declare-styleable name="BasalChartView">
-		<attr name="coordinate_drawable" format="reference"/>
-		<attr name="arrow_up_drawable" format="reference"/>
-		<attr name="arrow_right_drawable" format="reference"/>
-		<attr name="edit_drawable" format="reference"/>
-		<attr name="edit_line_drawable" format="reference"/>
-		<attr name="left_icon" format="reference"/>
-		<attr name="right_icon" format="reference"/>
-		<attr name="left_bg" format="reference"/>
-		<attr name="bottom_bg" format="reference"/>
-	</declare-styleable>
-	<declare-styleable name="NumberRangeTextView">
-		<attr name="value" format="integer"/>
-		<attr name="maxValue" format="integer"/>
-		<attr name="minValue" format="integer"/>
-		<attr name="step" format="integer"/>
-	</declare-styleable>
-	<declare-styleable name="BaseDecimalsTextView">
-		<attr name="decimal_value" format="float"/>
-		<attr name="decimal_maxValue" format="float"/>
-		<attr name="decimal_minValue" format="float"/>
-		<attr name="decimal_step" format="float"/>
-		<attr name="decimal_format" format="string"/>
-		<attr name="decimal_type" format="integer"/>
-	</declare-styleable>
-	<declare-styleable name="DragableViewGroup">
-		<attr name="default_screen" format="integer"/>
-	</declare-styleable>
+    <declare-styleable name="WidgetPickerSingle">
+        <attr name="pickerSingleHeader" format="string" />
+        <attr name="pickerSingleFooter" format="string" />
+        <attr name="pickerSingleFormat" format="enum">
+            <enum name="decimal" value="0" />
+            <enum name="time" value="1" />
+            <enum name="integer" value="2" />
+            <enum name="fraction" value="3" />
+        </attr>
+        <attr name="pickerSingleRatio" format="integer" />
+        <attr name="pickerSingleMax" format="integer" />
+        <attr name="pickerSingleMin" format="integer" />
+        <attr name="pickerSingleStep" format="integer" />
+        <attr name="pickerSingleValue" format="integer" />
+        <attr name="pickerSingleOrientation" format="enum">
+            <enum name="portrait" value="0" />
+            <enum name="landscape" value="1" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="WidgetPickerDouble">
+        <attr name="pickerDoubleHeader" format="string" />
+        <attr name="pickerDoubleFooter" format="string" />
+        <attr name="pickerDoubleFormat" format="enum">
+            <enum name="decimal" value="0" />
+            <enum name="time" value="1" />
+        </attr>
+        <attr name="pickerDoubleRatio" format="integer" />
+        <attr name="pickerDoubleMax" format="integer" />
+        <attr name="pickerDoubleMin" format="integer" />
+        <attr name="pickerDoubleStep" format="integer" />
+        <attr name="pickerDoubleValue" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="WidgetSettingItem">
+        <attr name="itemName" format="string" />
+        <attr name="itemValue" format="string" />
+        <attr name="isWizard" format="boolean" />
+        <attr name="isCheckBox" format="boolean" />
+        <attr name="hasNext" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="HistoryChartView">
+        <attr name="his_coordinate_drawable" format="reference" />
+        <attr name="his_up_drawable" format="reference" />
+        <attr name="his_right_drawable" format="reference" />
+        <attr name="his_carbs_bg_drawable" format="reference" />
+        <attr name="his_normal_bg_drawable" format="reference" />
+        <attr name="his_unnormal_bg_drawable" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="CustomProgressBar">
+        <attr name="progress_bg" format="reference" />
+        <attr name="progress_pbg" format="reference" />
+        <attr name="progress_arrow" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="CustomHProgressBar">
+        <attr name="hprogress_bg" format="reference" />
+        <attr name="hprogress_pbg" format="reference" />
+        <attr name="hprogress_arrow" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="BasalChartView">
+        <attr name="coordinate_drawable" format="reference" />
+        <attr name="arrow_up_drawable" format="reference" />
+        <attr name="arrow_right_drawable" format="reference" />
+        <attr name="edit_drawable" format="reference" />
+        <attr name="edit_line_drawable" format="reference" />
+        <attr name="left_icon" format="reference" />
+        <attr name="right_icon" format="reference" />
+        <attr name="left_bg" format="reference" />
+        <attr name="bottom_bg" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="NumberRangeTextView">
+        <attr name="value" format="integer" />
+        <attr name="maxValue" format="integer" />
+        <attr name="minValue" format="integer" />
+        <attr name="step" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="BaseDecimalsTextView">
+        <attr name="decimal_value" format="float" />
+        <attr name="decimal_maxValue" format="float" />
+        <attr name="decimal_minValue" format="float" />
+        <attr name="decimal_step" format="float" />
+        <attr name="decimal_format" format="string" />
+        <attr name="decimal_type" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="DragableViewGroup">
+        <attr name="default_screen" format="integer" />
+    </declare-styleable>
 
 
-	<declare-styleable name="CountdownView">
-		<attr name="isHideTimeBackground" format="boolean" />
-		<attr name="isShowTimeBgDivisionLine" format="boolean" />
-		<attr name="timeBgDivisionLineColor" format="color" />
-		<attr name="timeBgDivisionLineSize" format="dimension" />
-		<attr name="timeBgColor" format="color" />
-		<attr name="timeBgSize" format="dimension" />
-		<attr name="timeBgRadius" format="dimension" />
+    <declare-styleable name="CountdownView">
+        <attr name="isHideTimeBackground" format="boolean" />
+        <attr name="isShowTimeBgDivisionLine" format="boolean" />
+        <attr name="timeBgDivisionLineColor" format="color" />
+        <attr name="timeBgDivisionLineSize" format="dimension" />
+        <attr name="timeBgColor" format="color" />
+        <attr name="timeBgSize" format="dimension" />
+        <attr name="timeBgRadius" format="dimension" />
 
-		<attr name="isTimeTextBold" format="boolean" />
-		<attr name="timeTextSize" format="dimension" />
-		<attr name="timeTextColor" format="color" />
-		<attr name="isShowDay" format="boolean" />
-		<attr name="isShowHour" format="boolean" />
-		<attr name="isShowMinute" format="boolean" />
-		<attr name="isShowSecond" format="boolean" />
-		<attr name="isShowMillisecond" format="boolean" />
+        <attr name="isTimeTextBold" format="boolean" />
+        <attr name="timeTextSize" format="dimension" />
+        <attr name="timeTextColor" format="color" />
+        <attr name="isShowDay" format="boolean" />
+        <attr name="isShowHour" format="boolean" />
+        <attr name="isShowMinute" format="boolean" />
+        <attr name="isShowSecond" format="boolean" />
+        <attr name="isShowMillisecond" format="boolean" />
 
-		<attr name="isSuffixTextBold" format="boolean" />
-		<attr name="suffixTextSize" format="dimension" />
-		<attr name="suffixTextColor" format="color" />
-		<attr name="suffix" format="string" />
-		<attr name="suffixDay" format="string" />
-		<attr name="suffixHour" format="string" />
-		<attr name="suffixMinute" format="string" />
-		<attr name="suffixSecond" format="string" />
-		<attr name="suffixMillisecond" format="string" />
-		<attr name="suffixGravity">
-			<enum name="top" value="0" />
-			<enum name="center" value="1" />
-			<enum name="bottom" value="2" />
-		</attr>
-		<attr name="suffixLRMargin" format="dimension" />
-		<attr name="suffixDayLeftMargin" format="dimension" />
-		<attr name="suffixDayRightMargin" format="dimension" />
-		<attr name="suffixHourLeftMargin" format="dimension" />
-		<attr name="suffixHourRightMargin" format="dimension" />
-		<attr name="suffixMinuteLeftMargin" format="dimension" />
-		<attr name="suffixMinuteRightMargin" format="dimension" />
-		<attr name="suffixSecondLeftMargin" format="dimension" />
-		<attr name="suffixSecondRightMargin" format="dimension" />
-		<attr name="suffixMillisecondLeftMargin" format="dimension" />
-	</declare-styleable>
+        <attr name="isSuffixTextBold" format="boolean" />
+        <attr name="suffixTextSize" format="dimension" />
+        <attr name="suffixTextColor" format="color" />
+        <attr name="suffix" format="string" />
+        <attr name="suffixDay" format="string" />
+        <attr name="suffixHour" format="string" />
+        <attr name="suffixMinute" format="string" />
+        <attr name="suffixSecond" format="string" />
+        <attr name="suffixMillisecond" format="string" />
+        <attr name="suffixGravity">
+            <enum name="top" value="0" />
+            <enum name="center" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>
+        <attr name="suffixLRMargin" format="dimension" />
+        <attr name="suffixDayLeftMargin" format="dimension" />
+        <attr name="suffixDayRightMargin" format="dimension" />
+        <attr name="suffixHourLeftMargin" format="dimension" />
+        <attr name="suffixHourRightMargin" format="dimension" />
+        <attr name="suffixMinuteLeftMargin" format="dimension" />
+        <attr name="suffixMinuteRightMargin" format="dimension" />
+        <attr name="suffixSecondLeftMargin" format="dimension" />
+        <attr name="suffixSecondRightMargin" format="dimension" />
+        <attr name="suffixMillisecondLeftMargin" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="pickerview">
+        <attr name="wheelview_gravity">
+            <enum name="center" value="17" />
+            <enum name="left" value="3" />
+            <enum name="right" value="5" />
+        </attr>
+        <attr name="wheelview_textSize" format="dimension" />
+        <attr name="wheelview_textColorOut" format="color" />
+        <attr name="wheelview_textColorCenter" format="color" />
+        <attr name="wheelview_dividerColor" format="color" />
+        <attr name="wheelview_lineSpacingMultiplier" format="float" />
+    </declare-styleable>
+
+    <!--公用属性-->
+    <!--背景色-->
+    <attr name="zjun_bgColor" format="reference|color" />
+    <!--刻度颜色-->
+    <attr name="zjun_gradationColor" format="reference|color" />
+    <!--刻度字体颜色-->
+    <attr name="zjun_textColor" format="reference|color" />
+    <!--刻度字体大小-->
+    <attr name="zjun_textSize" format="reference|dimension" />
+    <!--中间指针线颜色-->
+    <attr name="zjun_indicatorLineColor" format="reference|color" />
+    <!--中间指针线宽度-->
+    <attr name="zjun_indicatorLineWidth" format="reference|dimension" />
+
+    <!--普通卷尺控件-->
+    <declare-styleable name="RuleView">
+        <!--背景色-->
+        <attr name="zjun_bgColor" />
+        <!--刻度颜色-->
+        <attr name="zjun_gradationColor" />
+        <!--短刻度线宽度-->
+        <attr name="gv_shortLineWidth" format="reference|dimension" />
+        <!--长刻度线宽度-->
+        <attr name="gv_longLineWidth" format="reference|dimension" />
+        <!--短刻度长度-->
+        <attr name="gv_shortGradationLen" format="reference|dimension" />
+        <!--长刻度长度-->
+        <attr name="gv_longGradationLen" format="reference|dimension" />
+        <!--刻度字体颜色-->
+        <attr name="zjun_textColor" />
+        <!--刻度字体大小-->
+        <attr name="zjun_textSize" />
+        <!--中间指针线颜色-->
+        <attr name="zjun_indicatorLineColor" />
+        <!--中间指针线宽度-->
+        <attr name="zjun_indicatorLineWidth" />
+        <!--中间指针线长度-->
+        <attr name="gv_indicatorLineLen" format="reference|dimension" />
+        <!--最小值-->
+        <attr name="gv_minValue" format="reference|float" />
+        <!--最大值-->
+        <attr name="gv_maxValue" format="reference|float" />
+        <!--当前值-->
+        <attr name="gv_currentValue" format="reference|float" />
+        <!--刻度最小单位-->
+        <attr name="gv_gradationUnit" format="reference|float" />
+        <!--需要绘制数值之间的最小单位个数-->
+        <attr name="gv_numberPerCount" format="reference|integer" />
+        <!--刻度间距离-->
+        <attr name="gv_gradationGap" format="reference|dimension" />
+        <!--刻度与文字的间距-->
+        <attr name="gv_gradationNumberGap" format="reference|dimension" />
+    </declare-styleable>
 </resources>

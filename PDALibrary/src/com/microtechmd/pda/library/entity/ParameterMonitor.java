@@ -15,6 +15,9 @@ public class ParameterMonitor {
     public static final int COUNTDOWNVIEW_VISIBLE = 10;
     public static final int SYNCHRONIZEDONE = 11;
     public static final int GLUCOSE_DISPLAY = 12;
+    public static final int GLUCOSE_TIME = 13;
+    public static final int CAN_SEND = 101;
+    public static final int CAN_SEND_FAILD = 102;
 
     public static final int EVENT_BATTERY = 0;
     public static final int EVENT_STARTUP = 1;

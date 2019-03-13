@@ -1,4 +1,4 @@
-include ':PDALibrary', ':SeekArc_library', ':javatest'
+include ':PDALibrary', ':SeekArc_library', ':javatest', ':mypicker'
 include ':PDAModel'
 include ':PDAControl'
 include ':PDA'

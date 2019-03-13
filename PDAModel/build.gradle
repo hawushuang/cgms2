@@ -1,6 +1,7 @@
 buildscript {
     repositories {
 		jcenter()
+		google()
 		mavenCentral()
     }
     dependencies {
@@ -10,11 +11,10 @@ buildscript {
 
 version = '3.0-SNAPSHOT'
 apply from: '../application.gradle'
-
 dependencies {
 	compile project(':PDALibrary')
+	implementation files('libs/lite-orm-1.9.1.jar')
 }
-
 android {
 	compileSdkVersion 25
 	buildToolsVersion '26.0.2'

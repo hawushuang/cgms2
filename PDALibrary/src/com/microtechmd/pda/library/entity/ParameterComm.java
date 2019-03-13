@@ -29,14 +29,19 @@ public class ParameterComm {
     public static final int UNPAIRNOSIGNAL = 41;
     public static final int SETTING_TYPE = 42;
     public static final int SETTING_TYPE_BACK = 43;
+    public static final int DISMISS_DIALOG = 44;
 
-    public static final int PAIR_SUCCESS = 44;
+    public static final int PAIR_SUCCESS = 45;
+    public static final int UNPAIR_SUCCESS = 46;
+    public static final int CANSEND_SUCCESS = 47;
+    public static final int BEGIN_SUCCESS = 48;
     public static final byte RF_STATE_IDLE = 0;
     public static final byte RF_STATE_BROADCAST = 1;
     public static final byte RF_STATE_CONNECTED = 2;
-    public static final byte COUNT_RF_STATE = 3;
+    public static final byte RF_STATE_CONNECTED_ERR = 3;
+    public static final byte COUNT_RF_STATE = 4;
 
     public static final byte BROADCAST_OFFSET_ALL = 0;
-    public static final byte BROADCAST_OFFSET_STATUS = 8;
+    public static final byte BROADCAST_OFFSET_STATUS = 1;
     public static final byte BROADCAST_OFFSET_EVENT = 12;
 }

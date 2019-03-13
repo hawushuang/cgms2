@@ -18,6 +18,7 @@ import com.microtechmd.pda.library.entity.ParameterComm;
 import com.microtechmd.pda.library.entity.monitor.History;
 import com.microtechmd.pda.library.parameter.ParameterGlobal;
 import com.microtechmd.pda.library.utility.LogPDA;
+import com.microtechmd.pda.util.CrashHandler;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -144,7 +145,7 @@ public class ApplicationPDA extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        CrashHandler.getInstance().init(getApplicationContext());
         if (sLog == null) {
             sLog = new LogPDA();
         }

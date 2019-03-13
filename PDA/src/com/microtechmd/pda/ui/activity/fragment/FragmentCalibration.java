@@ -8,9 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.microtechmd.pda.R;
+import com.microtechmd.pda.library.utility.SPUtils;
 import com.microtechmd.pda.ui.activity.ActivityBgEnter;
+
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.REALTIMEFLAG;
 
 
 public class FragmentCalibration extends FragmentBase {
@@ -47,7 +51,12 @@ public class FragmentCalibration extends FragmentBase {
 
         switch (v.getId()) {
             case R.id.button_calibration:
-                startActivity(new Intent(getActivity(), ActivityBgEnter.class));
+                boolean realtimeFlag = (boolean) SPUtils.get(getActivity(), REALTIMEFLAG, true);
+                if (realtimeFlag) {
+                    startActivity(new Intent(getActivity(), ActivityBgEnter.class));
+                } else {
+                    Toast.makeText(app, R.string.history_mode_forbidden, Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             default:

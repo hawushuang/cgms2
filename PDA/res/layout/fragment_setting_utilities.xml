@@ -65,15 +65,6 @@
                 app:itemValue="" />
 
             <com.microtechmd.pda.ui.widget.WidgetSettingItem
-                android:id="@+id/item_software_version"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@drawable/background_setting_item"
-                app:itemName="@string/setting_general_version"
-                app:itemValue="1.0.0" />
-
-            <com.microtechmd.pda.ui.widget.WidgetSettingItem
                 android:id="@+id/item_data_test"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -81,6 +72,7 @@
                 android:background="@drawable/background_setting_item"
                 android:clickable="true"
                 android:focusable="true"
+                android:visibility="gone"
                 app:itemName="@string/data_test"
                 app:itemValue="" />
 
@@ -88,13 +80,33 @@
                 android:id="@+id/item_recovery"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
                 android:background="@drawable/background_setting_item"
                 android:clickable="true"
                 android:focusable="true"
                 app:itemName="@string/recovery"
                 app:itemValue="" />
 
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_software_version"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
+                android:visibility="gone"
+                app:hasNext="false"
+                app:itemName="@string/setting_general_version"
+                app:itemValue="1.0.0" />
 
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_about"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
+                android:clickable="true"
+                android:focusable="true"
+                app:itemName="@string/about" />
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

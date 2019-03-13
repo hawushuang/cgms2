@@ -117,6 +117,10 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
     private DataSetHistory mDataSetHistory;
     private ExecutorService fixedThreadPool;
 
+
+    //    private List<List<PointValue>> lineList = new ArrayList<>();
+    private int lastIndex = 0;
+
     public void setTimeData(int timeData) {
         switch (timeData) {
             case FragmentHome.TIME_DATA_6:
@@ -131,7 +135,17 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
             default:
                 break;
         }
-        setZoom();
+        if (valuesAll != null) {
+            if (valuesAll.size() > 0) {
+                setZoom();
+            } else {
+                generateData(new ArrayList<DbHistory>());
+            }
+        }
+    }
+
+    public void firstRefresh() {
+        generateData(new ArrayList<DbHistory>());
     }
 
     public void setDataChange() {
@@ -139,6 +153,8 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
         if (dateChange) {
             dataListAll.clear();
             valuesAll.clear();
+//            lineList.clear();
+            lastIndex = 0;
             generateData(new ArrayList<DbHistory>());
             queryHistory();
             dateChange = false;
@@ -184,6 +200,8 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
                         mDataSetHistory.cleanDatabases();
                         dataListAll.clear();
                         valuesAll.clear();
+//                        lineList.clear();
+                        lastIndex = 0;
                         generateData(new ArrayList<DbHistory>());
                         break;
                     case 1:
@@ -191,6 +209,13 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
                         break;
                     case 2:
                         dateChange = true;
+                        dataListAll.clear();
+                        valuesAll.clear();
+                        lastIndex = 0;
+                        generateData(new ArrayList<DbHistory>());
+                        break;
+                    case 3:
+                        generateData(new ArrayList<DbHistory>());
                         break;
                     default:
 
@@ -237,15 +262,20 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
                     || (eventType == PDA_ERROR)
 //                            || (event.getEvent() == BLOOD_GLUCOSE)
 //                            || (event.getEvent() == CALIBRATION)
-                    ) {
+            ) {
                 dataErrListAll.add(dbHistory);
             }
         }
-        if (app != null) {
-            app.setDataErrListAll(dataErrListAll);
-        }
+//        if (app != null) {
+//            app.setDataErrListAll(dataErrListAll);
+//        }
         valuesAll.clear();
+//        lineList.clear();
+        lastIndex = 0;
+        long start = System.currentTimeMillis();
         generateData(dbList);
+        long end = System.currentTimeMillis();
+        mLog.Error(getClass(), "解析加画图时间：" + (end - start));
 //        dismissDialogProgress();
 //        DataList dataList = new DataList(message.getData());
 //        for (int i = 0; i < dataList.getCount(); i++) {
@@ -322,11 +352,11 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
                 case PDA_ERROR:
 //                case BLOOD_GLUCOSE:
 //                case CALIBRATION:
-                    if (app != null) {
-                        dataErrListAll = app.getDataErrListAll();
-                        dataErrListAll.add(history);
-                        app.setDataErrListAll(dataErrListAll);
-                    }
+//                    if (app != null) {
+//                        dataErrListAll = app.getDataErrListAll();
+//                        dataErrListAll.add(history);
+//                        app.setDataErrListAll(dataErrListAll);
+//                    }
                     break;
                 default:
 
@@ -377,7 +407,7 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
             mDataSetHistory = new DataSetHistory(getActivity());
         }
         //定长线程池，可控制线程最大并发数，超出的线程会在队列中等待
-        fixedThreadPool = Executors.newFixedThreadPool(6);
+        fixedThreadPool = Executors.newFixedThreadPool(1);
         PowerManager powerManager = (PowerManager) getActivity().getSystemService(Service.POWER_SERVICE);
         if (powerManager != null) {
             wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Lock");
@@ -471,15 +501,9 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
             return;
         }
         //请求屏幕常亮
-        wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/);
+//        wakeLock.acquire();
         showDialogProgress();
         mIsHistoryQuerying = true;
-//        DataList dataList = new DataList();
-//        ((ActivityPDA) getActivity()).handleMessage(new EntityMessage(
-//                ParameterGlobal.ADDRESS_LOCAL_VIEW,
-//                ParameterGlobal.ADDRESS_LOCAL_MODEL, ParameterGlobal.PORT_MONITOR,
-//                ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_GET,
-//                ParameterMonitor.PARAM_HISTORY, null));
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -516,6 +540,8 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
             for (int i = 0; i < valuesAll.size(); i++) {
                 PointValue value = valuesAll.get(i);
                 valuesAll.set(i, new PointValue(value.getX() + offset / pointSpace, value.getY()));
+//                lineList.clear();
+                lastIndex = 0;
             }
         }
         zero = calendar.getTimeInMillis();
@@ -523,7 +549,7 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
 //        if (offset > 0) {
 //            maxLimit = now_zero - zero + 5 * 60 * 60 * 1000 + offset;
 //        } else {
-            maxLimit = now_zero - zero + 5 * 60 * 60 * 1000;
+        maxLimit = now_zero - zero + 5 * 60 * 60 * 1000;
 //        }
 
         minLimit = now_zero - zero - ((24 + hour % 4) * 60 * 60 * 1000);
@@ -538,29 +564,76 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
                 valuesAll.remove(0);
             }
             setMinPoint();
-            Line glucoseLine = getGlucoseLine(valuesAll);
-            lines.add(glucoseLine);
+            List<List<PointValue>> lineList = new ArrayList<>();
+            List<Integer> errList = new ArrayList<>();
+            for (int i = 0; i < valuesAll.size(); i++) {
+                if (i > 0) {
+                    if (valuesAll.get(i).getX() < valuesAll.get(i - 1).getX()
+                            || (valuesAll.get(i).getX() - valuesAll.get(i - 1).getX()) > 15 * 60 * 1000 / pointSpace) {
+                        errList.add(i);
+                    }
+                }
+            }
+            lastIndex = valuesAll.size() - 1;
+            if (errList.size() > 0) {
+                for (int i = 0; i < errList.size(); i++) {
+                    if (i == 0) {
+                        lineList.add(valuesAll.subList(0, errList.get(i)));
+                    } else {
+                        lineList.add(valuesAll.subList(errList.get(i - 1), errList.get(i)));
+                    }
+                }
+                if (errList.get(errList.size() - 1) < valuesAll.size()) {
+                    lineList.add(valuesAll.subList(errList.get(errList.size() - 1), valuesAll.size()));
+                }
 
-            //添加血糖时间最大值的点
-            PointValue maxPoint;
-            History historyMax = ActivityMain.getStatus();
-            if (historyMax != null) {
-                Status status = historyMax.getStatus();
-                float value_display = status.getShortValue1() / 10f;
-                long time = historyMax.getDateTime().getCalendar().getTimeInMillis() - zero;
-                maxPoint = new PointValue(time / pointSpace, value_display);
             } else {
-                maxPoint = Collections.max(valuesAll, new MyComparator());
+                lineList.add(valuesAll);
             }
 
-            Line maxPointLine = new Line();
-            List<PointValue> maxPointValue = new ArrayList<>();
-            maxPointValue.add(maxPoint);
-            maxPointLine.setValues(maxPointValue);
-            maxPointLine.setPointColor(Color.GREEN);
-            maxPointLine.setPointRadius(4);
-            maxPointLine.setHasLines(false);
-            lines.add(maxPointLine);
+            mLog.Error(getClass(), "线段条数" + lineList.size());
+
+            for (List<PointValue> pointValues : lineList) {
+                if (pointValues.size() > 1) {
+                    Line glucoseLine = getGlucoseLine(pointValues);
+                    lines.add(glucoseLine);
+                } else {
+                    Line glucoseLine = getSingleGlucoseLine(pointValues);
+                    lines.add(glucoseLine);
+                }
+            }
+
+
+            //添加血糖时间最大值的点
+            PointValue maxPoint = null;
+            History historyMax = ActivityMain.getStatus();
+            if (historyMax != null) {
+                int value = historyMax.getStatus().getShortValue1();
+                mLog.Error(getClass(), "绿点值：" + value);
+                if (value == 0) {
+                    value = 20;
+                } else if (value == 255) {
+                    value = 250;
+                }
+                if (value >= 20 && value <= 255) {
+                    float value_display = value / 10f;
+                    long time = historyMax.getDateTime().getCalendar().getTimeInMillis() - zero;
+                    if (rangeInDefined(time, minLimit, maxLimit)) {
+                        maxPoint = new PointValue(time / pointSpace, value_display);
+                    }
+                }
+            }
+
+            if (maxPoint != null) {
+                Line maxPointLine = new Line();
+                List<PointValue> maxPointValue = new ArrayList<>();
+                maxPointValue.add(maxPoint);
+                maxPointLine.setValues(maxPointValue);
+                maxPointLine.setPointColor(Color.GREEN);
+                maxPointLine.setPointRadius(4);
+                maxPointLine.setHasLines(false);
+                lines.add(maxPointLine);
+            }
         } else {
             lines.add(new Line());
         }
@@ -586,6 +659,10 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
         setZoom();
     }
 
+    private boolean rangeInDefined(long current, long min, long max) {
+        return Math.max(min, current) == Math.min(current, max);
+    }
+
     private void setMinPoint() {
         PointValue minPoint = Collections.min(valuesAll, new MyComparator());
         if (minPoint.getX() * pointSpace < minLimit) {
@@ -609,10 +686,12 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
         List<PointValue> values = new ArrayList<>();
         for (CalibrationHistory calibrationHistory : list) {
             long time = calibrationHistory.getTime() - zero;
-            float value = calibrationHistory.getValue();
-            PointValue pointValue = new PointValue(time / pointSpace, value);
-            pointValue.setLabel(value + "");
-            values.add(pointValue);
+            if (rangeInDefined(time, minLimit, maxLimit)) {
+                float value = calibrationHistory.getValue();
+                PointValue pointValue = new PointValue(time / pointSpace, value);
+                pointValue.setLabel(value + "");
+                values.add(pointValue);
+            }
         }
         line.setValues(values);
         return line;
@@ -647,7 +726,7 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
             if (dbHistory.getEvent_type() == GLUCOSE ||
                     dbHistory.getEvent_type() == GLUCOSE_RECOMMEND_CAL) {
                 long t = dbHistory.getDate_time();
-                if (t < current + 60 * 60 * 1000) {
+                if (t < current + 4 * 60 * 60 * 1000) {
                     float value_display = dbHistory.getValue() / 10f;
                     long time = t - zero;
                     values.add(new PointValue(time / pointSpace, value_display));
@@ -751,7 +830,28 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
     @NonNull
     private Line getGlucoseLine(List<PointValue> values) {
         Line line = new Line(values);
+//        line.setPointColor(Color.parseColor("#FF00DEFF"));
+//        line.setPointRadius(2);
+        line.setHasLines(true);
+        line.setColor(Color.parseColor("#FF00DEFF"));
+        line.setHasPoints(false);
+        return line;
+    }
+
+    @NonNull
+    private Line getSingleGlucoseLine(List<PointValue> values) {
+        Line line = new Line(values);
         line.setPointColor(Color.parseColor("#FF00DEFF"));
+        line.setPointRadius(2);
+        line.setHasLines(false);
+//        line.setColor(Color.parseColor("#FF00DEFF"));
+//        line.setHasPoints(false);
+        return line;
+    }
+
+    private Line getErrGlucoseLine(List<PointValue> values) {
+        Line line = new Line(values);
+        line.setPointColor(Color.YELLOW);
         line.setPointRadius(2);
         line.setHasLines(false);
         return line;

@@ -63,6 +63,7 @@
     <string name="calibration_done">Calibration done</string>
     <string name="record_done">Record done</string>
     <string name="fragment_settings_pairing">Transmiter Pairing</string>
+    <string name="fragment_settings_unpairing">Transmiter UnPairing</string>
     <string name="fragment_settings_unpair">Transmitter will deactivate, continue?</string>
     <string name="recovery_pair">If reset,transmitter will deactivate and the log will be cleared, continue?</string>
     <string name="recovery_clear">If reset,the log will be cleared, continue?</string>
@@ -84,6 +85,7 @@
     <string name="blood_glucose">Blood Glucose!</string>
     <string name="alarm_new_sensor">Check the new sensor for confirmation!</string>
     <string name="alarm_expiration">Sensor is expired!</string>
+    <string name="alarm_expiration2">Sensor is expired!</string>
     <string name="alarm_sensor_error">Sensor error!</string>
     <string name="alarm_pda_error">PDA error!</string>
     <string name="alarm_pda_comm_error">communication loss！</string>
@@ -577,6 +579,38 @@
         <item>1 hour</item>
     </string-array>
 
+    <string-array name="language_array">
+        <item>Chinese</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="app_timezone_array">
+        <item>Pago Pago</item>
+        <item>Pacific/Honolulu</item>
+        <item>Anchorage</item>
+        <item>Los Angeles</item>
+        <item>Denver</item>
+        <item>Chicago</item>
+        <item>New York</item>
+        <item>Santiago</item>
+        <item>Rio De Janeiro</item>
+        <item>Fernando de Noronha</item>
+        <item>Praia</item>
+        <item>London</item>
+        <item>Paris</item>
+        <item>Athens</item>
+        <item>Jeddah</item>
+        <item>Dubai</item>
+        <item>KHI</item>
+        <item>Dhaka</item>
+        <item>Bangkok</item>
+        <item>Beijing</item>
+        <item>Tokyo</item>
+        <item>Sydney</item>
+        <item>Noumea</item>
+        <item>Wellington</item>
+    </string-array>
+
     <!-- blue tooth -->
     <string name="bluetooth_setting_title">Bluetooth</string>
     <string name="bluetooth_setting_name">Bluetooth</string>
@@ -663,7 +697,9 @@
     <string name="Toast_shutdown">Shutting down &#8230;</string>
     <string name="Toast_shutdown_fail">Fail to shut down.</string>
     <string name="shutdown_title">Confirm</string>
+    <string name="time_sure_title">Time Confirm</string>
     <string name="shutdown_content">Do you want to shut down?</string>
+    <string name="time_sure_content">Are you sure time is correct?</string>
 
     <!--
        lockSceen
@@ -743,6 +779,8 @@
     <string name="pair_data_err">Data Error, need to Pair again</string>
     <string name="force_unpair_info">Faied connect the transmitter,it can be force to unpair.
         if so,the transmitter will not be able to pair the other devices. Do you want to continue?</string>
+    <string name="force_unpair_info2">If this option is checked,it can be force to unpair.
+        the transmitter will not be able to pair the other devices.</string>
     <string name="fragment_settings_force_unpair">Force unpair</string>
     <string name="timeout_lock">ScreenOn time</string>
     <string name="glucose_messagetips">Glucose Check Alert</string>
@@ -754,4 +792,16 @@
     <string name="utilities">Utilities</string>
     <string name="alert">Alert</string>
     <string name="ensure">Ensure</string>
+    <string name="transmitter_id_err">Transmitter ID Error</string>
+    <string name="input_err">Input Error</string>
+    <string name="setting_success">Setting Success</string>
+    <string name="input_calibration_err">Calibration is rang from 2mmol/L to 30mmol/L</string>
+    <string name="minutebefore">Minutes Ago</string>
+    <string name="bluetooth_unmatch_success">Unpair Success</string>
+    <string name="remove_success">Remove Success</string>
+    <string name="unpair_recovery">Have not been unpired with the transmitter,
+    do you want to cancel the control of the transmitter first?</string>
+    <string name="sure_cancel">Are you sure to cancel?</string>
+    <string name="set_highorlow_failed">set threshold value failed,whether to set it manually</string>
+    <string name="history_mode_forbidden">In the history mode，calibration is forbidden</string>
 </resources>

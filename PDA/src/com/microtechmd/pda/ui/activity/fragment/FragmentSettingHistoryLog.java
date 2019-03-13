@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.microtechmd.pda.R;
+import com.microtechmd.pda.database.DataSetHistory;
 import com.microtechmd.pda.database.DbHistory;
 import com.microtechmd.pda.library.entity.EntityMessage;
 import com.microtechmd.pda.library.entity.ParameterComm;
@@ -23,9 +25,13 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import lecho.lib.hellocharts.model.PointValue;
 
 import static com.microtechmd.pda.ui.activity.ActivityPDA.BLOOD_GLUCOSE;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.CALIBRATION;
@@ -41,16 +47,30 @@ public class FragmentSettingHistoryLog extends FragmentBase
         EntityMessage.Listener {
     public static final long MILLISECOND_DAY = 1000 * 60 * 60 * 24;
     private View mRootView;
+    private ImageView btn_left, btn_right;
+    private boolean clickFlagLeft, clickFlagRight;
 
     private Calendar mCalendar;
     private List<DbHistory> dataErrListAll;
     private HistoryModel mHistoryModel;
     private HistoryAdapter mHistoryAdapter;
+    private long firstTime;
+
+    private DataSetHistory mDataSetHistory;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_history, container, false);
+        btn_left = (ImageView) mRootView.findViewById(R.id.btn_left);
+        btn_right = (ImageView) mRootView.findViewById(R.id.btn_right);
+
+        setLeftButton(true);
+        setRightButton(false);
+
+        if (mDataSetHistory == null) {
+            mDataSetHistory = new DataSetHistory(getActivity());
+        }
         return mRootView;
     }
 
@@ -58,11 +78,10 @@ public class FragmentSettingHistoryLog extends FragmentBase
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         dataErrListAll = new ArrayList<>();
-        if (app != null) {
-            ArrayList<DbHistory> dataErr = app.getDataErrListAll();
-            dataErrListAll.addAll(dataErr);
-        }
-
+//        if (app != null) {
+//            ArrayList<DbHistory> dataErr = app.getDataErrListAll();
+//            dataErrListAll.addAll(dataErr);
+//        }
         mHistoryModel = new HistoryModel();
         mHistoryAdapter = new HistoryAdapter();
         ((ListView) mRootView.findViewById(R.id.lv_log)).setAdapter(mHistoryAdapter);
@@ -71,7 +90,35 @@ public class FragmentSettingHistoryLog extends FragmentBase
         mCalendar.set(Calendar.MINUTE, 0);
         mCalendar.set(Calendar.SECOND, 0);
         updateDateTime(mCalendar);
-        queryHistory(mCalendar);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<DbHistory> dataBaseErrListAll = mDataSetHistory.getErrDbList();
+                for (DbHistory dbHistory : dataBaseErrListAll) {
+                    if (dbHistory.getEvent_type() == 5 ||
+                            dbHistory.getEvent_type() == 6 ||
+                            dbHistory.getEvent_type() == 10 ||
+                            dbHistory.getEvent_type() == 11
+                    ) {
+                        dataErrListAll.add(dbHistory);
+                    }
+                }
+//                dataErrListAll = mDataSetHistory.getErrDbList();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        queryHistory(mCalendar);
+                        if (dataErrListAll.size() > 0) {
+                            firstTime = Collections.min(dataErrListAll, new MyComparator()).getDate_time();
+                        }
+                    }
+                });
+            }
+        }).start();
+//        queryHistory(mCalendar);
+//        if (dataErrListAll.size() > 0) {
+//            firstTime = Collections.min(dataErrListAll, new MyComparator()).getDate_time();
+//        }
     }
 
     @Override
@@ -87,14 +134,36 @@ public class FragmentSettingHistoryLog extends FragmentBase
                                 new byte[]{(byte) TYPE_SETTING}));
                 break;
             case R.id.btn_left:
-                adjustDateTime(-MILLISECOND_DAY);
+                if (clickFlagLeft) {
+                    adjustDateTime(-MILLISECOND_DAY);
+                }
                 break;
 
             case R.id.btn_right:
-                adjustDateTime(MILLISECOND_DAY);
+                if (clickFlagRight) {
+                    adjustDateTime(MILLISECOND_DAY);
+                }
                 break;
             default:
                 break;
+        }
+    }
+
+    private void setLeftButton(boolean isClick) {
+        clickFlagLeft = isClick;
+        if (isClick) {
+            btn_left.setImageDrawable(getResources().getDrawable(R.drawable.btn_animation_left));
+        } else {
+            btn_left.setImageDrawable(getResources().getDrawable(R.drawable.btn_animation_left_grey));
+        }
+    }
+
+    private void setRightButton(boolean isClick) {
+        clickFlagRight = isClick;
+        if (isClick) {
+            btn_right.setImageDrawable(getResources().getDrawable(R.drawable.btn_animation_right));
+        } else {
+            btn_right.setImageDrawable(getResources().getDrawable(R.drawable.btn_animation_right_grey));
         }
     }
 
@@ -185,6 +254,33 @@ public class FragmentSettingHistoryLog extends FragmentBase
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(template, Locale.getDefault());
         TextView textView = (TextView) mRootView.findViewById(R.id.tv_date);
         textView.setText(simpleDateFormat.format(calendar.getTimeInMillis()));
+        if (dataErrListAll.size() == 0) {
+            setLeftButton(false);
+            setRightButton(false);
+        } else {
+            if (mCalendar.getTimeInMillis() + MILLISECOND_DAY > System.currentTimeMillis()) {
+                setRightButton(false);
+            } else {
+                setRightButton(true);
+            }
+
+
+            if (mCalendar.getTimeInMillis() <= firstTime) {
+                setLeftButton(false);
+            } else {
+                setLeftButton(true);
+            }
+
+        }
+    }
+
+    public class MyComparator implements Comparator<DbHistory> {
+        @Override
+        public int compare(DbHistory t1, DbHistory t2) {
+            Long v1 = t1.getDate_time();
+            Long v2 = t2.getDate_time();
+            return v1.compareTo(v2);
+        }
     }
 
     private class HistoryView extends LinearLayout {
@@ -348,35 +444,36 @@ public class FragmentSettingHistoryLog extends FragmentBase
 
     private String getEventContent(int eventType) {
         String content = "";
+        if (isAdded()) {
+            switch (eventType) {
+                case SENSOR_ERROR:
+                    content = getString(R.string.alarm_sensor_error);
+                    break;
 
-        switch (eventType) {
-            case SENSOR_ERROR:
-                content = getString(R.string.alarm_sensor_error);
-                break;
+                case SENSOR_EXPIRATION:
+                    content = getString(R.string.alarm_expiration2);
+                    break;
 
-            case SENSOR_EXPIRATION:
-                content = getString(R.string.alarm_expiration2);
-                break;
+                case HYPO:
+                    content = getString(R.string.alarm_hypo);
+                    break;
 
-            case HYPO:
-                content = getString(R.string.alarm_hypo);
-                break;
+                case HYPER:
+                    content = getString(R.string.alarm_hyper);
+                    break;
+                case PDA_ERROR:
+                    content = getString(R.string.alarm_pda_error);
+                    break;
+                case BLOOD_GLUCOSE:
+                    content = getString(R.string.blood_glucose);
+                    break;
 
-            case HYPER:
-                content = getString(R.string.alarm_hyper);
-                break;
-            case PDA_ERROR:
-                content = getString(R.string.alarm_pda_error);
-                break;
-            case BLOOD_GLUCOSE:
-                content = getString(R.string.blood_glucose);
-                break;
-
-            case CALIBRATION:
-                content = getString(R.string.calibrate_blood);
-                break;
-            default:
-                break;
+                case CALIBRATION:
+                    content = getString(R.string.calibrate_blood);
+                    break;
+                default:
+                    break;
+            }
         }
         return content;
     }

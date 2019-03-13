@@ -22,19 +22,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="5dip"
-            android:paddingTop="5dip">
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip">
 
             <FrameLayout
-                android:layout_width="110dip"
-                android:layout_height="wrap_content">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
                 <com.example.liangmutian.mypicker.LoopView
                     android:id="@+id/loop_year"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="2dp" />
+                    android:layout_gravity="center_horizontal" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -43,6 +43,20 @@
                     android:layout_marginLeft="40dip"
                     android:text="@string/timepicker_year"
                     android:textColor="#B3B3B3" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="19dip"
+                    android:background="#A5A5A5" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="19dip"
+                    android:background="#A5A5A5" />
             </FrameLayout>
 
             <FrameLayout
@@ -63,11 +77,26 @@
                     android:layout_marginLeft="36dip"
                     android:text="@string/timepicker_month"
                     android:textColor="#B3B3B3" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="19dip"
+                    android:background="#A5A5A5" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="19dip"
+                    android:background="#A5A5A5" />
             </FrameLayout>
 
             <FrameLayout
-                android:layout_width="110dip"
-                android:layout_height="wrap_content">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
                 <com.example.liangmutian.mypicker.LoopView
                     android:id="@+id/loop_day"
@@ -82,6 +111,20 @@
                     android:layout_marginRight="15dip"
                     android:text="@string/timepicker_day"
                     android:textColor="#B3B3B3" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="19dip"
+                    android:background="#A5A5A5" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="19dip"
+                    android:background="#A5A5A5" />
             </FrameLayout>
         </LinearLayout>
 

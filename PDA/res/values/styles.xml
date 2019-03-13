@@ -100,7 +100,7 @@
 
 	<style name="bar_title">
 		<item name="android:layout_width">0dp</item>
-		<item name="android:layout_height">38dp</item>
+		<item name="android:layout_height">50dp</item>
 		<item name="android:background">@color/background_dark</item>
 		<item name="layout_constraintTop_toTopOf">parent</item>
 		<item name="layout_constraintLeft_toLeftOf">parent</item>

@@ -37,13 +37,19 @@ import com.microtechmd.pda.ui.activity.ActivityMain;
 import com.microtechmd.pda.ui.activity.ActivityPDA;
 import com.microtechmd.pda.ui.widget.countdownview.CountdownView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static android.content.Context.ALARM_SERVICE;
+import static com.microtechmd.pda.ui.activity.ActivityPDA.DATE_CHANGE;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.GLUCOSE;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.GLUCOSE_INVALID;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.GLUCOSE_RECOMMEND_CAL;
@@ -74,6 +80,7 @@ public class FragmentHome extends FragmentBase
     private FragmentHelloChartsGraph fragmentNewGraph = null;
 
     private TextView textView_t;
+    private TextView tv_minutes;
     private TextView textView_g;
     private TextView textView_g_recommend_cal;
     private ImageView textView_g_err;
@@ -87,8 +94,12 @@ public class FragmentHome extends FragmentBase
     private Handler handler;
     private CountDownTimer countDownTimer;
     private Runnable runnable;
-    private PendingIntent sender;
-    private AlarmManager manager;
+//    private PendingIntent sender;
+//    private AlarmManager manager;
+
+    private History mHistory;
+
+    private boolean firstLauncher;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,6 +110,7 @@ public class FragmentHome extends FragmentBase
         textView_g_recommend_cal = (TextView) mRootView.findViewById(R.id.text_view_glucose_recommend);
         textView_g_err = (ImageView) mRootView.findViewById(R.id.glucose_err);
         textView_t = (TextView) mRootView.findViewById(R.id.text_view_date_time);
+        tv_minutes = (TextView) mRootView.findViewById(R.id.tv_minutes);
         textView_unit = (TextView) mRootView.findViewById(R.id.text_view_unit);
         text_view_countdown = (TextView) mRootView.findViewById(R.id.text_view_countdown);
         countdownView = (CountdownView) mRootView.findViewById(R.id.countdown_view);
@@ -109,7 +121,7 @@ public class FragmentHome extends FragmentBase
         }
         getChildFragmentManager().beginTransaction()
                 .add(R.id.layout_graph, fragmentNewGraph, TAG_GRAPH).show(fragmentNewGraph).commit();
-        updateStatus(ActivityMain.getStatus());
+//        updateStatus(ActivityMain.getStatus());
         radio_group = (RadioGroup) mRootView.findViewById(R.id.radio_group);
         radio_group.check(R.id.btn_0);
         radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -137,8 +149,8 @@ public class FragmentHome extends FragmentBase
         });
 
         textView_g.setTextColor(getResources().getColor(R.color.green));
-        textView_g.setText(STRING_UNKNOWN);
-        textView_t.setText("");
+        setDisplayUnKnow();
+        setTimeVisible("");
         handler = new Handler();
 
         boolean realtimeFlag = (boolean) SPUtils.get(getActivity(), REALTIMEFLAG, true);
@@ -172,6 +184,7 @@ public class FragmentHome extends FragmentBase
                 }
             }
         });
+        firstLauncher = true;
         return mRootView;
     }
 
@@ -212,9 +225,14 @@ public class FragmentHome extends FragmentBase
         super.onResume();
     }
 
-    public void setDataChange() {
+    public void setDateChange() {
         if (fragmentNewGraph != null) {
             fragmentNewGraph.setDataChange();
+            firstLauncher = true;
+            boolean dateChange = (boolean) SPUtils.get(app, DATE_CHANGE, false);
+            if (dateChange) {
+                setTimeVisible("");
+            }
         }
     }
 
@@ -259,6 +277,11 @@ public class FragmentHome extends FragmentBase
             if (message.getData()[0] == 0) {
                 synchronize.setVisibility(View.VISIBLE);
                 tv_mode.setVisibility(View.VISIBLE);
+                setTimeVisible("");
+                setDisplayUnKnow();
+                textView_g_recommend_cal.setVisibility(View.GONE);
+                firstLauncher = true;
+                fragmentNewGraph.firstRefresh();
             } else {
                 synchronize.setVisibility(View.GONE);
                 tv_mode.setVisibility(View.GONE);
@@ -272,20 +295,32 @@ public class FragmentHome extends FragmentBase
             }
         }
         if (message.getParameter() == ParameterMonitor.GLUCOSE_DISPLAY) {
-            if (!getActivity().isFinishing()) {
-                textView_g.setTextColor(Color.GREEN);
-                textView_g.setText(STRING_UNKNOWN);
-                textView_g_recommend_cal.setVisibility(View.GONE);
-                ActivityMain.setStatus(null);
+            if (mHistory != null) {
+                long space = System.currentTimeMillis() - mHistory.getDateTime().getCalendar().getTimeInMillis();
+                int minute = (int) (space / 60000);
+                if (minute < -1) {
+                    setTimeVisible("");
+                    setDisplayUnKnow();
+                } else if (minute <= 0) {
+                    setTimeVisible(String.valueOf(0));
+                } else if (minute < 15) {
+                    setTimeVisible(String.valueOf(minute));
+                } else {
+                    setTimeVisible("");
+                    setDisplayUnKnow();
+                    textView_g_recommend_cal.setVisibility(View.GONE);
+                    fragmentNewGraph.firstRefresh();
+                }
             }
         }
         if (message.getParameter() == ParameterComm.RESET_DATA) {
             switch (message.getData()[0]) {
                 case 0:
                 case 3:
-                    setGlucoseVisible(true);
-                    textView_g.setText(STRING_UNKNOWN);
-                    textView_t.setText("");
+                    setDisplayUnKnow();
+                    setTimeVisible("");
+                    textView_g_recommend_cal.setVisibility(View.GONE);
+                    mHistory = null;
                     break;
                 case 1:
                     radio_group.check(R.id.btn_1);
@@ -296,6 +331,11 @@ public class FragmentHome extends FragmentBase
                     break;
             }
         }
+    }
+
+    private void setDisplayUnKnow() {
+        textView_g.setText(STRING_UNKNOWN);
+        ActivityMain.setStatus(null);
     }
 
     public void setCountdownViewVisible(int value) {
@@ -334,27 +374,35 @@ public class FragmentHome extends FragmentBase
                         if (dataList.getCount() > 0) {
                             History history = new History(dataList.getData(dataList.getCount() - 1));
                             updateStatus(history);
+                            boolean a = (history.getEvent().getEventFlag() & 0x40) == 0;
+                            mLog.Error(getClass(), "广播包血糖：" + (history.getStatus().getShortValue1()) +
+                                    "valueflag：" + a + "enventype:" + history.getEvent().getEvent());
+                            mLog.Error(getClass(), "广播包血糖：" + Arrays.toString(history.getByteArray()));
                         }
                     }
                     break;
                 case ParameterMonitor.PARAM_HISTORY:
-                    if ((message.getSourceAddress() == ParameterGlobal.ADDRESS_LOCAL_CONTROL) ||
-                            (message.getSourceAddress() == ParameterGlobal.ADDRESS_REMOTE_MASTER)) {
-                        History historyLast = ActivityMain.getStatus();
-                        if (historyLast == null) {
-                            return;
-                        }
-                        if (message.getData() != null) {
-                            final DataList dataList = new DataList(message.getData());
-                            if (dataList.getCount() > 0) {
-                                //同步比广播包时间新则取同步数据显示
-                                History history = new History(dataList.getData(dataList.getCount() - 1));
-                                if (history.getDateTime().getBCD() > historyLast.getDateTime().getBCD()) {
-                                    updateStatus(history);
-                                }
-                            }
-                        }
-                    }
+//                    if ((message.getSourceAddress() == ParameterGlobal.ADDRESS_LOCAL_CONTROL) ||
+//                            (message.getSourceAddress() == ParameterGlobal.ADDRESS_REMOTE_MASTER)) {
+//                        History historyLast = ActivityMain.getStatus();
+//                        if (historyLast == null) {
+//                            return;
+//                        }
+//                        if (message.getData() != null) {
+//                            final DataList dataList = new DataList(message.getData());
+//                            if (dataList.getCount() > 0) {
+//                                //同步比广播包时间新则取同步数据显示
+//                                History history = new History(dataList.getData(dataList.getCount() - 1));
+//                                if (history.getDateTime().getBCD() > historyLast.getDateTime().getBCD()) {
+//                                    updateStatus(history);
+//                                    boolean a = (history.getEvent().getEventFlag() & 0x40) == 0;
+//                                    mLog.Error(getClass(), "同步血糖：" + (history.getStatus().getShortValue1()) +
+//                                            "valueflag：" + a + "enventype:" + history.getEvent().getEvent());
+//                                    mLog.Error(getClass(), "同步血糖：" + Arrays.toString(history.getByteArray()));
+//                                }
+//                            }
+//                        }
+//                    }
                     break;
                 default:
 
@@ -417,29 +465,30 @@ public class FragmentHome extends FragmentBase
     private void updateStatus(History history) {
         mLog.Error(getClass(), "显示广播包血糖值");
         if (history != null) {
-            DateTime nowTime = new DateTime(Calendar.getInstance());
             DateTime statusTime = history.getDateTime();
-            long time_space = nowTime.getCalendar().getTimeInMillis() - statusTime.getCalendar().getTimeInMillis();
+//            DateTime nowTime = new DateTime(Calendar.getInstance());
+//            long time_space = nowTime.getCalendar().getTimeInMillis() - statusTime.getCalendar().getTimeInMillis();
+            long time_space = System.currentTimeMillis() - statusTime.getCalendar().getTimeInMillis();
             boolean a = (history.getEvent().getEventFlag() & 0x40) == 0;
-            mLog.Error(getClass(), "血糖：" + (history.getStatus().getShortValue1()) + "valueflag：" + a);
+//            mLog.Error(getClass(), "血糖：" + (history.getStatus().getShortValue1()) + "valueflag：" + a + "enventype:" + history.getEvent().getEvent());
             if (time_space / 1000 >= -60) {
                 if (history.getEvent().getEvent() == SENSOR_EXPIRATION) {
-                    ActivityMain.setStatus(history);
+//                    ActivityMain.setStatus(history);
                     textView_g_err.setBackgroundResource(R.drawable.expirtion_err);
-                    textView_t.setText(((ActivityPDA) getActivity()).getDateString(
-                            history.getDateTime().getCalendar().getTimeInMillis(),
-                            null) + " " + ((ActivityPDA) getActivity()).getTimeString(
-                            history.getDateTime().getCalendar().getTimeInMillis(),
-                            null));
+                    //判断血糖时间
+                    long space = System.currentTimeMillis() - history.getDateTime().getCalendar().getTimeInMillis();
+                    int minute = (int) (space / 60000);
+                    setTimeVisible(String.valueOf(minute));
 
                     setGlucoseVisible(false);
+                    mHistory = history;
                     return;
                 }
                 if (Math.abs(time_space) < 15 * 60 * 1000) {
-                    ActivityMain.setStatus(history);
+                    mHistory = history;
                     switch (history.getEvent().getEvent()) {
                         case SENSOR_ERROR:
-                            textView_g.setText(STRING_UNKNOWN);
+                            setDisplayUnKnow();
                             textView_g_recommend_cal.setVisibility(View.GONE);
                             break;
                         case GLUCOSE:
@@ -448,15 +497,12 @@ public class FragmentHome extends FragmentBase
                         case HYPO:
                         case HYPER:
                         case IMPENDANCE:
-                            if ((history.getEvent().getEventFlag() & 0x40) == 0) {
-                                setGlucoseVisible(true);
+                            if (a) {
                                 switch (history.getStatus().getShortValue1()) {
                                     case 0:
-                                        textView_g.setTextColor(Color.RED);
                                         textView_g.setText(R.string.low);
                                         break;
                                     case 255:
-                                        textView_g.setTextColor(Color.RED);
                                         textView_g.setText(R.string.high);
                                         break;
                                     default:
@@ -466,52 +512,12 @@ public class FragmentHome extends FragmentBase
                                                         ActivityPDA.GLUCOSE_UNIT_MG_STEP, false).trim());
                                         break;
                                 }
-
-                                textView_t.setText(((ActivityPDA) getActivity()).getDateString(
-                                        history.getDateTime().getCalendar().getTimeInMillis(),
-                                        null) + " " + ((ActivityPDA) getActivity()).getTimeString(
-                                        history.getDateTime().getCalendar().getTimeInMillis(),
-                                        null));
-
-
-                                if (sender != null) {
-                                    manager.cancel(sender);
-                                    sender = null;
-                                }
-                                Intent intent = new Intent();
-                                // 设置Intent action属性
-                                intent.setAction("glucose_display");
-                                // 实例化PendingIntent
-                                if (sender == null) {
-                                    sender = PendingIntent.getBroadcast(getActivity(), 100,
-                                            intent, 0);
-                                }
-                                manager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
-                                manager.set(AlarmManager.RTC_WAKEUP,
-                                        System.currentTimeMillis() + GLUCOSE_DISPLAY_TIMEOUT - time_space, sender);
-//                                if (countDownTimer != null) {
-//                                    countDownTimer.cancel();
-//                                    countDownTimer = null;
-//                                }
-//                                countDownTimer = new CountDownTimer(15 * 60 * 1000 - time_space,
-//                                        15 * 60 * 1000 - time_space) {
-//                                    @Override
-//                                    public void onTick(long l) {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onFinish() {
-//                                        if (!getActivity().isFinishing()) {
-//                                            textView_g.setTextColor(Color.GREEN);
-//                                            textView_g.setText(STRING_UNKNOWN);
-//                                            textView_g_recommend_cal.setVisibility(View.GONE);
-////                                        textView_t.setText("");
-////                                        setGlucoseVisible(true);
-//                                            ActivityMain.setStatus(null);
-//                                        }
-//                                    }
-//                                }.start();
+                                setGlucoseVisible(true);
+                                ActivityMain.setStatus(history);
+                                //判断血糖时间
+                                long space = System.currentTimeMillis() - history.getDateTime().getCalendar().getTimeInMillis();
+                                int minute = (int) (space / 60000);
+                                setTimeVisible(String.valueOf(minute));
 
                                 if ((history.getEvent().getEventFlag() & 0x80) != 0) {
                                     textView_g_recommend_cal.setVisibility(View.VISIBLE);
@@ -519,9 +525,9 @@ public class FragmentHome extends FragmentBase
                                     textView_g_recommend_cal.setVisibility(View.GONE);
                                 }
                             } else {
+                                setDisplayUnKnow();
                                 textView_g_recommend_cal.setVisibility(View.GONE);
-//                            textView_g.setText(STRING_UNKNOWN);
-//                            textView_t.setText("");
+//                                textView_t.setText("");
                             }
                             break;
                         default:
@@ -530,12 +536,11 @@ public class FragmentHome extends FragmentBase
                     }
                     if ((history.getEvent().getEventFlag() & 0x20) != 0) {
                         if (textView_g_err.getVisibility() == View.GONE) {
-                            textView_g.setText(STRING_UNKNOWN);
-                            textView_t.setText(((ActivityPDA) getActivity()).getDateString(
-                                    history.getDateTime().getCalendar().getTimeInMillis(),
-                                    null) + " " + ((ActivityPDA) getActivity()).getTimeString(
-                                    history.getDateTime().getCalendar().getTimeInMillis(),
-                                    null));
+                            setDisplayUnKnow();
+                            //判断血糖时间
+                            long space = System.currentTimeMillis() - history.getDateTime().getCalendar().getTimeInMillis();
+                            int minute = (int) (space / 60000);
+                            setTimeVisible(String.valueOf(minute));
                         }
                         textView_g_err.setBackgroundResource(R.drawable.glucose_err);
                         textView_g_recommend_cal.setVisibility(View.GONE);
@@ -543,6 +548,10 @@ public class FragmentHome extends FragmentBase
                     } else {
                         setGlucoseVisible(true);
                         textView_g.setTextColor(getResources().getColor(R.color.green));
+                    }
+                    if (firstLauncher) {
+                        firstLauncher = false;
+                        fragmentNewGraph.firstRefresh();
                     }
                 }
             }
@@ -553,6 +562,7 @@ public class FragmentHome extends FragmentBase
         if (countDownVisible) {
             textView_g.setVisibility(View.GONE);
             textView_t.setVisibility(View.GONE);
+            tv_minutes.setVisibility(View.GONE);
             textView_g_err.setVisibility(View.GONE);
             textView_unit.setVisibility(View.GONE);
 
@@ -560,7 +570,7 @@ public class FragmentHome extends FragmentBase
             countdownView.setVisibility(View.VISIBLE);
         } else {
             textView_g.setVisibility(View.VISIBLE);
-            textView_t.setVisibility(View.VISIBLE);
+            setTimeVisible("");
             textView_g_err.setVisibility(View.GONE);
             textView_unit.setVisibility(View.VISIBLE);
 
@@ -577,6 +587,16 @@ public class FragmentHome extends FragmentBase
             textView_g.setVisibility(View.GONE);
             textView_g_recommend_cal.setVisibility(View.GONE);
             textView_g_err.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setTimeVisible(String time) {
+        textView_t.setVisibility(View.VISIBLE);
+        textView_t.setText(time);
+        if (TextUtils.isEmpty(time)) {
+            tv_minutes.setVisibility(View.GONE);
+        } else {
+            tv_minutes.setVisibility(View.VISIBLE);
         }
     }
 //

@@ -12,7 +12,9 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.TypedArrayUtils;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -42,7 +44,6 @@ import com.microtechmd.pda.library.parameter.ParameterGlobal;
 import com.microtechmd.pda.library.utility.ByteUtil;
 import com.microtechmd.pda.library.utility.SPUtils;
 import com.microtechmd.pda.ui.activity.ActivityMain;
-import com.microtechmd.pda.ui.activity.ActivityMessageTips;
 import com.microtechmd.pda.ui.activity.ActivityPDA;
 import com.microtechmd.pda.ui.widget.WidgetSettingItem;
 import com.microtechmd.pda.util.DataCleanUtil;
@@ -53,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static com.microtechmd.pda.library.entity.ParameterComm.CLOSE_COMM;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.COMMMESSAGETIPS;
@@ -88,8 +90,8 @@ public class FragmentSettings extends FragmentBase
     private BroadcastReceiver mBroadcastReceiver = null;
     private boolean mIsRFStateChecking = false;
     private int mQueryStateTimeout = 0;
-    private int mHyper = HYPER_DEFAULT;
-    private int mHypo = HYPO_DEFAULT;
+    //    private int mHyper = HYPER_DEFAULT;
+//    private int mHypo = HYPO_DEFAULT;
     private String mRFAddress = "";
     private View mRootView = null;
 
@@ -100,6 +102,9 @@ public class FragmentSettings extends FragmentBase
     private boolean pairFlag = true;
 
     private FragmentDialog pairFragmentDialog;
+    private FragmentDialog unPairFragmentDialog;
+    private FragmentDialog modeFragmentDialog;
+    private FragmentDialog setFailedFragmentDialog;
     private FragmentDialog highFragmentDialog;
     private FragmentDialog lowFragmentDialog;
 
@@ -137,14 +142,14 @@ public class FragmentSettings extends FragmentBase
                 .getExtras(ActivityPDA.SETTING_RF_ADDRESS, null));
         ((WidgetSettingItem) mRootView.findViewById(R.id.item_pairing))
                 .setItemValue(mRFAddress);
-        mHyper = ((ActivityPDA) getActivity())
-                .getDataStorage(ActivityPDA.class.getSimpleName())
-                .getInt(SETTING_HYPER, HYPER_DEFAULT);
-        mHypo = ((ActivityPDA) getActivity())
-                .getDataStorage(ActivityPDA.class.getSimpleName())
-                .getInt(SETTING_HYPO, HYPO_DEFAULT);
-        updateHyper(mHyper);
-        updateHypo(mHypo);
+//        mHyper = ((ActivityPDA) getActivity())
+//                .getDataStorage(ActivityPDA.class.getSimpleName())
+//                .getInt(SETTING_HYPER, HYPER_DEFAULT);
+//        mHypo = ((ActivityPDA) getActivity())
+//                .getDataStorage(ActivityPDA.class.getSimpleName())
+//                .getInt(SETTING_HYPO, HYPO_DEFAULT);
+//        updateHyper(mHyper);
+//        updateHypo(mHypo);
 
 //        if (Calendar.getInstance()
 //                .get(Calendar.YEAR) < YEAR_MIN) {
@@ -180,37 +185,37 @@ public class FragmentSettings extends FragmentBase
         }
     };
 
-    public void onVolumeUpPressed() {
-        mKeyNavigation.onKeyPrevious();
-        rootViewGetFocus();
-    }
-
-    public void onVolumeDownPressed() {
-        mKeyNavigation.onKeyNext();
-        rootViewGetFocus();
-    }
+//    public void onVolumeUpPressed() {
+//        mKeyNavigation.onKeyPrevious();
+//        rootViewGetFocus();
+//    }
+//
+//    public void onVolumeDownPressed() {
+//        mKeyNavigation.onKeyNext();
+//        rootViewGetFocus();
+//    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                final String action = intent.getAction();
+//        mBroadcastReceiver = new BroadcastReceiver() {
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//                final String action = intent.getAction();
+//
+//                assert action != null;
+//                if (action.equals(Intent.ACTION_TIME_TICK)) {
+//                    if (getActivity() != null) {
+//                        updateDateTimeSetting(true);
+//                    }
+//                }
+//            }
+//        };
 
-                assert action != null;
-                if (action.equals(Intent.ACTION_TIME_TICK)) {
-                    if (getActivity() != null) {
-                        updateDateTimeSetting(true);
-                    }
-                }
-            }
-        };
-
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_TIME_TICK);
-        getActivity().registerReceiver(mBroadcastReceiver, intentFilter);
+//        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction(Intent.ACTION_TIME_TICK);
+//        getActivity().registerReceiver(mBroadcastReceiver, intentFilter);
         ((ApplicationPDA) getActivity().getApplication())
                 .registerMessageListener(ParameterGlobal.PORT_COMM, this);
         ((ApplicationPDA) getActivity().getApplication())
@@ -228,7 +233,7 @@ public class FragmentSettings extends FragmentBase
                 .unregisterMessageListener(ParameterGlobal.PORT_GLUCOSE, this);
         ((ApplicationPDA) getActivity().getApplication())
                 .unregisterMessageListener(ParameterGlobal.PORT_MONITOR, this);
-        getActivity().unregisterReceiver(mBroadcastReceiver);
+//        getActivity().unregisterReceiver(mBroadcastReceiver);
         super.onDestroyView();
     }
 
@@ -241,13 +246,13 @@ public class FragmentSettings extends FragmentBase
             case R.id.item_date_time:
                 changeSettingType(TYPE_DATE_TIME);
                 break;
-            case R.id.item_date:
-                setDate();
-                break;
-
-            case R.id.item_time:
-                setTime();
-                break;
+//            case R.id.item_date:
+//                setDate();
+//                break;
+//
+//            case R.id.item_time:
+//                setTime();
+//                break;
 
             case R.id.item_pairing:
                 setTransmitterID();
@@ -258,24 +263,35 @@ public class FragmentSettings extends FragmentBase
                 break;
 
             case R.id.item_message:
-//                startActivity(new Intent(getActivity(), ActivityMessageTips.class));
                 changeSettingType(TYPE_TIPS);
+//                showDialogProgress();
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ((ActivityPDA) getActivity()).handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+//                                ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                                ParameterGlobal.PORT_MONITOR,
+//                                ParameterGlobal.PORT_MONITOR,
+//                                EntityMessage.OPERATION_SET,
+//                                ParameterMonitor.CAN_SEND_FAILD,
+//                                null));
+//                    }
+//                }, 3000);
                 break;
 
-            case R.id.item_hi_bg:
-                setHyper();
-                break;
-
-            case R.id.item_lo_bg:
-                setHypo();
-                break;
+//            case R.id.item_hi_bg:
+//                setHyper();
+//                break;
+//
+//            case R.id.item_lo_bg:
+//                setHypo();
+//                break;
             case R.id.item_history:
-//                startActivity(new Intent(getActivity(), ActivityHistoryLog.class));
                 changeSettingType(TYPE_HISTORY_LOG);
                 break;
-            case R.id.item_recovery:
-                recovery();
-                break;
+//            case R.id.item_recovery:
+//                recovery();
+//                break;
             case R.id.item_utilities:
                 changeSettingType(TYPE_UTILITIES);
                 break;
@@ -330,9 +346,49 @@ public class FragmentSettings extends FragmentBase
     }
 
     private void handleSet(EntityMessage message) {
-        if (message.getParameter() == ParameterComm.PAIRAGAIN) {
-            mRFAddress = RFAddress.RF_ADDRESS_UNPAIR;
-            pair(RFAddress.RF_ADDRESS_UNPAIR);
+        switch (message.getParameter()) {
+            case ParameterComm.PAIRAGAIN:
+                mRFAddress = RFAddress.RF_ADDRESS_UNPAIR;
+                pair(RFAddress.RF_ADDRESS_UNPAIR);
+                break;
+            case ParameterComm.DISMISS_DIALOG:
+                if (pairFragmentDialog != null) {
+                    pairFragmentDialog.dismissAllowingStateLoss();
+                }
+
+                if (unPairFragmentDialog != null) {
+                    unPairFragmentDialog.dismissAllowingStateLoss();
+                }
+
+                if (modeFragmentDialog != null) {
+                    modeFragmentDialog.dismissAllowingStateLoss();
+                }
+                if (setFailedFragmentDialog != null) {
+                    setFailedFragmentDialog.dismissAllowingStateLoss();
+                }
+                break;
+            case ParameterMonitor.CAN_SEND:
+                if (message.getSourcePort() == ParameterGlobal.PORT_MONITOR) {
+                    int mHyper = ((ActivityPDA) getActivity())
+                            .getDataStorage(ActivityPDA.class.getSimpleName())
+                            .getInt(SETTING_HYPER, HYPER_DEFAULT);
+                    ((ActivityPDA) getActivity()).handleMessage(
+                            new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                    ParameterGlobal.ADDRESS_REMOTE_MASTER,
+                                    ParameterGlobal.PORT_GLUCOSE,
+                                    ParameterGlobal.PORT_GLUCOSE,
+                                    EntityMessage.OPERATION_SET,
+                                    ParameterGlucose.PARAM_BG_LIMIT,
+                                    new ValueByte(mHyper).getByteArray()
+                            ));
+                }
+                break;
+            case ParameterMonitor.CAN_SEND_FAILD:
+                dismissDialogProgress();
+                showSetFailedDialog();
+                break;
+            default:
+                break;
         }
     }
 
@@ -350,6 +406,24 @@ public class FragmentSettings extends FragmentBase
                 ((WidgetSettingItem) mRootView
                         .findViewById(R.id.item_pairing))
                         .setItemValue(mRFAddress.toUpperCase());
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        int mHyper = ((ActivityPDA) getActivity())
+//                                .getDataStorage(ActivityPDA.class.getSimpleName())
+//                                .getInt(SETTING_HYPER, HYPER_DEFAULT);
+//                        ((ActivityPDA) getActivity()).handleMessage(
+//                                new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                                        ParameterGlobal.ADDRESS_REMOTE_MASTER,
+//                                        ParameterGlobal.PORT_GLUCOSE,
+//                                        ParameterGlobal.PORT_GLUCOSE,
+//                                        EntityMessage.OPERATION_SET,
+//                                        ParameterGlucose.PARAM_BG_LIMIT,
+//                                        new ValueByte(mHyper).getByteArray()
+//                                ));
+//                    }
+//                }, 600);
+
                 ((ActivityPDA) getActivity()).handleMessage(
                         new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
                                 ParameterGlobal.ADDRESS_LOCAL_VIEW,
@@ -371,23 +445,12 @@ public class FragmentSettings extends FragmentBase
 //
                 ((ActivityPDA) getActivity()).handleMessage(
                         new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                ParameterGlobal.ADDRESS_REMOTE_MASTER,
-                                ParameterGlobal.PORT_GLUCOSE,
-                                ParameterGlobal.PORT_GLUCOSE,
+                                ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                                ParameterGlobal.PORT_MONITOR,
+                                ParameterGlobal.PORT_MONITOR,
                                 EntityMessage.OPERATION_SET,
-                                ParameterGlucose.PARAM_BG_LIMIT,
-                                new ValueByte(mHyper).getByteArray()
-                        ));
-                ((ActivityPDA) getActivity()).handleMessage(
-                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                ParameterGlobal.ADDRESS_REMOTE_MASTER,
-                                ParameterGlobal.PORT_GLUCOSE,
-                                ParameterGlobal.PORT_GLUCOSE,
-                                EntityMessage.OPERATION_SET,
-                                ParameterGlucose.PARAM_FILL_LIMIT,
-                                new ValueByte(mHypo).getByteArray()
-                        ));
-
+                                ParameterComm.BEGIN_SUCCESS,
+                                null));
                 List<DbHistory> lastList = mDataSetHistory.querAddressHistoryLast(mRFAddress.toUpperCase());
                 if (lastList != null) {
                     if (lastList.size() > 0) {
@@ -413,14 +476,15 @@ public class FragmentSettings extends FragmentBase
                     pairFragmentDialog.dismissAllowingStateLoss();
                 }
 
-                ((ActivityPDA) getActivity()).handleMessage(new EntityMessage(
-                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                        ParameterGlobal.ADDRESS_LOCAL_MODEL, ParameterGlobal.PORT_MONITOR,
-                        ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_GET,
-                        ParameterMonitor.PARAM_HISTORY_LAST, null));
+//                ((ActivityPDA) getActivity()).handleMessage(new EntityMessage(
+//                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                        ParameterGlobal.ADDRESS_LOCAL_MODEL, ParameterGlobal.PORT_MONITOR,
+//                        ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_GET,
+//                        ParameterMonitor.PARAM_HISTORY_LAST, null));
 
                 mIsProgressNotDismiss = false;
-                dismissDialogProgress();
+//                dismissDialogProgress();
+                showDialogProgress();
 //                ((ActivityPDA) getActivity())
 //                        .handleMessage(new EntityMessage(
 //                                ParameterGlobal.ADDRESS_LOCAL_VIEW,
@@ -464,6 +528,29 @@ public class FragmentSettings extends FragmentBase
                             ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
                             ParameterComm.UNPAIRNOSIGNAL,
                             null));
+            ((ActivityPDA) getActivity()).handleMessage(
+                    new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                            ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                            ParameterGlobal.PORT_COMM,
+                            ParameterGlobal.PORT_COMM,
+                            EntityMessage.OPERATION_SET,
+                            CLOSE_COMM,
+                            new byte[]
+                                    {
+                                            (byte) 0
+                                    }));
+            ((ActivityPDA) getActivity()).handleMessage(
+                    new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                            ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                            ParameterGlobal.PORT_MONITOR,
+                            ParameterGlobal.PORT_MONITOR,
+                            EntityMessage.OPERATION_SET,
+                            ParameterComm.UNPAIR_SUCCESS,
+                            null));
+            SPUtils.put(getActivity(), COMM_CLOSE, false);
+            Toast.makeText(getActivity(), getResources().getString(R.string.bluetooth_unmatch_success),
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
@@ -481,9 +568,10 @@ public class FragmentSettings extends FragmentBase
                         message.getParameter() == ParameterComm.PARAM_MAC) {
                     if (pairFlag) {
                         pair(RFAddress.RF_ADDRESS_UNPAIR);
-                    } else {
-                        ensureUnpair();
                     }
+//                    else {
+//                        ensureUnpair();
+//                    }
                 }
 
                 mIsProgressNotDismiss = false;
@@ -586,28 +674,68 @@ public class FragmentSettings extends FragmentBase
                 }
             }
         }
-        if ((message.getSourceAddress() == ParameterGlobal.ADDRESS_LOCAL_MODEL) &&
-                (message.getParameter() == ParameterMonitor.PARAM_HISTORY_LAST)) {
-            if (message.getData() != null) {
-                String addr = new String(message.getData());
-                RFAddress address = new RFAddress(mRFAddress);
-
-                if (!addr.equals(address.getAddress())) {
-                    ((ActivityPDA) getActivity()).handleMessage(
-                            new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                    ParameterGlobal.ADDRESS_LOCAL_CONTROL,
-                                    ParameterGlobal.PORT_MONITOR,
-                                    ParameterGlobal.PORT_MONITOR,
-                                    EntityMessage.OPERATION_SET,
-                                    ParameterComm.ADDCHANGE,
-                                    null));
-                }
-            }
-        }
+//        if ((message.getSourceAddress() == ParameterGlobal.ADDRESS_LOCAL_MODEL) &&
+//                (message.getParameter() == ParameterMonitor.PARAM_HISTORY_LAST)) {
+//            if (message.getData() != null) {
+//                String addr = new String(message.getData());
+//                RFAddress address = new RFAddress(mRFAddress);
+//
+//                if (!addr.equals(address.getAddress())) {
+//                    ((ActivityPDA) getActivity()).handleMessage(
+//                            new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                                    ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+//                                    ParameterGlobal.PORT_MONITOR,
+//                                    ParameterGlobal.PORT_MONITOR,
+//                                    EntityMessage.OPERATION_SET,
+//                                    ParameterComm.ADDCHANGE,
+//                                    null));
+//                }
+//            }
+//        }
     }
 
 
     protected void handleAcknowledgement(final EntityMessage message) {
+        if (message.getSourcePort() == ParameterGlobal.PORT_GLUCOSE) {
+            if (message.getParameter() == ParameterGlucose.PARAM_FILL_LIMIT) {
+                if (!(message.getData()[0] == EntityMessage.FUNCTION_OK)) {
+                    showSetFailedDialog();
+                    return;
+                }
+                mLog.Debug(getClass(), "Set hypo success!");
+                ((ActivityPDA) getActivity()).handleMessage(
+                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                                ParameterGlobal.PORT_MONITOR,
+                                ParameterGlobal.PORT_MONITOR,
+                                EntityMessage.OPERATION_SET,
+                                ParameterComm.CANSEND_SUCCESS,
+                                null));
+            }
+            if (message.getParameter() == ParameterGlucose.PARAM_BG_LIMIT) {
+                if (!(message.getData()[0] == EntityMessage.FUNCTION_OK)) {
+                    showSetFailedDialog();
+                    return;
+                }
+                mLog.Debug(getClass(), "Set hypr success!");
+//                mHyper = ((ActivityPDA) getActivity())
+//                        .getDataStorage(ActivityPDA.class.getSimpleName())
+//                        .getInt(SETTING_HYPER, HYPER_DEFAULT);
+                int mHypo = ((ActivityPDA) getActivity())
+                        .getDataStorage(ActivityPDA.class.getSimpleName())
+                        .getInt(SETTING_HYPO, HYPO_DEFAULT);
+                ((ActivityPDA) getActivity()).handleMessage(
+                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                ParameterGlobal.ADDRESS_REMOTE_MASTER,
+                                ParameterGlobal.PORT_GLUCOSE,
+                                ParameterGlobal.PORT_GLUCOSE,
+                                EntityMessage.OPERATION_SET,
+                                ParameterGlucose.PARAM_FILL_LIMIT,
+                                new ValueByte(mHypo).getByteArray()
+                        ));
+            }
+        }
+
 //        if (message.getSourceAddress() == ParameterGlobal.ADDRESS_REMOTE_MASTER) {
 //            if ((message.getSourcePort() == ParameterGlobal.PORT_COMM) &&
 //                    (message.getParameter() == ParameterComm.PARAM_RF_REMOTE_ADDRESS)) {
@@ -820,6 +948,28 @@ public class FragmentSettings extends FragmentBase
         }
     }
 
+    private void showSetFailedDialog() {
+        FragmentMessage message = new FragmentMessage();
+        message.setComment(getString(R.string.set_highorlow_failed));
+
+        setFailedFragmentDialog = new FragmentDialog();
+        showRetryDialog(setFailedFragmentDialog, getString(R.string.setting), getString(R.string.setting), "",
+                message, new FragmentDialog.ListenerDialog() {
+                    @Override
+                    public boolean onButtonClick(int buttonID, Fragment content) {
+                        switch (buttonID) {
+                            case FragmentDialog.BUTTON_ID_POSITIVE:
+                                changeSettingType(TYPE_TIPS);
+                                break;
+                            default:
+                                break;
+                        }
+
+                        return true;
+                    }
+                });
+    }
+
 
     private void pair(String addressString) {
         mRFAddress = addressString;
@@ -912,52 +1062,52 @@ public class FragmentSettings extends FragmentBase
         fragmentDialog.show(getChildFragmentManager(), null);
     }
 
-    private void showDateDialog(List<Integer> date) {
-        DatePickerDialog.Builder builder = new DatePickerDialog.Builder(getActivity())
-                .setSelectYear(date.get(0) - 1)
-                .setSelectMonth(date.get(1))
-                .setSelectDay(date.get(2) - 1);
-        builder.setOnDateSelectedListener(new DatePickerDialog.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(int[] dates) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.YEAR, dates[0]);
-                calendar.set(Calendar.MONTH, dates[1] - 1);
-                calendar.set(Calendar.DAY_OF_MONTH, dates[2]);
-                SystemClock.setCurrentTimeMillis(
-                        calendar.getTimeInMillis());
-                dateOrTimeChanged();
-            }
+//    private void showDateDialog(List<Integer> date) {
+//        DatePickerDialog.Builder builder = new DatePickerDialog.Builder(getActivity())
+//                .setSelectYear(date.get(0) - 1)
+//                .setSelectMonth(date.get(1))
+//                .setSelectDay(date.get(2) - 1);
+//        builder.setOnDateSelectedListener(new DatePickerDialog.OnDateSelectedListener() {
+//            @Override
+//            public void onDateSelected(int[] dates) {
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.set(Calendar.YEAR, dates[0]);
+//                calendar.set(Calendar.MONTH, dates[1] - 1);
+//                calendar.set(Calendar.DAY_OF_MONTH, dates[2]);
+//                SystemClock.setCurrentTimeMillis(
+//                        calendar.getTimeInMillis());
+//                dateOrTimeChanged();
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//            }
+//        });
+//
+//        dateDialog = builder.create();
+//        dateDialog.show();
+//        dateDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+//            @Override
+//            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
+//                switch (keyCode) {
+//                    case KeyEvent.KEYCODE_HOME:
+//                        dateDialog.dismiss();
+//                        return true;
+//                }
+//                return false;
+//            }
+//        });
+//        dateDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+//
+//    }
 
-            @Override
-            public void onCancel() {
-            }
-        });
-
-        dateDialog = builder.create();
-        dateDialog.show();
-        dateDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
-                switch (keyCode) {
-                    case KeyEvent.KEYCODE_HOME:
-                        dateDialog.dismiss();
-                        return true;
-                }
-                return false;
-            }
-        });
-        dateDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
-
-    }
-
-    private void setDate() {
-        Calendar calendar = Calendar.getInstance();
-        List<Integer> date = new ArrayList<>();
-        date.add(calendar.get(Calendar.YEAR));
-        date.add(calendar.get(Calendar.MONTH));
-        date.add(calendar.get(Calendar.DAY_OF_MONTH));
-        showDateDialog(date);
+//    private void setDate() {
+//        Calendar calendar = Calendar.getInstance();
+//        List<Integer> date = new ArrayList<>();
+//        date.add(calendar.get(Calendar.YEAR));
+//        date.add(calendar.get(Calendar.MONTH));
+//        date.add(calendar.get(Calendar.DAY_OF_MONTH));
+//        showDateDialog(date);
 //        final FragmentInput fragmentInput = new FragmentInput();
 //        fragmentInput.setInputText(FragmentInput.POSITION_LEFT,
 //                calendar.get(Calendar.YEAR) + "");
@@ -1003,64 +1153,64 @@ public class FragmentSettings extends FragmentBase
 //                        return true;
 //                    }
 //                });
-    }
+//    }
 
-    private void showTimePick(List<Integer> time) {
-        TimePickerDialog.Builder builder = new TimePickerDialog.Builder(getActivity())
-                .setSelectHour(time.get(0))
-                .setSelectMinute(time.get(1));
-        timeDialog = builder.setOnTimeSelectedListener(new TimePickerDialog.OnTimeSelectedListener() {
-            @Override
-            public void onTimeSelected(int[] times) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, times[0]);
-                calendar.set(Calendar.MINUTE, times[1]);
-                calendar.set(Calendar.SECOND, 0);
-                SystemClock.setCurrentTimeMillis(
-                        calendar.getTimeInMillis());
-                dateOrTimeChanged();
-            }
-        }).create();
+//    private void showTimePick(List<Integer> time) {
+//        TimePickerDialog.Builder builder = new TimePickerDialog.Builder(getActivity())
+//                .setSelectHour(time.get(0))
+//                .setSelectMinute(time.get(1));
+//        timeDialog = builder.setOnTimeSelectedListener(new TimePickerDialog.OnTimeSelectedListener() {
+//            @Override
+//            public void onTimeSelected(int[] times) {
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.set(Calendar.HOUR_OF_DAY, times[0]);
+//                calendar.set(Calendar.MINUTE, times[1]);
+//                calendar.set(Calendar.SECOND, 0);
+//                SystemClock.setCurrentTimeMillis(
+//                        calendar.getTimeInMillis());
+//                dateOrTimeChanged();
+//            }
+//        }).create();
+//
+//        timeDialog.show();
+//        timeDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+//            @Override
+//            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
+//                switch (keyCode) {
+//                    case KeyEvent.KEYCODE_HOME:
+//                        timeDialog.dismiss();
+//                        return true;
+//                }
+//                return false;
+//            }
+//        });
+//        timeDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+//    }
 
-        timeDialog.show();
-        timeDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
-                switch (keyCode) {
-                    case KeyEvent.KEYCODE_HOME:
-                        timeDialog.dismiss();
-                        return true;
-                }
-                return false;
-            }
-        });
-        timeDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
-    }
+//    private void dateOrTimeChanged() {
+//        ((ActivityPDA) getActivity())
+//                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                        ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_MONITOR,
+//                        ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_SET,
+//                        ParameterComm.RESET_DATA,
+//                        new byte[]{(byte) 2}));
+//
+//        ((ActivityPDA) getActivity()).handleMessage(
+//                new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                        ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+//                        ParameterGlobal.PORT_MONITOR,
+//                        ParameterGlobal.PORT_MONITOR,
+//                        EntityMessage.OPERATION_SET,
+//                        ParameterComm.FORCESYNCHRONIZEFLAG, new byte[]{}));
+//        updateDateTimeSetting(true);
+//    }
 
-    private void dateOrTimeChanged() {
-        ((ActivityPDA) getActivity())
-                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                        ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_MONITOR,
-                        ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_SET,
-                        ParameterComm.RESET_DATA,
-                        new byte[]{(byte) 2}));
-
-        ((ActivityPDA) getActivity()).handleMessage(
-                new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                        ParameterGlobal.ADDRESS_LOCAL_CONTROL,
-                        ParameterGlobal.PORT_MONITOR,
-                        ParameterGlobal.PORT_MONITOR,
-                        EntityMessage.OPERATION_SET,
-                        ParameterComm.FORCESYNCHRONIZEFLAG, new byte[]{}));
-        updateDateTimeSetting(true);
-    }
-
-    private void setTime() {
-        Calendar calendar = Calendar.getInstance();
-        List<Integer> time = new ArrayList<>();
-        time.add(calendar.get(Calendar.HOUR_OF_DAY));
-        time.add(calendar.get(Calendar.MINUTE));
-        showTimePick(time);
+//    private void setTime() {
+//        Calendar calendar = Calendar.getInstance();
+//        List<Integer> time = new ArrayList<>();
+//        time.add(calendar.get(Calendar.HOUR_OF_DAY));
+//        time.add(calendar.get(Calendar.MINUTE));
+//        showTimePick(time);
 //        final FragmentInput fragmentInput = new FragmentInput();
 //        fragmentInput.setInputText(FragmentInput.POSITION_LEFT,
 //                calendar.get(Calendar.HOUR_OF_DAY) + "");
@@ -1095,7 +1245,7 @@ public class FragmentSettings extends FragmentBase
 //                        return true;
 //                    }
 //                });
-    }
+//    }
 
 //    private void dateOrTimeChanged() {
 //
@@ -1116,7 +1266,9 @@ public class FragmentSettings extends FragmentBase
         fragmentInput.setInputText(FragmentInput.POSITION_CENTER, null);
         fragmentInput.setSeparatorText(FragmentInput.POSITION_LEFT, null);
         fragmentInput.setSeparatorText(FragmentInput.POSITION_RIGHT, null);
-        showDialogConfirm(getString(R.string.setting_general_mode), "", "",
+
+        modeFragmentDialog = new FragmentDialog();
+        showRetryDialog(modeFragmentDialog, getString(R.string.setting_general_mode), "", "",
                 fragmentInput, new FragmentDialog.ListenerDialog() {
                     @Override
                     public boolean onButtonClick(int buttonID, Fragment content) {
@@ -1183,13 +1335,28 @@ public class FragmentSettings extends FragmentBase
     }
 
     private void setTransmitterID() {
-        final FragmentInput fragmentInput = new FragmentInput();
 
         if ((mRFAddress.equals("")) || (mRFAddress.equals(RFAddress.RF_ADDRESS_UNPAIR))) {
+            final FragmentInput fragmentInput = new FragmentInput();
             fragmentInput.setInputText(FragmentInput.POSITION_CENTER,
                     mRFAddress);
             fragmentInput.setInputType(FragmentInput.POSITION_CENTER,
                     InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
+            );
+            fragmentInput.setInputFilter(FragmentInput.POSITION_CENTER,
+                    new InputFilter() {
+                        @Override
+                        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+                            String regex = "^[\u4E00-\u9FA5]+$";
+                            boolean isChinese = Pattern.matches(regex, charSequence.toString());
+                            if (i < charSequence.length()) {
+                                if (!Character.isLetterOrDigit(charSequence.charAt(i)) || isChinese) {
+                                    return "";
+                                }
+                            }
+                            return null;
+                        }
+                    }
             );
             fragmentInput.setInputWidth(FragmentInput.POSITION_CENTER, 150);
             pairFragmentDialog = new FragmentDialog();
@@ -1263,25 +1430,46 @@ public class FragmentSettings extends FragmentBase
                         }
                     });
         } else {
-            fragmentInput
+            final FragmentUnPair fragmentUnPair = new FragmentUnPair();
+            fragmentUnPair
                     .setComment(getString(R.string.fragment_settings_unpair));
-            showDialogConfirm(getString(R.string.fragment_settings_pairing), "",
-                    "", fragmentInput, new FragmentDialog.ListenerDialog() {
+            unPairFragmentDialog = new FragmentDialog();
+            showRetryDialog(unPairFragmentDialog, getString(R.string.fragment_settings_unpairing), "",
+                    "", fragmentUnPair, new FragmentDialog.ListenerDialog() {
                         @Override
                         public boolean onButtonClick(int buttonID, Fragment content) {
                             switch (buttonID) {
                                 case FragmentDialog.BUTTON_ID_POSITIVE:
-                                    mIsProgressNotDismiss = true;
-                                    showDialogProgress();
-                                    ((ActivityPDA) getActivity())
-                                            .handleMessage(new EntityMessage(
-                                                    ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                    ParameterGlobal.ADDRESS_REMOTE_MASTER,
-                                                    ParameterGlobal.PORT_COMM,
-                                                    ParameterGlobal.PORT_COMM,
-                                                    EntityMessage.OPERATION_UNPAIR,
-                                                    ParameterComm.PARAM_MAC,
-                                                    new byte[]{}));
+                                    if (fragmentUnPair.getIsRemove()) {
+                                        pair(RFAddress.RF_ADDRESS_UNPAIR);
+                                        ((ActivityPDA) getActivity())
+                                                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                        ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_MONITOR,
+                                                        ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_SET,
+                                                        ParameterComm.RESET_DATA,
+                                                        new byte[]{(byte) 3}));
+                                        ((ActivityPDA) getActivity())
+                                                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                        ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
+                                                        ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
+                                                        ParameterComm.UNPAIRNOSIGNAL,
+                                                        null));
+                                        Toast.makeText(getActivity(), getResources().getString(R.string.remove_success),
+                                                Toast.LENGTH_SHORT)
+                                                .show();
+                                    } else {
+                                        mIsProgressNotDismiss = true;
+                                        showDialogProgress();
+                                        ((ActivityPDA) getActivity())
+                                                .handleMessage(new EntityMessage(
+                                                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                                        ParameterGlobal.ADDRESS_REMOTE_MASTER,
+                                                        ParameterGlobal.PORT_COMM,
+                                                        ParameterGlobal.PORT_COMM,
+                                                        EntityMessage.OPERATION_UNPAIR,
+                                                        ParameterComm.PARAM_MAC,
+                                                        new byte[]{}));
+                                    }
                                     pairFlag = false;
 //                                    pair(mRFAddress);
                                     break;
@@ -1296,125 +1484,125 @@ public class FragmentSettings extends FragmentBase
     }
 
 
-    private void setHyper() {
-        mHyper = ((ActivityPDA) getActivity())
-                .getDataStorage(ActivityPDA.class.getSimpleName())
-                .getInt(SETTING_HYPER, HYPER_DEFAULT);
-        final FragmentInput fragmentInput = new FragmentInput();
-        fragmentInput.setInputText(FragmentInput.POSITION_CENTER,
-                new DecimalFormat("0.0").format((double) mHyper / 10));
-        fragmentInput.setInputType(FragmentInput.POSITION_CENTER,
-                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        fragmentInput.setSeparatorText(FragmentInput.POSITION_RIGHT,
-                getString(R.string.unit_mmol_l));
-        highFragmentDialog = new FragmentDialog();
-        showRetryDialog(highFragmentDialog, getString(R.string.fragment_settings_hi_bg_threshold),
-                "", "", fragmentInput, new FragmentDialog.ListenerDialog() {
-                    @Override
-                    public boolean onButtonClick(int buttonID, Fragment content) {
-                        switch (buttonID) {
-                            case FragmentDialog.BUTTON_ID_POSITIVE:
-                                mHyper = (int) (Float.parseFloat(fragmentInput
-                                        .getInputText(FragmentInput.POSITION_CENTER)) * 10.0f);
+//    private void setHyper() {
+//        mHyper = ((ActivityPDA) getActivity())
+//                .getDataStorage(ActivityPDA.class.getSimpleName())
+//                .getInt(SETTING_HYPER, HYPER_DEFAULT);
+//        final FragmentInput fragmentInput = new FragmentInput();
+//        fragmentInput.setInputText(FragmentInput.POSITION_CENTER,
+//                new DecimalFormat("0.0").format((double) mHyper / 10));
+//        fragmentInput.setInputType(FragmentInput.POSITION_CENTER,
+//                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+//        fragmentInput.setSeparatorText(FragmentInput.POSITION_RIGHT,
+//                getString(R.string.unit_mmol_l));
+//        highFragmentDialog = new FragmentDialog();
+//        showRetryDialog(highFragmentDialog, getString(R.string.fragment_settings_hi_bg_threshold),
+//                "", "", fragmentInput, new FragmentDialog.ListenerDialog() {
+//                    @Override
+//                    public boolean onButtonClick(int buttonID, Fragment content) {
+//                        switch (buttonID) {
+//                            case FragmentDialog.BUTTON_ID_POSITIVE:
+//                                mHyper = (int) (Float.parseFloat(fragmentInput
+//                                        .getInputText(FragmentInput.POSITION_CENTER)) * 10.0f);
+//
+//                                if ((mHyper > HYPER_MAX) || (mHyper < HYPER_MIN)) {
+//                                    Toast.makeText(getActivity(),
+//                                            R.string.fragment_settings_hyper_error,
+//                                            Toast.LENGTH_SHORT).show();
+//                                    return false;
+//                                } else {
+//                                    if ((!mRFAddress.equals("")) && (!mRFAddress
+//                                            .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
+//                                        ((ActivityPDA) getActivity())
+//                                                .handleMessage(new EntityMessage(
+//                                                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                                                        ParameterGlobal.ADDRESS_REMOTE_MASTER,
+//                                                        ParameterGlobal.PORT_GLUCOSE,
+//                                                        ParameterGlobal.PORT_GLUCOSE,
+//                                                        EntityMessage.OPERATION_SET,
+//                                                        ParameterGlucose.PARAM_BG_LIMIT,
+//                                                        new ValueByte(mHyper).getByteArray()
+//                                                ));
+//                                        if (highFragmentDialog != null) {
+//                                            highFragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_POSITIVE,
+//                                                    getResources().getString(R.string.retry));
+//                                        }
+//                                        return false;
+//                                    } else {
+//                                        updateHyper(mHyper);
+//                                    }
+//                                }
+//
+//                                break;
+//
+//                            default:
+//                                break;
+//                        }
+//
+//                        return true;
+//                    }
+//                });
+//    }
 
-                                if ((mHyper > HYPER_MAX) || (mHyper < HYPER_MIN)) {
-                                    Toast.makeText(getActivity(),
-                                            R.string.fragment_settings_hyper_error,
-                                            Toast.LENGTH_SHORT).show();
-                                    return false;
-                                } else {
-                                    if ((!mRFAddress.equals("")) && (!mRFAddress
-                                            .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
-                                        ((ActivityPDA) getActivity())
-                                                .handleMessage(new EntityMessage(
-                                                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                        ParameterGlobal.ADDRESS_REMOTE_MASTER,
-                                                        ParameterGlobal.PORT_GLUCOSE,
-                                                        ParameterGlobal.PORT_GLUCOSE,
-                                                        EntityMessage.OPERATION_SET,
-                                                        ParameterGlucose.PARAM_BG_LIMIT,
-                                                        new ValueByte(mHyper).getByteArray()
-                                                ));
-                                        if (highFragmentDialog != null) {
-                                            highFragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_POSITIVE,
-                                                    getResources().getString(R.string.retry));
-                                        }
-                                        return false;
-                                    } else {
-                                        updateHyper(mHyper);
-                                    }
-                                }
 
-                                break;
-
-                            default:
-                                break;
-                        }
-
-                        return true;
-                    }
-                });
-    }
-
-
-    private void setHypo() {
-        mHypo = ((ActivityPDA) getActivity())
-                .getDataStorage(ActivityPDA.class.getSimpleName())
-                .getInt(SETTING_HYPO, HYPO_DEFAULT);
-        final FragmentInput fragmentInput = new FragmentInput();
-        fragmentInput.setInputText(FragmentInput.POSITION_CENTER,
-                new DecimalFormat("0.0").format((double) mHypo / 10));
-        fragmentInput.setInputType(FragmentInput.POSITION_CENTER,
-                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        fragmentInput.setSeparatorText(FragmentInput.POSITION_RIGHT,
-                getString(R.string.unit_mmol_l));
-        lowFragmentDialog = new FragmentDialog();
-        showRetryDialog(lowFragmentDialog, getString(R.string.fragment_settings_lo_bg_threshold),
-                "", "", fragmentInput, new FragmentDialog.ListenerDialog() {
-                    @Override
-                    public boolean onButtonClick(int buttonID, Fragment content) {
-                        switch (buttonID) {
-                            case FragmentDialog.BUTTON_ID_POSITIVE:
-                                mHypo = (int) (Float.parseFloat(fragmentInput
-                                        .getInputText(FragmentInput.POSITION_CENTER)) * 10.0f);
-
-                                if ((mHypo > HYPO_MAX) || (mHypo < HYPO_MIN)) {
-                                    Toast.makeText(getActivity(),
-                                            R.string.fragment_settings_hypo_error,
-                                            Toast.LENGTH_SHORT).show();
-                                    return false;
-                                } else {
-                                    if ((!mRFAddress.equals("")) && (!mRFAddress
-                                            .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
-                                        ((ActivityPDA) getActivity())
-                                                .handleMessage(new EntityMessage(
-                                                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                        ParameterGlobal.ADDRESS_REMOTE_MASTER,
-                                                        ParameterGlobal.PORT_GLUCOSE,
-                                                        ParameterGlobal.PORT_GLUCOSE,
-                                                        EntityMessage.OPERATION_SET,
-                                                        ParameterGlucose.PARAM_FILL_LIMIT,
-                                                        new ValueByte(mHypo).getByteArray()
-                                                ));
-                                        if (lowFragmentDialog != null) {
-                                            lowFragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_POSITIVE,
-                                                    getResources().getString(R.string.retry));
-                                        }
-                                        return false;
-                                    } else {
-                                        updateHypo(mHypo);
-                                    }
-                                }
-
-                                break;
-
-                            default:
-                                break;
-                        }
-                        return true;
-                    }
-                });
-    }
+//    private void setHypo() {
+//        mHypo = ((ActivityPDA) getActivity())
+//                .getDataStorage(ActivityPDA.class.getSimpleName())
+//                .getInt(SETTING_HYPO, HYPO_DEFAULT);
+//        final FragmentInput fragmentInput = new FragmentInput();
+//        fragmentInput.setInputText(FragmentInput.POSITION_CENTER,
+//                new DecimalFormat("0.0").format((double) mHypo / 10));
+//        fragmentInput.setInputType(FragmentInput.POSITION_CENTER,
+//                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+//        fragmentInput.setSeparatorText(FragmentInput.POSITION_RIGHT,
+//                getString(R.string.unit_mmol_l));
+//        lowFragmentDialog = new FragmentDialog();
+//        showRetryDialog(lowFragmentDialog, getString(R.string.fragment_settings_lo_bg_threshold),
+//                "", "", fragmentInput, new FragmentDialog.ListenerDialog() {
+//                    @Override
+//                    public boolean onButtonClick(int buttonID, Fragment content) {
+//                        switch (buttonID) {
+//                            case FragmentDialog.BUTTON_ID_POSITIVE:
+//                                mHypo = (int) (Float.parseFloat(fragmentInput
+//                                        .getInputText(FragmentInput.POSITION_CENTER)) * 10.0f);
+//
+//                                if ((mHypo > HYPO_MAX) || (mHypo < HYPO_MIN)) {
+//                                    Toast.makeText(getActivity(),
+//                                            R.string.fragment_settings_hypo_error,
+//                                            Toast.LENGTH_SHORT).show();
+//                                    return false;
+//                                } else {
+//                                    if ((!mRFAddress.equals("")) && (!mRFAddress
+//                                            .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
+//                                        ((ActivityPDA) getActivity())
+//                                                .handleMessage(new EntityMessage(
+//                                                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                                                        ParameterGlobal.ADDRESS_REMOTE_MASTER,
+//                                                        ParameterGlobal.PORT_GLUCOSE,
+//                                                        ParameterGlobal.PORT_GLUCOSE,
+//                                                        EntityMessage.OPERATION_SET,
+//                                                        ParameterGlucose.PARAM_FILL_LIMIT,
+//                                                        new ValueByte(mHypo).getByteArray()
+//                                                ));
+//                                        if (lowFragmentDialog != null) {
+//                                            lowFragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_POSITIVE,
+//                                                    getResources().getString(R.string.retry));
+//                                        }
+//                                        return false;
+//                                    } else {
+//                                        updateHypo(mHypo);
+//                                    }
+//                                }
+//
+//                                break;
+//
+//                            default:
+//                                break;
+//                        }
+//                        return true;
+//                    }
+//                });
+//    }
 
     public void updateDateTimeSetting(boolean timeFormat) {
         WidgetSettingItem settingItem =
@@ -1474,154 +1662,154 @@ public class FragmentSettings extends FragmentBase
                 .setInt(SETTING_HYPO, hypo);
     }
 
-    private void recovery() {
-        unTransmitterId();
-    }
+//    private void recovery() {
+//        unTransmitterId();
+//    }
 
-    private void restoreHg() {
-        mHyper = HYPER_DEFAULT;
-        mHypo = HYPO_DEFAULT;
-        if ((!mRFAddress.equals("")) && (!mRFAddress
-                .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
-            ((ActivityPDA) getActivity())
-                    .handleMessage(new EntityMessage(
-                            ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                            ParameterGlobal.ADDRESS_REMOTE_MASTER,
-                            ParameterGlobal.PORT_GLUCOSE,
-                            ParameterGlobal.PORT_GLUCOSE,
-                            EntityMessage.OPERATION_SET,
-                            ParameterGlucose.PARAM_BG_LIMIT,
-                            new ValueByte(mHyper).getByteArray()
-                    ));
-        } else {
-            updateHyper(mHyper);
-        }
-        if ((!mRFAddress.equals("")) && (!mRFAddress
-                .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
-            ((ActivityPDA) getActivity())
-                    .handleMessage(new EntityMessage(
-                            ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                            ParameterGlobal.ADDRESS_REMOTE_MASTER,
-                            ParameterGlobal.PORT_GLUCOSE,
-                            ParameterGlobal.PORT_GLUCOSE,
-                            EntityMessage.OPERATION_SET,
-                            ParameterGlucose.PARAM_FILL_LIMIT,
-                            new ValueByte(mHypo).getByteArray()
-                    ));
-        } else {
-            updateHypo(mHypo);
-        }
-    }
+//    private void restoreHg() {
+//        mHyper = HYPER_DEFAULT;
+//        mHypo = HYPO_DEFAULT;
+//        if ((!mRFAddress.equals("")) && (!mRFAddress
+//                .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
+//            ((ActivityPDA) getActivity())
+//                    .handleMessage(new EntityMessage(
+//                            ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                            ParameterGlobal.ADDRESS_REMOTE_MASTER,
+//                            ParameterGlobal.PORT_GLUCOSE,
+//                            ParameterGlobal.PORT_GLUCOSE,
+//                            EntityMessage.OPERATION_SET,
+//                            ParameterGlucose.PARAM_BG_LIMIT,
+//                            new ValueByte(mHyper).getByteArray()
+//                    ));
+//        } else {
+//            updateHyper(mHyper);
+//        }
+//        if ((!mRFAddress.equals("")) && (!mRFAddress
+//                .equals(RFAddress.RF_ADDRESS_UNPAIR))) {
+//            ((ActivityPDA) getActivity())
+//                    .handleMessage(new EntityMessage(
+//                            ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                            ParameterGlobal.ADDRESS_REMOTE_MASTER,
+//                            ParameterGlobal.PORT_GLUCOSE,
+//                            ParameterGlobal.PORT_GLUCOSE,
+//                            EntityMessage.OPERATION_SET,
+//                            ParameterGlucose.PARAM_FILL_LIMIT,
+//                            new ValueByte(mHypo).getByteArray()
+//                    ));
+//        } else {
+//            updateHypo(mHypo);
+//        }
+//    }
 
-    private void unTransmitterId() {
-        FragmentInput fragmentInput = new FragmentInput();
-        showDialogConfirm(getString(R.string.recovery_pair), "",
-                "", fragmentInput, new FragmentDialog.ListenerDialog() {
-                    @Override
-                    public boolean onButtonClick(int buttonID, Fragment content) {
-                        switch (buttonID) {
-                            case FragmentDialog.BUTTON_ID_POSITIVE:
-                                ((ActivityPDA) getActivity()).handleMessage(
-                                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                ParameterGlobal.PORT_MONITOR,
-                                                ParameterGlobal.PORT_MONITOR,
-                                                EntityMessage.OPERATION_SET,
-                                                ParameterComm.BROADCAST_SAVA, new byte[]
-                                                {
-                                                        (byte) 1
-                                                }));
-                                ((ActivityPDA) getActivity()).handleMessage(
-                                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                ParameterGlobal.ADDRESS_LOCAL_CONTROL,
-                                                ParameterGlobal.PORT_MONITOR,
-                                                ParameterGlobal.PORT_MONITOR,
-                                                EntityMessage.OPERATION_SET,
-                                                ParameterComm.BROADCAST_SAVA, new byte[]
-                                                {
-                                                        (byte) 1
-                                                }));
-                                modeSettingItem.setItemValue(getString(R.string.setting_general_mode_time));
-                                restoreHg();
-                                cleanCache();
-                                ((ActivityPDA) getActivity()).handleMessage(
-                                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                                ParameterGlobal.PORT_MONITOR,
-                                                ParameterGlobal.PORT_MONITOR,
-                                                EntityMessage.OPERATION_SET,
-                                                ParameterMonitor.COUNTDOWNVIEW_VISIBLE,
-                                                new ValueInt(0).getByteArray()));
-                                mRFAddress = RFAddress.RF_ADDRESS_UNPAIR;
-                                mIsProgressNotDismiss = true;
-//                                showDialogProgress();
-                                pair(RFAddress.RF_ADDRESS_UNPAIR);
-                                ((WidgetSettingItem) mRootView
-                                        .findViewById(R.id.item_pairing))
-                                        .setItemValue("");
-//                                    ((ActivityPDA) getActivity())
-//                                            .handleMessage(new EntityMessage(
-//                                                    ParameterGlobal.ADDRESS_LOCAL_VIEW,
-//                                                    ParameterGlobal.ADDRESS_REMOTE_MASTER,
-//                                                    ParameterGlobal.PORT_COMM,
-//                                                    ParameterGlobal.PORT_COMM,
-//                                                    EntityMessage.OPERATION_SET,
-//                                                    ParameterComm.PARAM_RF_REMOTE_ADDRESS,
-//                                                    new RFAddress(mRFAddress)
-//                                                            .getByteArray()));
-                                break;
+//    private void unTransmitterId() {
+//        FragmentInput fragmentInput = new FragmentInput();
+//        showDialogConfirm(getString(R.string.recovery_pair), "",
+//                "", fragmentInput, new FragmentDialog.ListenerDialog() {
+//                    @Override
+//                    public boolean onButtonClick(int buttonID, Fragment content) {
+//                        switch (buttonID) {
+//                            case FragmentDialog.BUTTON_ID_POSITIVE:
+//                                ((ActivityPDA) getActivity()).handleMessage(
+//                                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                                                ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                                                ParameterGlobal.PORT_MONITOR,
+//                                                ParameterGlobal.PORT_MONITOR,
+//                                                EntityMessage.OPERATION_SET,
+//                                                ParameterComm.BROADCAST_SAVA, new byte[]
+//                                                {
+//                                                        (byte) 1
+//                                                }));
+//                                ((ActivityPDA) getActivity()).handleMessage(
+//                                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                                                ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+//                                                ParameterGlobal.PORT_MONITOR,
+//                                                ParameterGlobal.PORT_MONITOR,
+//                                                EntityMessage.OPERATION_SET,
+//                                                ParameterComm.BROADCAST_SAVA, new byte[]
+//                                                {
+//                                                        (byte) 1
+//                                                }));
+//                                modeSettingItem.setItemValue(getString(R.string.setting_general_mode_time));
+//                                restoreHg();
+//                                cleanCache();
+//                                ((ActivityPDA) getActivity()).handleMessage(
+//                                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                                                ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                                                ParameterGlobal.PORT_MONITOR,
+//                                                ParameterGlobal.PORT_MONITOR,
+//                                                EntityMessage.OPERATION_SET,
+//                                                ParameterMonitor.COUNTDOWNVIEW_VISIBLE,
+//                                                new ValueInt(0).getByteArray()));
+//                                mRFAddress = RFAddress.RF_ADDRESS_UNPAIR;
+//                                mIsProgressNotDismiss = true;
+////                                showDialogProgress();
+//                                pair(RFAddress.RF_ADDRESS_UNPAIR);
+//                                ((WidgetSettingItem) mRootView
+//                                        .findViewById(R.id.item_pairing))
+//                                        .setItemValue("");
+////                                    ((ActivityPDA) getActivity())
+////                                            .handleMessage(new EntityMessage(
+////                                                    ParameterGlobal.ADDRESS_LOCAL_VIEW,
+////                                                    ParameterGlobal.ADDRESS_REMOTE_MASTER,
+////                                                    ParameterGlobal.PORT_COMM,
+////                                                    ParameterGlobal.PORT_COMM,
+////                                                    EntityMessage.OPERATION_SET,
+////                                                    ParameterComm.PARAM_RF_REMOTE_ADDRESS,
+////                                                    new RFAddress(mRFAddress)
+////                                                            .getByteArray()));
+//                                break;
+//
+//                            default:
+//                                break;
+//                        }
+//                        return true;
+//                    }
+//                });
+//    }
 
-                            default:
-                                break;
-                        }
-                        return true;
-                    }
-                });
-    }
-
-    private void cleanCache() {
-        ArrayList<DbHistory> errList = ((ApplicationPDA) getActivity().getApplication()).getDataErrListAll();
-        errList.clear();
-        ((ApplicationPDA) getActivity().getApplication()).setDataErrListAll(errList);
-        List<History> dataList = ((ApplicationPDA) getActivity().getApplication()).getDataListAll();
-        dataList.clear();
-        ((ApplicationPDA) getActivity().getApplication()).setDataListAll(dataList);
-        DataCleanUtil.cleanSharedPreference(getActivity());
-        SPUtils.clear(getActivity());
-        ((ActivityPDA) getActivity())
-                .getDataStorage(ActivityPDA.class.getSimpleName())
-                .clear();
-        ((ActivityPDA) getActivity())
-                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                        ParameterGlobal.ADDRESS_LOCAL_CONTROL, ParameterGlobal.PORT_COMM,
-                        ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
-                        ParameterComm.CLEAN_DATABASES,
-                        new byte[]{}));
-        ((ActivityPDA) getActivity())
-                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                        ParameterGlobal.ADDRESS_LOCAL_CONTROL, ParameterGlobal.PORT_MONITOR,
-                        ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_SET,
-                        ParameterComm.CLEAN_DATABASES,
-                        new byte[]{}));
-        ((ActivityPDA) getActivity())
-                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                        ParameterGlobal.ADDRESS_LOCAL_MODEL, ParameterGlobal.PORT_COMM,
-                        ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
-                        ParameterComm.CLEAN_DATABASES,
-                        new byte[]{}));
-        ((ActivityPDA) getActivity())
-                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                        ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_MONITOR,
-                        ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_SET,
-                        ParameterComm.RESET_DATA,
-                        new byte[]{(byte) 0}));
-        ((ActivityPDA) getActivity())
-                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                        ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
-                        ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
-                        ParameterComm.UNPAIRNOSIGNAL,
-                        null));
-    }
+//    private void cleanCache() {
+//        ArrayList<DbHistory> errList = ((ApplicationPDA) getActivity().getApplication()).getDataErrListAll();
+//        errList.clear();
+//        ((ApplicationPDA) getActivity().getApplication()).setDataErrListAll(errList);
+//        List<History> dataList = ((ApplicationPDA) getActivity().getApplication()).getDataListAll();
+//        dataList.clear();
+//        ((ApplicationPDA) getActivity().getApplication()).setDataListAll(dataList);
+//        DataCleanUtil.cleanSharedPreference(getActivity());
+//        SPUtils.clear(getActivity());
+//        ((ActivityPDA) getActivity())
+//                .getDataStorage(ActivityPDA.class.getSimpleName())
+//                .clear();
+//        ((ActivityPDA) getActivity())
+//                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                        ParameterGlobal.ADDRESS_LOCAL_CONTROL, ParameterGlobal.PORT_COMM,
+//                        ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
+//                        ParameterComm.CLEAN_DATABASES,
+//                        new byte[]{}));
+//        ((ActivityPDA) getActivity())
+//                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                        ParameterGlobal.ADDRESS_LOCAL_CONTROL, ParameterGlobal.PORT_MONITOR,
+//                        ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_SET,
+//                        ParameterComm.CLEAN_DATABASES,
+//                        new byte[]{}));
+//        ((ActivityPDA) getActivity())
+//                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                        ParameterGlobal.ADDRESS_LOCAL_MODEL, ParameterGlobal.PORT_COMM,
+//                        ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
+//                        ParameterComm.CLEAN_DATABASES,
+//                        new byte[]{}));
+//        ((ActivityPDA) getActivity())
+//                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                        ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_MONITOR,
+//                        ParameterGlobal.PORT_MONITOR, EntityMessage.OPERATION_SET,
+//                        ParameterComm.RESET_DATA,
+//                        new byte[]{(byte) 0}));
+//        ((ActivityPDA) getActivity())
+//                .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                        ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
+//                        ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
+//                        ParameterComm.UNPAIRNOSIGNAL,
+//                        null));
+//    }
 
     public String getAddress(byte[] addressByte) {
         if (addressByte != null) {

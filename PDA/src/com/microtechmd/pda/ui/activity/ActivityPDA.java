@@ -117,7 +117,7 @@ public class ActivityPDA extends AppCompatActivity
     public static final int BLOOD_GLUCOSE = 13;
     public static final int CALIBRATION = 14;
     private static final int PDA_BATTERY_LOW = 21;
-    public static final int PDA_ERROR = 256;
+    public static final int PDA_ERROR = 22;
     private static final int PDA_COMM_ERROR = 23;
     private static final int GLUCOSE_CHECK = 24;
 
@@ -128,7 +128,7 @@ public class ActivityPDA extends AppCompatActivity
     public static final String SETTING_RF_ADDRESS = "setting_rf_address";
     public static final String GET_RF_MAC_ADDRESS = "get_rf_mac_address";
     public static final String RFSIGNAL = "rfsignal";
-    public static int YEAR_MIN = 2018;
+    public static int YEAR_MIN = 2019;
 
     protected ActivityPDA mBaseActivity;
     protected LayoutInflater mLayoutInflater;
@@ -201,6 +201,7 @@ public class ActivityPDA extends AppCompatActivity
     private ArrayList<DbHistory> dataErrListAll = null;
     private ApplicationPDA applicationPDA;
 
+    private long noSignalTag;
     private int signal = 0;
     @SuppressLint("HandlerLeak")
     private Handler signalHandler = new Handler() {
@@ -706,6 +707,37 @@ public class ActivityPDA extends AppCompatActivity
                         break;
                     case Intent.ACTION_TIME_TICK:
                         onTimeTick();
+                        //刷新血糖时间
+                        handleMessage(
+                                new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                        ParameterGlobal.PORT_MONITOR,
+                                        ParameterGlobal.PORT_MONITOR,
+                                        EntityMessage.OPERATION_SET,
+                                        ParameterMonitor.GLUCOSE_DISPLAY,
+                                        null));
+                        //计算是否断线15分钟
+//                        mLog.Error(ActivityPDA.this.getClass(), "时钟改变：noSignalTag" + noSignalTag);
+//                        if (noSignalTag != 0) {
+//                            long space = System.currentTimeMillis() - noSignalTag;
+//                            int minute = (int) (space / 60000);
+//                            mLog.Error(ActivityPDA.this.getClass(), "断线时间：" + minute);
+//                            if (minute == 14 || minute == 15 || minute == 16) {
+//                                noSignalTag = 0;
+//                                Event event = new Event(0, PDA_COMM_ERROR, 0);
+//                                History history = new History(
+//                                        new DateTime(Calendar.getInstance()), new Status(), event);
+//                                if (commErrorFlag) {
+//                                    boolean comm_messageFlag = (boolean) SPUtils.get(context, COMMMESSAGETIPS, true);
+////                                    if (mIsForeground || hasWindowFocus()) {
+//                                    if (comm_messageFlag) {
+//                                        notifyErrEventAlert(history, COMM_ERR_TYPE);
+//                                    }
+////                                    }
+//
+//                                }
+//                            }
+//                        }
                         break;
                     case Intent.ACTION_SCREEN_ON:
                         onScreenOn();
@@ -726,28 +758,20 @@ public class ActivityPDA extends AppCompatActivity
 //                        }
                         break;
                     case "comm_err":
-                        Event event = new Event(0, PDA_COMM_ERROR, 0);
-                        History history = new History(
-                                new DateTime(Calendar.getInstance()), new Status(), event);
-                        if (commErrorFlag) {
-                            boolean comm_messageFlag = (boolean) SPUtils.get(context, COMMMESSAGETIPS, true);
-                            if (mIsForeground || hasWindowFocus()) {
-                                if (comm_messageFlag) {
-                                    notifyErrEventAlert(history, COMM_ERR_TYPE);
-                                }
-                            }
-
-                        }
+//                        Event event = new Event(0, PDA_COMM_ERROR, 0);
+//                        History history = new History(
+//                                new DateTime(Calendar.getInstance()), new Status(), event);
+//                        if (commErrorFlag) {
+//                            boolean comm_messageFlag = (boolean) SPUtils.get(context, COMMMESSAGETIPS, true);
+//                            if (mIsForeground || hasWindowFocus()) {
+//                                if (comm_messageFlag) {
+//                                    notifyErrEventAlert(history, COMM_ERR_TYPE);
+//                                }
+//                            }
+//
+//                        }
                         break;
                     case "glucose_display":
-                        handleMessage(
-                                new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                        ParameterGlobal.ADDRESS_LOCAL_VIEW,
-                                        ParameterGlobal.PORT_MONITOR,
-                                        ParameterGlobal.PORT_MONITOR,
-                                        EntityMessage.OPERATION_SET,
-                                        ParameterMonitor.GLUCOSE_DISPLAY,
-                                        null));
                         break;
                     default:
                         break;
@@ -802,43 +826,6 @@ public class ActivityPDA extends AppCompatActivity
         mToastLastShowTime = 0;
         mLayoutInflater =
                 (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-//        new CountDownTimer(15000, 1500) {
-//            @Override
-//            public void onTick(long l) {
-//                History history = new History();
-//                Event event = new Event();
-//
-//                switch (i % 3) {
-//                    case 0:
-//                        event.setEvent(PDA_BATTERY_LOW);
-//                        history.setEvent(event);
-////                        alertTips(history);
-//                        notifyErrEventAlert(history, PAD_LOWBATTERY_ERR_TYPE);
-//                        break;
-//                    case 1:
-//                        event.setEvent(10);
-//                        history.setEvent(event);
-//                        alertTips(history);
-//                        break;
-//                    case 2:
-//                        event.setEvent(6);
-//                        history.setEvent(event);
-//                        alertTips(history);
-//                        break;
-//                    default:
-//
-//                        break;
-//                }
-//
-//                i++;
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//
-//            }
-//        }.start();
 
 
     }
@@ -947,9 +934,9 @@ public class ActivityPDA extends AppCompatActivity
             Event event = new Event(0, PDA_BATTERY_LOW, 0);
             History history = new History(
                     new DateTime(Calendar.getInstance()), new Status(), event);
-            if (mIsForeground || hasWindowFocus()) {
-                notifyErrEventAlert(history, PAD_LOWBATTERY_ERR_TYPE);
-            }
+//            if (mIsForeground || hasWindowFocus()) {
+            notifyErrEventAlert(history, PAD_LOWBATTERY_ERR_TYPE);
+//            }
         }
 
         if ((sIsPDABatteryLow) && (level > BATTERY_LEVEL_RECOVER)) {
@@ -1021,11 +1008,11 @@ public class ActivityPDA extends AppCompatActivity
     }
 
     protected void onVolumeUpPressed() {
-        mKeyNavigation.onKeyPrevious();
+//        mKeyNavigation.onKeyPrevious();
     }
 
     protected void onVolumeDownPressed() {
-        mKeyNavigation.onKeyNext();
+//        mKeyNavigation.onKeyNext();
     }
 
 
@@ -1284,11 +1271,10 @@ public class ActivityPDA extends AppCompatActivity
             if (history.getEvent().getEvent() == SENSOR_NEW) {
                 if (value == 0xFF) {
                     if (newSensorFlag) {
+//                        if (mIsForeground || hasWindowFocus()) {
+                        notifyNewSensorEventAlert(history);
                         newSensorFlag = false;
-                        if (mIsForeground || hasWindowFocus() ||
-                                (mFragmentAlarm != null)) {
-                            notifyNewSensorEventAlert(history);
-                        }
+//                        }
                     }
                 } else {
                     newSensorFlag = true;
@@ -1320,6 +1306,9 @@ public class ActivityPDA extends AppCompatActivity
             SPUtils.put(this, RFSIGNAL, signal);
             if ((int) message.getData()[0] > 0) {
                 signal = (int) message.getData()[0];
+                noSignalTag = 0;
+            } else {
+                noSignalTag = System.currentTimeMillis();
             }
             if (signalTimer != null) {
                 signalTimer.cancel();
@@ -1419,51 +1408,64 @@ public class ActivityPDA extends AppCompatActivity
                 commErrFragmentDialog.dismissAllowingStateLoss();
             }
         }
+        if ((message.getSourcePort() == ParameterGlobal.PORT_COMM) &&
+                (message.getParameter() == ParameterComm.COMM_ERR)) {
+            Event event = new Event(0, PDA_COMM_ERROR, 0);
+            History history = new History(
+                    new DateTime(Calendar.getInstance()), new Status(), event);
+            if (commErrorFlag) {
+                boolean comm_messageFlag = (boolean) SPUtils.get(context, COMMMESSAGETIPS, true);
+                if (comm_messageFlag) {
+                    notifyErrEventAlert(history, COMM_ERR_TYPE);
+                }
+
+            }
+        }
         if ((message.getSourcePort() == ParameterGlobal.PORT_MONITOR) &&
                 (message.getParameter() == ParameterMonitor.PARAM_HISTORY)) {
             if (message
                     .getSourceAddress() != ParameterGlobal.ADDRESS_LOCAL_MODEL) {
-                if (mIsForeground || hasWindowFocus()) {
-                    if (message.getData() != null) {
-                        DataList dataList = new DataList(message.getData());
-                        for (int i = 0; i < dataList.getCount(); i++) {
-                            History history = new History(dataList.getData(i));
-                            Event event = history.getEvent();
-                            if (event.getEvent() == TRANSMITTER_STARTUP || event.getEvent() == INVALID || event.getEvent() == GLUCOSE) {
-                                continue;
-                            }
+//                if (mIsForeground || hasWindowFocus()) {
+                if (message.getData() != null) {
+                    DataList dataList = new DataList(message.getData());
+                    for (int i = 0; i < dataList.getCount(); i++) {
+                        History history = new History(dataList.getData(i));
+                        Event event = history.getEvent();
+                        if (event.getEvent() == TRANSMITTER_STARTUP || event.getEvent() == INVALID || event.getEvent() == GLUCOSE) {
+                            continue;
+                        }
 
-                            long timeChange = System.currentTimeMillis() - history.getDateTime().getCalendar().getTimeInMillis();
-                            if (Math.abs(timeChange) > 15 * 60 * 1000) {
-                                continue;
-                            }
-                            boolean low_messageFlag = (boolean) SPUtils.get(this, LOMESSAGETIPS, true);
-                            boolean hi_messageFlag = (boolean) SPUtils.get(this, HIMESSAGETIPS, true);
-                            switch (event.getEvent()) {
-                                case HYPO:
-                                    if (low_messageFlag) {
-                                        alertTips(history);
-                                    }
-                                    break;
-                                case HYPER:
-                                    if (hi_messageFlag) {
-                                        alertTips(history);
-                                    }
-                                    break;
-                                case SENSOR_ERROR:
-                                case SENSOR_EXPIRATION:
+                        long timeChange = System.currentTimeMillis() - history.getDateTime().getCalendar().getTimeInMillis();
+                        if (Math.abs(timeChange) > 15 * 60 * 1000) {
+                            continue;
+                        }
+                        boolean low_messageFlag = (boolean) SPUtils.get(this, LOMESSAGETIPS, true);
+                        boolean hi_messageFlag = (boolean) SPUtils.get(this, HIMESSAGETIPS, true);
+                        switch (event.getEvent()) {
+                            case HYPO:
+                                if (low_messageFlag) {
                                     alertTips(history);
-                                    break;
-                                case PDA_ERROR:
-                                    notifyErrEventAlert(history, PDA_ERR_TYPE);
-                                    break;
-                                default:
+                                }
+                                break;
+                            case HYPER:
+                                if (hi_messageFlag) {
+                                    alertTips(history);
+                                }
+                                break;
+                            case SENSOR_ERROR:
+                            case SENSOR_EXPIRATION:
+                                alertTips(history);
+                                break;
+                            case PDA_ERROR:
+                                notifyErrEventAlert(history, PDA_ERR_TYPE);
+                                break;
+                            default:
 
-                                    break;
-                            }
+                                break;
                         }
                     }
                 }
+//                }
             }
         }
     }
@@ -1554,7 +1556,7 @@ public class ActivityPDA extends AppCompatActivity
 
     private static synchronized void acquireWakeLock() {
         if (!sWakeLock.isHeld()) {
-            sWakeLock.acquire();
+//            sWakeLock.acquire();
         }
     }
 
@@ -1882,15 +1884,15 @@ public class ActivityPDA extends AppCompatActivity
                     @Override
                     public boolean onButtonClick(int buttonID, Fragment content) {
                         confirmNewSensorAlarm(history);
-                        newSensorFlag = true;
                         switch (buttonID) {
                             case FragmentDialog.BUTTON_ID_POSITIVE:
                                 sendNewSensorMessage(1);
                                 newFlag = true;
+                                newSensorFlag = true;
                                 break;
                             case FragmentDialog.BUTTON_ID_NEGATIVE:
                                 FragmentDialog fragmentDialog = new FragmentDialog();
-                                fragmentDialog.setTitle(getString(R.string.alarm_dialog_title));
+                                fragmentDialog.setTitle(getString(R.string.sure_cancel));
                                 fragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_POSITIVE,
                                         "");
                                 fragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_NEGATIVE,
@@ -1903,16 +1905,29 @@ public class ActivityPDA extends AppCompatActivity
                                 fragmentDialog.setListener(new FragmentDialog.ListenerDialog() {
                                     @Override
                                     public boolean onButtonClick(int buttonID, Fragment content) {
-                                        if (buttonID == FragmentDialog.BUTTON_ID_POSITIVE) {
-                                            sendNewSensorMessage(0);
-                                            newFlag = false;
+                                        switch (buttonID) {
+                                            case FragmentDialog.BUTTON_ID_POSITIVE:
+                                                sendNewSensorMessage(0);
+                                                newFlag = false;
+                                                newSensorFlag = true;
+                                                if (newSensorFragmentDialog != null) {
+                                                    confirmNewSensorAlarm(history);
+                                                    newSensorFragmentDialog.dismissAllowingStateLoss();
+                                                }
+                                                break;
+                                            case FragmentDialog.BUTTON_ID_NEGATIVE:
+
+                                                break;
+                                            default:
+
+                                                break;
                                         }
                                         return true;
                                     }
                                 });
                                 fragmentDialog.show(getSupportFragmentManager(), null);
 
-                                break;
+                                return false;
                             default:
                                 break;
                         }

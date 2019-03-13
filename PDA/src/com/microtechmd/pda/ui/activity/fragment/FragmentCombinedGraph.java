@@ -165,7 +165,7 @@ public class FragmentCombinedGraph extends FragmentBase
     int index = 0;
     long bcd = getTodayDateTime().getCalendar().getTimeInMillis();
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "InvalidWakeLockTag"})
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -798,7 +798,7 @@ public class FragmentCombinedGraph extends FragmentBase
         }
         mLog.Debug(getClass(), "Query history");
         //请求屏幕常亮
-        wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/);
+//        wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/);
         showDialogProgress();
         mIsHistoryQuerying = true;
         DataList dataList = new DataList();

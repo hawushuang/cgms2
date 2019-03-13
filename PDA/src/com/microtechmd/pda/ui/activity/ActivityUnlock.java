@@ -279,13 +279,12 @@ public class ActivityUnlock extends ActivityPDA {
             mLog.Error(getClass(), "血糖：" + (history.getStatus().getShortValue1() & 0xFFFF) + "valueflag：" + a);
             if (time_space / 1000 >= -60) {
                 if (history.getEvent().getEvent() == SENSOR_EXPIRATION) {
-                    ActivityMain.setStatus(history);
+//                    ActivityMain.setStatus(history);
                     textView_g_err.setBackgroundResource(R.drawable.expirtion_err);
                     setGlucoseVisible(false);
                     return;
                 }
                 if (Math.abs(time_space) < 15 * 60 * 1000) {
-                    ActivityMain.setStatus(history);
                     switch (history.getEvent().getEvent()) {
                         case SENSOR_ERROR:
                             textView_g_recommend_cal.setVisibility(View.GONE);
@@ -333,7 +332,7 @@ public class ActivityUnlock extends ActivityPDA {
                                             textView_g.setText(STRING_UNKNOWN);
 //                                        textView_t.setText("");
 //                                        setGlucoseVisible(true);
-                                            ActivityMain.setStatus(null);
+//                                            ActivityMain.setStatus(null);
                                         }
                                     }
                                 }.start();

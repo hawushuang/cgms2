@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.litesuits.orm.LiteOrm;
 import com.litesuits.orm.db.assit.QueryBuilder;
+import com.litesuits.orm.db.assit.WhereBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,8 +70,34 @@ public class DatabaseManager {
 //                        .whereEquals("event_type", 8)
                         .whereGreaterThan("date_time", current - 60 * 60 * 24 * 30 * 1000L)
                         .whereAppendAnd()
-                        .whereLessThan("date_time", current)
+                        .whereLessThan("date_time", current + 60 * 60 * 24 * 1000L)
                         .columns(new String[]{"date_time", "event_type", "value"})
+//                .appendOrderAscBy("date_time")
+        );
+    }
+
+    /**
+     * 查询报警列
+     *
+     * @param cla
+     * @return
+     */
+    public <T> List<T> getQueryErrByColumns(Class<T> cla) {
+        long current = System.currentTimeMillis();
+        return liteOrm.query(new QueryBuilder<>(cla)
+                        .columns(new String[]{"date_time", "event_type", "value"})
+                        .appendOrderAscBy("date_time")
+                        .whereGreaterThan("date_time", current - 60 * 60 * 24 * 30 * 1000L)
+                        .whereAppendAnd()
+                        .whereLessThan("date_time", current + 60 * 60 * 24 * 1000L)
+//                        .whereAppendAnd()
+//                        .whereEquals("event_type", 5)
+//                        .whereAppendOr()
+//                        .whereEquals("event_type", 6)
+//                        .whereAppendOr()
+//                        .whereEquals("event_type", 10)
+//                        .whereAppendOr()
+//                        .whereEquals("event_type", 11)
 //                .appendOrderAscBy("date_time")
         );
     }

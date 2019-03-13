@@ -14,9 +14,10 @@ import java.util.List;
 
 public class DatePickerDialog extends Dialog {
 
-    private static  int MIN_YEAR = 2000;
-    private static  int MAX_YEAR = 2050;
+    private static  int MIN_YEAR = 2019;
+    private static  int MAX_YEAR = 2037;
     private Params params;
+
 
     public DatePickerDialog(Context context, int themeResId) {
         super(context, themeResId);
@@ -144,7 +145,7 @@ public class DatePickerDialog extends Dialog {
             }else{
                 loopDay.setCurrentItem(c.get(Calendar.DATE));
             }
-            //loopDay.setNotLoop();
+            loopDay.setNotLoop();
 
             final LoopView loopYear = (LoopView) view.findViewById(R.id.loop_year);
             loopYear.setArrayList(d(MIN_YEAR, MAX_YEAR - MIN_YEAR + 1));

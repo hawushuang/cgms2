@@ -1,10 +1,14 @@
 package com.microtechmd.pda.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.WindowManager;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.microtechmd.pda.ApplicationPDA;
 import com.microtechmd.pda.R;
@@ -12,9 +16,11 @@ import com.microtechmd.pda.database.DataSetHistory;
 import com.microtechmd.pda.library.entity.EntityMessage;
 import com.microtechmd.pda.library.entity.ParameterComm;
 import com.microtechmd.pda.library.entity.ParameterGlucose;
+import com.microtechmd.pda.library.entity.ParameterMonitor;
 import com.microtechmd.pda.library.entity.monitor.DateTime;
 import com.microtechmd.pda.library.entity.monitor.History;
 import com.microtechmd.pda.library.parameter.ParameterGlobal;
+import com.microtechmd.pda.library.utility.SPUtils;
 import com.microtechmd.pda.manager.ActivityPathManager;
 import com.microtechmd.pda.ui.activity.fragment.FragmentBase;
 import com.microtechmd.pda.ui.activity.fragment.FragmentCalibration;
@@ -24,7 +30,9 @@ import com.microtechmd.pda.ui.widget.highlight.HighLight;
 
 import java.util.Calendar;
 
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_DATE_TIME;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_SETTING;
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.REALTIMEFLAG;
 
 
 public class ActivityMain extends ActivityPDA {
@@ -118,14 +126,14 @@ public class ActivityMain extends ActivityPDA {
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
                         switch (group.getCheckedRadioButtonId()) {
                             case R.id.radio_button_tab_home:
-
+                                dismissDialog();
                                 if (mFragmentHome == null) {
                                     mFragmentHome = new FragmentHome();
                                 }
 
                                 fragMent = mFragmentHome;
                                 switchContent(mFragmentHome);
-                                mFragmentHome.setDataChange();
+                                mFragmentHome.setDateChange();
 
                                 if (Calendar.getInstance()
                                         .get(Calendar.YEAR) >= YEAR_MIN) {
@@ -134,7 +142,7 @@ public class ActivityMain extends ActivityPDA {
                                 break;
 
                             case R.id.radio_button_tab_calibration:
-
+                                dismissDialog();
                                 if (mFragmentCalibration == null) {
                                     mFragmentCalibration = new FragmentCalibration();
                                 }
@@ -171,9 +179,7 @@ public class ActivityMain extends ActivityPDA {
                     }
                 });
 
-        if (radioGroup.getCheckedRadioButtonId() < 0)
-
-        {
+        if (radioGroup.getCheckedRadioButtonId() < 0) {
             radioGroup.check(R.id.radio_button_tab_home);
         }
 
@@ -183,7 +189,18 @@ public class ActivityMain extends ActivityPDA {
 
                 registerMessageListener(
                         ParameterGlobal.PORT_GLUCOSE, mMessageListener);
+        if (Calendar.getInstance()
+                .get(Calendar.YEAR) >= YEAR_MIN) {
+            showTimeSetting();
+        }
+    }
 
+    private void dismissDialog() {
+        handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
+                ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
+                ParameterComm.DISMISS_DIALOG,
+                null));
     }
 
     private void changToMainSetting() {
@@ -205,6 +222,32 @@ public class ActivityMain extends ActivityPDA {
                 .get(Calendar.YEAR) < YEAR_MIN) {
             radioGroup.check(R.id.radio_button_tab_settings);
         }
+    }
+
+    private void showTimeSetting() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setTitle(getString(R.string.time_sure_title))
+                .setMessage(getString(R.string.time_sure_content))
+                .setCancelable(false)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .setNegativeButton(R.string.setting, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        radioGroup.check(R.id.radio_button_tab_settings);
+                        handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
+                                ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
+                                ParameterComm.SETTING_TYPE,
+                                new byte[]{(byte) TYPE_DATE_TIME}));
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        dialog.show();
     }
 
     @Override
@@ -237,6 +280,15 @@ public class ActivityMain extends ActivityPDA {
         radioGroup.check(R.id.radio_button_tab_home);
     }
 
+    @Override
+    protected void handleEvent(EntityMessage message) {
+        super.handleEvent(message);
+        if ((message.getSourcePort() == ParameterGlobal.PORT_GLUCOSE) &&
+                (message.getParameter() == ParameterGlucose.HOME_PRESS)) {
+            radioGroup.check(R.id.radio_button_tab_home);
+        }
+
+    }
 
     @Override
     protected void handleNotification(final EntityMessage message) {
@@ -245,14 +297,35 @@ public class ActivityMain extends ActivityPDA {
         if ((message.getSourcePort() == ParameterGlobal.PORT_GLUCOSE) &&
                 (message.getParameter() == ParameterGlucose.PARAM_SIGNAL_PRESENT)) {
             if (getStatusBar().getGlucose()) {
-                Intent intent = new Intent(this, ActivityBgApply.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                boolean realtimeFlag = (boolean) SPUtils.get(this, REALTIMEFLAG, true);
+                if (realtimeFlag) {
+                    Intent intent = new Intent(this, ActivityBgApply.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, R.string.history_mode_forbidden, Toast.LENGTH_SHORT).show();
+                }
+
             }
         }
     }
 
+    @Override
+    protected void setParameter(EntityMessage message) {
+        super.setParameter(message);
+        switch (message.getParameter()) {
+            case ParameterMonitor.CAN_SEND_FAILD:
+                if (radioGroup.getCheckedRadioButtonId() !=R.id.radio_button_tab_settings){
+                    radioGroup.check(R.id.radio_button_tab_settings);
+                }
+                break;
+            default:
+
+                break;
+        }
+
+    }
 
     //    private void onScreenOn() {
 //        mLog.Debug(getClass(), "Screen on");
