@@ -56,8 +56,8 @@ import static com.microtechmd.pda.ui.activity.ActivityPDA.HIMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.LOMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_DATE_TIME;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_SETTING;
-import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPER_DEFAULT;
-import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPO_DEFAULT;
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingTips.HYPER_DEFAULT;
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingTips.HYPO_DEFAULT;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.SETTING_HYPER;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.SETTING_HYPO;
 

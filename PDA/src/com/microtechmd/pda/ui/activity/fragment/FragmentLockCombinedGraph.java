@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.ScatterChart;
@@ -40,7 +39,6 @@ import com.microtechmd.pda.library.entity.monitor.DateTime;
 import com.microtechmd.pda.library.entity.monitor.History;
 import com.microtechmd.pda.library.entity.monitor.Status;
 import com.microtechmd.pda.library.parameter.ParameterGlobal;
-import com.microtechmd.pda.library.utility.SPUtils;
 import com.microtechmd.pda.ui.activity.ActivityPDA;
 import com.microtechmd.pda.util.CalibrationSaveUtil;
 import com.microtechmd.pda.util.FormatterUtil;
@@ -52,12 +50,10 @@ import java.util.List;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.CALIBRATION_HISTORY;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.GLUCOSE;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.GLUCOSE_RECOMMEND_CAL;
-import static com.microtechmd.pda.ui.activity.ActivityPDA.RFSIGNAL;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentCombinedGraph.oneDay_lenth;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentCombinedGraph.pointSpace;
-import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPER_DEFAULT;
-import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPO_DEFAULT;
-import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.REALTIMEFLAG;
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingTips.HYPER_DEFAULT;
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingTips.HYPO_DEFAULT;
 
 public class FragmentLockCombinedGraph extends FragmentBase
         implements

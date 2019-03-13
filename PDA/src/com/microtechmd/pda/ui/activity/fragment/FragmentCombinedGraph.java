@@ -73,9 +73,8 @@ import static com.microtechmd.pda.ui.activity.ActivityPDA.PDA_ERROR;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.RFSIGNAL;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.SENSOR_ERROR;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.SENSOR_EXPIRATION;
-import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPER_DEFAULT;
-import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPO_DEFAULT;
-import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.REALTIMEFLAG;
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingTips.HYPER_DEFAULT;
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingTips.HYPO_DEFAULT;
 
 public class FragmentCombinedGraph extends FragmentBase
         implements
