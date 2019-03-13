@@ -3,14 +3,11 @@ package com.microtechmd.pda.ui.activity.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.microtechmd.pda.ApplicationPDA;
@@ -18,7 +15,6 @@ import com.microtechmd.pda.R;
 import com.microtechmd.pda.library.entity.EntityMessage;
 import com.microtechmd.pda.library.entity.ParameterComm;
 import com.microtechmd.pda.library.entity.ParameterGlucose;
-import com.microtechmd.pda.library.entity.ParameterMonitor;
 import com.microtechmd.pda.library.entity.ValueByte;
 import com.microtechmd.pda.library.entity.comm.RFAddress;
 import com.microtechmd.pda.library.parameter.ParameterGlobal;
@@ -27,15 +23,11 @@ import com.microtechmd.pda.ui.activity.ActivityPDA;
 import com.microtechmd.pda.ui.widget.WidgetSettingTipsItem;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.microtechmd.pda.ui.activity.ActivityPDA.COMMMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.HIMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.LOMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_SETTING;
-import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPER_DEFAULT;
-import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.HYPO_DEFAULT;
 
 public class FragmentSettingTips extends FragmentBase
         implements

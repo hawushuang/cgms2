@@ -3,28 +3,18 @@ package com.microtechmd.pda.ui.activity.fragment;
 
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.res.TypedArrayUtils;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.example.liangmutian.mypicker.DatePickerDialog;
-import com.example.liangmutian.mypicker.TimePickerDialog;
 import com.microtechmd.pda.ApplicationPDA;
 import com.microtechmd.pda.R;
 import com.microtechmd.pda.database.DataSetHistory;
@@ -46,12 +36,9 @@ import com.microtechmd.pda.library.utility.SPUtils;
 import com.microtechmd.pda.ui.activity.ActivityMain;
 import com.microtechmd.pda.ui.activity.ActivityPDA;
 import com.microtechmd.pda.ui.widget.WidgetSettingItem;
-import com.microtechmd.pda.util.DataCleanUtil;
 import com.microtechmd.pda.util.TimeUtil;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -59,11 +46,12 @@ import java.util.regex.Pattern;
 import static com.microtechmd.pda.library.entity.ParameterComm.CLOSE_COMM;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.COMMMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.COMM_CLOSE;
-import static com.microtechmd.pda.ui.activity.ActivityPDA.YEAR_MIN;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_DATE_TIME;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_HISTORY_LOG;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_TIPS;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_UTILITIES;
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingTips.HYPER_DEFAULT;
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingTips.HYPO_DEFAULT;
 
 public class FragmentSettings extends FragmentBase
         implements
@@ -73,12 +61,12 @@ public class FragmentSettings extends FragmentBase
     public static final String SETTING_HYPO = "hypo";
     public static final String REALTIMEFLAG = "realtimeFlag";
 
-    public static final int HYPER_DEFAULT = 120;
-    private static final int HYPER_MAX = 250;
-    private static final int HYPER_MIN = 80;
-    public static final int HYPO_DEFAULT = 35;
-    private static final int HYPO_MAX = 50;
-    private static final int HYPO_MIN = 22;
+//    public static final int HYPER_DEFAULT = 120;
+//    private static final int HYPER_MAX = 250;
+//    private static final int HYPER_MIN = 80;
+//    public static final int HYPO_DEFAULT = 35;
+//    private static final int HYPO_MAX = 50;
+//    private static final int HYPO_MIN = 22;
 
     private boolean mIsProgressNotShow = false;
     private boolean mIsProgressNotDismiss = false;
