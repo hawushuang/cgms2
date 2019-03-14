@@ -58,6 +58,8 @@ public class FragmentSettingHistoryLog extends FragmentBase
 
     private DataSetHistory mDataSetHistory;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -102,6 +104,9 @@ public class FragmentSettingHistoryLog extends FragmentBase
                     ) {
                         dataErrListAll.add(dbHistory);
                     }
+                }
+                if (getActivity() == null){
+                    return;
                 }
 //                dataErrListAll = mDataSetHistory.getErrDbList();
                 getActivity().runOnUiThread(new Runnable() {
