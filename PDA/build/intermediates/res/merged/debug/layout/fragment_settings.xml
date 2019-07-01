@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,121 +8,156 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         style="?style_bar_title"
+        android:visibility="gone"
         app:navigationIcon="@null">
 
         <TextView
             android:id="@+id/text_view_title_bar"
             style="?style_text_title_bar"
-            android:text="@string/activity_main_tab_settings"/>
+            android:text="@string/activity_main_tab_settings" />
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/size20"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
+
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_date_time"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
+                android:clickable="true"
+                android:focusable="true"
+                app:itemName="@string/setting_general_date_time"
+                app:itemValue="" />
 
             <com.microtechmd.pda.ui.widget.WidgetSettingItem
                 android:id="@+id/item_date"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/background_setting_item"
+                android:visibility="gone"
                 app:itemName="@string/setting_general_set_date"
-                app:itemValue=""/>
+                app:itemValue="" />
 
             <com.microtechmd.pda.ui.widget.WidgetSettingItem
                 android:id="@+id/item_time"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/background_setting_item"
+                android:visibility="gone"
                 app:itemName="@string/setting_general_set_time"
-                app:itemValue=""/>
+                app:itemValue="" />
 
             <com.microtechmd.pda.ui.widget.WidgetSettingItem
                 android:id="@+id/item_pairing"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/background_setting_item"
                 app:itemName="@string/fragment_settings_pairing"
-                app:itemValue=""/>
+                app:itemValue="" />
+
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_mode"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
+                android:clickable="true"
+                android:focusable="true"
+                app:itemName="@string/setting_general_mode"
+                app:itemValue="@string/setting_general_mode_time" />
+
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_message"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
+                android:clickable="true"
+                android:focusable="true"
+                app:itemName="@string/messagetips"
+                app:itemValue="" />
 
             <com.microtechmd.pda.ui.widget.WidgetSettingItem
                 android:id="@+id/item_hi_bg"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/background_setting_item"
+                android:visibility="gone"
                 app:itemName="@string/fragment_settings_hi_bg_threshold"
-                app:itemValue=""/>
+                app:itemValue="" />
 
             <com.microtechmd.pda.ui.widget.WidgetSettingItem
                 android:id="@+id/item_lo_bg"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/background_setting_item"
+                android:visibility="gone"
                 app:itemName="@string/fragment_settings_lo_bg_threshold"
-                app:itemValue=""/>
-
-            <com.microtechmd.pda.ui.widget.WidgetSettingItem
-                android:id="@+id/item_language"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="@drawable/background_setting_item"
-                app:itemName="@string/setting_general_language"
-                app:itemValue="@string/fragment_settings_language"/>
-
-            <com.microtechmd.pda.ui.widget.WidgetSettingItem
-                android:id="@+id/item_software_version"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@drawable/background_setting_item"
-                app:itemName="@string/setting_general_version"
-                app:itemValue="1.0.0"/>
+                app:itemValue="" />
 
             <com.microtechmd.pda.ui.widget.WidgetSettingItem
                 android:id="@+id/item_history"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
+                android:background="@drawable/background_setting_item"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/background_setting_item"
                 app:itemName="@string/history_log_title"
-                app:itemValue=""/>
+                app:itemValue="" />
+
             <com.microtechmd.pda.ui.widget.WidgetSettingItem
                 android:id="@+id/item_recovery"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/background_setting_item"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/background_setting_item"
+                android:visibility="gone"
                 app:itemName="@string/recovery"
-                app:itemValue=""/>
+                app:itemValue="" />
+
+            <com.microtechmd.pda.ui.widget.WidgetSettingItem
+                android:id="@+id/item_utilities"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_setting_item"
+                android:clickable="true"
+                android:focusable="true"
+                app:itemName="@string/utilities"
+                app:itemValue="" />
         </LinearLayout>
     </ScrollView>
 

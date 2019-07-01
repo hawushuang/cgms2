@@ -32,4 +32,9 @@ public final class DeviceLED
 		JNIInterface jniInterface = JNIInterface.getInstance();
 		return jniInterface.getLED(color);
 	}
+	public int battery()
+	{
+		JNIInterface jniInterface = JNIInterface.getInstance();
+		return jniInterface.battery();
+	}
 }

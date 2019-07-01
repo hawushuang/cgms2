@@ -42,6 +42,8 @@ public class ParameterComm {
     public static final byte COUNT_RF_STATE = 4;
 
     public static final byte BROADCAST_OFFSET_ALL = 0;
-    public static final byte BROADCAST_OFFSET_STATUS = 1;
+    public static final byte BROADCAST_OFFSET_STATUS = 6;
     public static final byte BROADCAST_OFFSET_EVENT = 12;
+
+    public static final int TIME_CORRECTED = 51;
 }

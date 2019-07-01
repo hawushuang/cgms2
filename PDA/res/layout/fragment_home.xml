@@ -140,7 +140,6 @@
         android:id="@+id/countdown_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size10"
         android:gravity="center"
         android:visibility="gone"
         app:isShowDay="false"

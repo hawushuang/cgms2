@@ -15,7 +15,8 @@
           <task>generateDebugSources</task>
         </afterSyncTasks>
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/res;file://$MODULE_DIR$/build/generated/res/rs/debug;file://$MODULE_DIR$/build/generated/res/resValues/debug" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/res;file://$MODULE_DIR$/build/generated/res/rs/debug" />
+        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="" />
       </configuration>
     </facet>
   </component>
@@ -81,13 +82,12 @@
       <excludeFolder url="file://$MODULE_DIR$/build/generated/source/r" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/assets" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/blame" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/check-manifest" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/build-info" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/javaPrecompile" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jniLibs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/prebuild" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/res" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/shaders" />
@@ -112,30 +112,6 @@
     <orderEntry type="library" name="Gradle: com.android.support:support-compat:25.0.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-media-compat:25.0.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-v4:25.0.1@aar" level="project" />
-    <orderEntry type="module" module-name="PDALibrary" />
-    <orderEntry type="module" module-name="SeekArc_library" />
-    <orderEntry type="module" module-name="mypicker" />
-    <orderEntry type="module" module-name="PDALibrary" />
-    <orderEntry type="module" module-name="SeekArc_library" />
-    <orderEntry type="module" module-name="mypicker" />
-    <orderEntry type="module" module-name="PDALibrary" />
-    <orderEntry type="module" module-name="SeekArc_library" />
-    <orderEntry type="module" module-name="mypicker" />
-    <orderEntry type="module" module-name="PDALibrary" />
-    <orderEntry type="module" module-name="SeekArc_library" />
-    <orderEntry type="module" module-name="mypicker" />
-    <orderEntry type="module" module-name="PDALibrary" />
-    <orderEntry type="module" module-name="SeekArc_library" />
-    <orderEntry type="module" module-name="mypicker" />
-    <orderEntry type="module" module-name="PDALibrary" />
-    <orderEntry type="module" module-name="SeekArc_library" />
-    <orderEntry type="module" module-name="mypicker" />
-    <orderEntry type="module" module-name="PDALibrary" />
-    <orderEntry type="module" module-name="SeekArc_library" />
-    <orderEntry type="module" module-name="mypicker" />
-    <orderEntry type="module" module-name="PDALibrary" />
-    <orderEntry type="module" module-name="SeekArc_library" />
-    <orderEntry type="module" module-name="mypicker" />
     <orderEntry type="module" module-name="PDALibrary" />
     <orderEntry type="module" module-name="SeekArc_library" />
     <orderEntry type="module" module-name="mypicker" />

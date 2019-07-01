@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"/><dataSet config="debug"><source path="E:\Project\cgms2\PDAControl\build-types\debug\jniLibs"/></dataSet></merger>
+<merger version="3"><dataSet config="main"/><dataSet config="debug"><source path="E:\Project\cgms2_test\PDAControl\build-types\debug\jniLibs"/></dataSet></merger>

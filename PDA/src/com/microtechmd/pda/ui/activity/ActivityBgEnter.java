@@ -24,6 +24,7 @@ import com.microtechmd.pda.library.entity.ParameterGlucose;
 import com.microtechmd.pda.library.entity.ValueShort;
 import com.microtechmd.pda.library.entity.monitor.DateTime;
 import com.microtechmd.pda.library.parameter.ParameterGlobal;
+import com.microtechmd.pda.library.utility.SPUtils;
 import com.microtechmd.pda.ui.activity.fragment.FragmentDialog;
 import com.microtechmd.pda.ui.activity.fragment.FragmentInput;
 import com.microtechmd.pda.ui.activity.fragment.FragmentMessage;
@@ -33,6 +34,7 @@ import com.microtechmd.pda.ui.widget.contrarywind.listener.OnItemSelectedListene
 import com.microtechmd.pda.ui.widget.contrarywind.view.WheelView;
 import com.microtechmd.pda.util.CalibrationSaveUtil;
 import com.microtechmd.pda.util.MediaUtil;
+import com.microtechmd.pda.util.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,10 +43,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.REALTIMEFLAG;
+
 
 public class ActivityBgEnter extends ActivityPDA {
     public static final String EXTRA_BG_AMT = "extra_bg_amt";
     public static final String EXTRA_IS_MANUAL = "extra_is_manual";
+    public static final String EXTRA_BG_MODE = "extra_bg_mode";
 
     private static final int GLUCOSE_MAX = 333 * GLUCOSE_UNIT_MMOL_STEP;
     private static final int GLUCOSE_MIN = GLUCOSE_UNIT_MMOL_STEP;
@@ -59,17 +64,26 @@ public class ActivityBgEnter extends ActivityPDA {
     private TextView tv_glucose;
     private Button button_add;
     private Button button_sub;
+    private Button button_calibrate;
+    private Button button_record;
+    private String mRFAddress;
+
+    private boolean isCalibration = false;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_bg_enter);
-
+        if (ActivityUnlockNew.instance != null) {
+            ActivityUnlockNew.instance.finish();
+        }
         ruleView = (RuleView) findViewById(R.id.ruleView);
         tv_glucose = (TextView) findViewById(R.id.tv_glucose);
         button_add = (Button) findViewById(R.id.button_add);
         button_sub = (Button) findViewById(R.id.button_sub);
+        button_calibrate = (Button) findViewById(R.id.button_calibrate);
+        button_record = (Button) findViewById(R.id.button_record);
         ruleView.setValue(0, 30, 5, 0.1F, 10);
         ruleView.setOnValueChangedListener(new RuleView.OnValueChangedListener() {
             @Override
@@ -115,8 +129,28 @@ public class ActivityBgEnter extends ActivityPDA {
 //        });
         calibrate_time_tv = (TextView) findViewById(R.id.calibrate_time_tv);
 
+        mRFAddress = getAddress(
+                getDataStorage(ActivityPDA.class.getSimpleName())
+                        .getExtras(ActivityPDA.SETTING_RF_ADDRESS, null));
         initialize(getIntent());
 
+    }
+
+    public String getAddress(byte[] addressByte) {
+        if (addressByte != null) {
+            for (int i = 0; i < addressByte.length; i++) {
+                if (addressByte[i] < 10) {
+                    addressByte[i] += '0';
+                } else {
+                    addressByte[i] -= 10;
+                    addressByte[i] += 'A';
+                }
+            }
+
+            return new String(addressByte);
+        } else {
+            return "";
+        }
     }
 
     /**
@@ -190,7 +224,16 @@ public class ActivityBgEnter extends ActivityPDA {
                 finish();
                 break;
             case R.id.button_calibrate:
-                showCalibrateConfirmDialog();
+                boolean realtimeFlag = (boolean) SPUtils.get(this, REALTIMEFLAG, true);
+                if (realtimeFlag) {
+                    if (TextUtils.isEmpty(mRFAddress)) {
+                        ToastUtils.showToast(this, R.string.unpaired);
+                    } else {
+                        showCalibrateConfirmDialog();
+                    }
+                } else {
+                    ToastUtils.showToast(this, R.string.history_mode_forbidden);
+                }
                 break;
             case R.id.button_record:
                 showRecordConfirmDialog();
@@ -232,6 +275,7 @@ public class ActivityBgEnter extends ActivityPDA {
                     public boolean onButtonClick(int buttonID, Fragment content) {
                         switch (buttonID) {
                             case FragmentDialog.BUTTON_ID_POSITIVE:
+                                isCalibration = false;
                                 sendRecord();
                                 break;
 
@@ -259,6 +303,7 @@ public class ActivityBgEnter extends ActivityPDA {
                     public boolean onButtonClick(int buttonID, Fragment content) {
                         switch (buttonID) {
                             case FragmentDialog.BUTTON_ID_POSITIVE:
+                                isCalibration = true;
                                 sendCalibrate();
 //                                record();
                                 break;
@@ -308,6 +353,9 @@ public class ActivityBgEnter extends ActivityPDA {
                         new byte[]{(byte) 1}));
 
                 dismissDialogLoading();
+                if (!isCalibration){
+                    ToastUtils.showToast(ActivityBgEnter.this, R.string.record_done);
+                }
                 finish();
             }
         }, 500);
@@ -341,15 +389,19 @@ public class ActivityBgEnter extends ActivityPDA {
                 Toast.makeText(this, getResources().getString(R.string.calibration_done), Toast.LENGTH_SHORT).show();
                 record();
             }
-            if (message.getParameter() == ParameterGlucose.TASK_GLUCOSE_PARAM_GLUCOSE) {
-                Toast.makeText(this, getResources().getString(R.string.record_done), Toast.LENGTH_SHORT).show();
-            }
+//            if (message.getParameter() == ParameterGlucose.TASK_GLUCOSE_PARAM_GLUCOSE) {
+//                Toast.makeText(this, getResources().getString(R.string.record_done), Toast.LENGTH_SHORT).show();
+//            }
         }
     }
 
 
     @SuppressLint("SetTextI18n")
     private void initialize(Intent intent) {
+        if (intent.getIntExtra(EXTRA_BG_MODE, 0) == 1) {
+            button_calibrate.setVisibility(View.GONE);
+            button_record.setVisibility(View.GONE);
+        }
         mIsManual = intent.getBooleanExtra(EXTRA_IS_MANUAL, true);
 
         if (mIsManual) {
@@ -357,10 +409,13 @@ public class ActivityBgEnter extends ActivityPDA {
             mGlucose *= GLUCOSE_UNIT_MG_STEP;
             calibrate_time_tv.setVisibility(View.GONE);
         } else {
-            button_add.setEnabled(false);
-            button_add.setBackgroundResource(R.drawable.jia_2);
-            button_sub.setEnabled(false);
-            button_sub.setBackgroundResource(R.drawable.jian_2);
+//            button_add.setEnabled(false);
+//            button_add.setBackgroundResource(R.drawable.jia_2);
+//            button_sub.setEnabled(false);
+//            button_sub.setBackgroundResource(R.drawable.jian_2);
+
+            button_add.setVisibility(View.GONE);
+            button_sub.setVisibility(View.GONE);
             ruleView.setCanScroll(false);
 
             mCalendar = Calendar.getInstance();
@@ -434,6 +489,9 @@ public class ActivityBgEnter extends ActivityPDA {
             System.arraycopy(dateTime.getByteArray(), 0, send, 0, 4);
             System.arraycopy(value.getByteArray(), 0, send, 4, 2);
             record();
+            if (TextUtils.isEmpty(mRFAddress)) {
+                return;
+            }
             handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
                     ParameterGlobal.ADDRESS_REMOTE_MASTER, ParameterGlobal.PORT_MONITOR,
                     ParameterGlobal.PORT_GLUCOSE, EntityMessage.OPERATION_SET,

@@ -1,4 +1,0 @@
-#Tue Dec 12 15:36:40 CST 2017
-base.0=E\:\\Project\\cgms2\\PDAModel\\build\\intermediates\\transforms\\dexMerger\\debug\\4
-renamed.0=classes.dex
-file.0=E\:\\Project\\cgms2\\PDAModel\\build\\intermediates\\transforms\\dexMerger\\debug\\4\\classes.dex

@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\res\\merged\\debug\\values-bs-rBA\\values-bs-rBA.xml",
+            "outputFile": "E:\\Project\\cgms2_test\\PDA\\build\\intermediates\\res\\merged\\debug\\values-bs-rBA\\values-bs-rBA.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\values-bs-rBA\\values-bs-rBA.xml",
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\a826d36d52cf85bf3950b5e8221e0bda\\res\\values-bs-rBA\\values-bs-rBA.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -16,10 +16,10 @@
             ]
         },
         {
-            "outputFile": "E:\\Project\\cgms2\\PDA\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-bs-rBA\\values-bs-rBA.xml",
+            "outputFile": "E:\\Project\\cgms2_test\\PDA\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-bs-rBA\\values-bs-rBA.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\07a7292a1f0bec283d794f9a2de4e661\\res\\values-bs-rBA\\values-bs-rBA.xml",
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\a826d36d52cf85bf3950b5e8221e0bda\\res\\values-bs-rBA\\values-bs-rBA.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

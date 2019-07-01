@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "E:\\Project\\cgms2\\PDAControl\\build\\intermediates\\res\\merged\\debug\\values\\values.xml",
+            "outputFile": "E:\\Project\\cgms2_test\\PDAControl\\build\\intermediates\\res\\merged\\debug\\values\\values.xml",
             "map": [
                 {
-                    "source": "E:\\Project\\cgms2\\PDAControl\\res\\values\\strings.xml",
+                    "source": "E:\\Project\\cgms2_test\\PDAControl\\res\\values\\strings.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "E:\\Project\\cgms2\\PDAControl\\res\\values\\styles.xml",
+                    "source": "E:\\Project\\cgms2_test\\PDAControl\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "6,15",
                         "startColumns": "4,4",
@@ -42,10 +42,10 @@
             ]
         },
         {
-            "outputFile": "E:\\Project\\cgms2\\PDAControl\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "E:\\Project\\cgms2_test\\PDAControl\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
-                    "source": "E:\\Project\\cgms2\\PDAControl\\res\\values\\strings.xml",
+                    "source": "E:\\Project\\cgms2_test\\PDAControl\\res\\values\\strings.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -62,7 +62,7 @@
                     }
                 },
                 {
-                    "source": "E:\\Project\\cgms2\\PDAControl\\res\\values\\styles.xml",
+                    "source": "E:\\Project\\cgms2_test\\PDAControl\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "6,15",
                         "startColumns": "4,4",

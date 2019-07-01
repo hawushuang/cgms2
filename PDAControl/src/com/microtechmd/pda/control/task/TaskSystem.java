@@ -12,173 +12,145 @@ import com.microtechmd.pda.library.service.ServiceBase;
 import com.microtechmd.pda.library.service.TaskBase;
 
 
-public class TaskSystem extends TaskBase
-{
-	private static TaskSystem sInstance = null;
-	private static DeviceLED sDeviceLED = null;
+public class TaskSystem extends TaskBase {
+    private static TaskSystem sInstance = null;
+    private static DeviceLED sDeviceLED = null;
 
-	private int mReaction = ParameterSystem.REACTION_NORMAL;
-
-
-	private TaskSystem(ServiceBase service)
-	{
-		super(service);
-	}
+    private int mReaction = ParameterSystem.REACTION_NORMAL;
 
 
-	public static synchronized TaskSystem getInstance(final ServiceBase service)
-	{
-		if (sInstance == null)
-		{
-			sInstance = new TaskSystem(service);
-
-			if (sDeviceLED == null)
-			{
-				sDeviceLED = DeviceLED.getInstance();
-			}
-		}
-
-		return sInstance;
-	}
+    private TaskSystem(ServiceBase service) {
+        super(service);
+    }
 
 
-	@Override
-	public void handleMessage(EntityMessage message)
-	{
-		switch (message.getOperation())
-		{
-			case EntityMessage.OPERATION_SET:
-				setParameter(message);
-				break;
+    public static synchronized TaskSystem getInstance(final ServiceBase service) {
+        if (sInstance == null) {
+            sInstance = new TaskSystem(service);
 
-			case EntityMessage.OPERATION_GET:
-				getParameter(message);
-				break;
+            if (sDeviceLED == null) {
+                sDeviceLED = DeviceLED.getInstance();
+            }
+        }
 
-			case EntityMessage.OPERATION_EVENT:
-				handleEvent(message);
-				break;
-
-			case EntityMessage.OPERATION_NOTIFY:
-				handleNotification(message);
-				break;
-
-			case EntityMessage.OPERATION_ACKNOWLEDGE:
-				handleAcknowledgement(message);
-				break;
-
-			default:
-				break;
-		}
-	}
+        return sInstance;
+    }
 
 
-	private void setParameter(final EntityMessage message)
-	{
-		mLog.Debug(getClass(), "Set parameter: " + message.getParameter());
+    @Override
+    public void handleMessage(EntityMessage message) {
+        switch (message.getOperation()) {
+            case EntityMessage.OPERATION_SET:
+                setParameter(message);
+                break;
 
-		switch (message.getParameter())
-		{
-			case ParameterSystem.PARAM_REACTION:
-				setReaction(new ValueInt(message.getData()).getValue());
-				break;
+            case EntityMessage.OPERATION_GET:
+                getParameter(message);
+                break;
 
-			default:
-				message.setTargetAddress(ParameterGlobal.ADDRESS_REMOTE_MASTER);
-				mService.onReceive(message);
-				break;
-		}
-	}
+            case EntityMessage.OPERATION_EVENT:
+                handleEvent(message);
+                break;
 
+            case EntityMessage.OPERATION_NOTIFY:
+                handleNotification(message);
+                break;
 
-	private void getParameter(final EntityMessage message)
-	{
-	}
+            case EntityMessage.OPERATION_ACKNOWLEDGE:
+                handleAcknowledgement(message);
+                break;
 
-
-	private void handleEvent(final EntityMessage message)
-	{
-		mLog.Debug(getClass(), "Handle event: " + message.getEvent());
-
-		message.setTargetAddress(ParameterGlobal.ADDRESS_LOCAL_VIEW);
-		mService.onReceive(message);
-	}
+            default:
+                break;
+        }
+    }
 
 
-	private void handleNotification(final EntityMessage message)
-	{
-	}
+    private void setParameter(final EntityMessage message) {
+        mLog.Debug(getClass(), "Set parameter: " + message.getParameter());
+
+        switch (message.getParameter()) {
+            case ParameterSystem.PARAM_REACTION:
+                setReaction(new ValueInt(message.getData()).getValue());
+                break;
+            case ParameterSystem.PARAM_BATTERY:
+                int aa = sDeviceLED.battery();
+                mLog.Error(getClass(), "jni电量：" + aa);
+                break;
+
+            default:
+                message.setTargetAddress(ParameterGlobal.ADDRESS_REMOTE_MASTER);
+                mService.onReceive(message);
+                break;
+        }
+    }
 
 
-	private void handleAcknowledgement(final EntityMessage message)
-	{
-		if (message.getSourcePort() == ParameterGlobal.PORT_SYSTEM)
-		{
-			mLog.Debug(getClass(),
-				"Acknowledge port comm: " + message.getData()[0]);
-
-			message.setTargetAddress(ParameterGlobal.ADDRESS_LOCAL_VIEW);
-			mService.onReceive(message);
-		}
-	}
+    private void getParameter(final EntityMessage message) {
+    }
 
 
-	private void setReaction(int value)
-	{
-		final int REACTION_CYCLE_ALARM = 1000;
+    private void handleEvent(final EntityMessage message) {
+        mLog.Debug(getClass(), "Handle event: " + message.getEvent());
 
-		if (value == mReaction)
-		{
-			return;
-		}
+        message.setTargetAddress(ParameterGlobal.ADDRESS_LOCAL_VIEW);
+        mService.onReceive(message);
+    }
 
-		mReaction = value;
 
-		if (value == ParameterSystem.REACTION_ALARM)
-		{
-			final Handler handlerReaction = new Handler();
+    private void handleNotification(final EntityMessage message) {
+    }
 
-			handlerReaction.postDelayed(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					if (mReaction == ParameterSystem.REACTION_ALARM)
-					{
-						handlerReaction.postDelayed(this, REACTION_CYCLE_ALARM);
 
-						if (sDeviceLED.get(DeviceLED.COLOR_YELLOW) > 0)
-						{
-							sDeviceLED.set(DeviceLED.COLOR_YELLOW, 0);
-						}
-						else
-						{
-							sDeviceLED.set(DeviceLED.COLOR_YELLOW, 100);
-						}
-					}
-					else
-					{
-						handlerReaction.removeCallbacks(this);
+    private void handleAcknowledgement(final EntityMessage message) {
+        if (message.getSourcePort() == ParameterGlobal.PORT_SYSTEM) {
+            mLog.Debug(getClass(),
+                    "Acknowledge port comm: " + message.getData()[0]);
 
-						if (mReaction == ParameterSystem.REACTION_ALERT)
-						{
-							sDeviceLED.set(DeviceLED.COLOR_YELLOW, 100);
-						}
-						else
-						{
-							sDeviceLED.set(DeviceLED.COLOR_YELLOW, 0);
-						}
-					}
-				}
-			}, REACTION_CYCLE_ALARM);
-		}
-		else if (value == ParameterSystem.REACTION_ALERT)
-		{
-			sDeviceLED.set(DeviceLED.COLOR_YELLOW, 100);
-		}
-		else
-		{
-			sDeviceLED.set(DeviceLED.COLOR_YELLOW, 0);
-		}
-	}
+            message.setTargetAddress(ParameterGlobal.ADDRESS_LOCAL_VIEW);
+            mService.onReceive(message);
+        }
+    }
+
+
+    private void setReaction(int value) {
+        final int REACTION_CYCLE_ALARM = 1000;
+
+        if (value == mReaction) {
+            return;
+        }
+
+        mReaction = value;
+
+        if (value == ParameterSystem.REACTION_ALARM) {
+            final Handler handlerReaction = new Handler();
+
+            handlerReaction.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mReaction == ParameterSystem.REACTION_ALARM) {
+                        handlerReaction.postDelayed(this, REACTION_CYCLE_ALARM);
+
+                        if (sDeviceLED.get(DeviceLED.COLOR_YELLOW) > 0) {
+                            sDeviceLED.set(DeviceLED.COLOR_YELLOW, 0);
+                        } else {
+                            sDeviceLED.set(DeviceLED.COLOR_YELLOW, 100);
+                        }
+                    } else {
+                        handlerReaction.removeCallbacks(this);
+
+                        if (mReaction == ParameterSystem.REACTION_ALERT) {
+                            sDeviceLED.set(DeviceLED.COLOR_YELLOW, 100);
+                        } else {
+                            sDeviceLED.set(DeviceLED.COLOR_YELLOW, 0);
+                        }
+                    }
+                }
+            }, REACTION_CYCLE_ALARM);
+        } else if (value == ParameterSystem.REACTION_ALERT) {
+            sDeviceLED.set(DeviceLED.COLOR_YELLOW, 100);
+        } else {
+            sDeviceLED.set(DeviceLED.COLOR_YELLOW, 0);
+        }
+    }
 }

@@ -87,6 +87,7 @@ public class DatabaseManager {
         return liteOrm.query(new QueryBuilder<>(cla)
                         .columns(new String[]{"date_time", "event_type", "value"})
                         .appendOrderAscBy("date_time")
+                        .distinct(true)
                         .whereGreaterThan("date_time", current - 60 * 60 * 24 * 30 * 1000L)
                         .whereAppendAnd()
                         .whereLessThan("date_time", current + 60 * 60 * 24 * 1000L)

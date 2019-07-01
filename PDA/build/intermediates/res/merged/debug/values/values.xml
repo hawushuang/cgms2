@@ -1,48 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="app_timezone_array">
+        <item>Pago Pago</item>
+        <item>Pacific/Honolulu</item>
+        <item>Anchorage</item>
+        <item>Los Angeles</item>
+        <item>Denver</item>
+        <item>Chicago</item>
+        <item>New York</item>
+        <item>Santiago</item>
+        <item>Rio De Janeiro</item>
+        <item>Fernando de Noronha</item>
+        <item>Praia</item>
+        <item>London</item>
+        <item>Paris</item>
+        <item>Athens</item>
+        <item>Jeddah</item>
+        <item>Dubai</item>
+        <item>KHI</item>
+        <item>Dhaka</item>
+        <item>Bangkok</item>
+        <item>Beijing</item>
+        <item>Tokyo</item>
+        <item>Sydney</item>
+        <item>Noumea</item>
+        <item>Wellington</item>
+    </string-array>
     <string-array name="extend_bolus_array">
-		<item>OFF</item>
-		<item>U</item>
-		<item>%</item>
-	</string-array>
+        <item>OFF</item>
+        <item>U</item>
+        <item>%</item>
+    </string-array>
     <string-array name="food_type_chinese">
-	    <item>&lt;全部></item>
-		<item>辅食</item>
-		<item>水果</item>
-		<item>蔬菜</item>
-		<item>饮料</item>
-		<item>鱼/贝类</item>
-		<item>主食</item>
-		<item>小吃</item>
-		<item>其他</item>
-		<item>肉类</item>
-		<item>脂肪</item>
-	</string-array>
+        <item>&lt;全部></item>
+        <item>辅食</item>
+        <item>水果</item>
+        <item>蔬菜</item>
+        <item>饮料</item>
+        <item>鱼/贝类</item>
+        <item>主食</item>
+        <item>小吃</item>
+        <item>其他</item>
+        <item>肉类</item>
+        <item>脂肪</item>
+    </string-array>
     <string-array name="food_type_english">
-	    <item>&lt;All></item>
-		<item>Milk and Egg</item>
-		<item>Fruits</item>
-		<item>Vegetables</item>
-		<item>Beverages</item>
-		<item>Shellfish</item>
-		<item>Staples</item>
-		<item>Snacks</item>
-		<item>Other</item>
-		<item>Meat/Meat Substitutes</item>
-		<item>Fats</item>
-	</string-array>
+        <item>&lt;All></item>
+        <item>Milk and Egg</item>
+        <item>Fruits</item>
+        <item>Vegetables</item>
+        <item>Beverages</item>
+        <item>Shellfish</item>
+        <item>Staples</item>
+        <item>Snacks</item>
+        <item>Other</item>
+        <item>Meat/Meat Substitutes</item>
+        <item>Fats</item>
+    </string-array>
     <string-array name="history_excel">
-		<item>time</item>
-		<item>description</item>
-		<item>value</item>
-		<item>proiority</item>
-		<item>bg tag</item>
-	</string-array>
+        <item>time</item>
+        <item>description</item>
+        <item>value</item>
+        <item>proiority</item>
+        <item>bg tag</item>
+    </string-array>
+    <string-array name="language_array">
+        <item>Chinese</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="pnw_date_time_range">
+        <item>今天</item>
+        <item>明天</item>
+        <item>后天</item>
+    </string-array>
+    <string-array name="screen_timeout_array">
+        <item>10 s</item>
+        <item>1 min</item>
+        <item>5 min</item>
+        <item>10 min</item>
+        <item>1 hour</item>
+    </string-array>
     <string-array name="temp_array">
-		<item>OFF</item>
-		<item>U/hr</item>
-		<item>%</item>
-	</string-array>
+        <item>OFF</item>
+        <item>U/hr</item>
+        <item>%</item>
+    </string-array>
+    <string-array name="timezone_array">
+        <item>Pago Pago(GMT-11:00)</item>
+        <item>Honolulu(GMT-10:00)</item>
+        <item>Anchorage(GMT-09:00)</item>
+        <item>NV Nevada(GMT-08:00)</item>
+        <item>Denver(GMT-07:00)</item>
+        <item>Chicago(GMT-06:00)</item>
+        <item>New York(GMT-05:00)</item>
+        <item>Santiago(GMT-04:00)</item>
+        <item>Sao Paulo(GMT-03:00)</item>
+        <item>Greenland(GMT-02:00)</item>
+        <item>Praia(GMT-01:00)</item>
+        <item>London(GMT+00:00)</item>
+        <item>Paris(GMT+01:00)</item>
+        <item>Athens(GMT+02:00)</item>
+        <item>Jeddah(GMT+03:00)</item>
+        <item>Dubai(GMT+04:00)</item>
+        <item>KHI(GMT+05:00)</item>
+        <item>Dhaka(GMT+06:00)</item>
+        <item>Bangkok(GMT+07:00)</item>
+        <item>Beijing(GMT+08:00)</item>
+        <item>Tokyo(GMT+09:00)</item>
+        <item>Sydney(GMT+10:00)</item>
+        <item>Noumea(GMT+11:00)</item>
+        <item>Wellington(GMT+12:00)</item>
+    </string-array>
+    <attr format="reference" name="constraintSet"/>
     <attr format="reference" name="drawerArrowStyle"/>
     <attr format="dimension" name="height"/>
     <attr format="boolean" name="isLightTheme"/>
@@ -67,6 +136,12 @@
     <attr format="dimension" name="layout_constraintGuide_begin"/>
     <attr format="dimension" name="layout_constraintGuide_end"/>
     <attr format="float" name="layout_constraintGuide_percent"/>
+    <attr name="layout_constraintHeight_default">
+        <enum name="spread" value="0"/>
+        <enum name="wrap" value="1"/>
+    </attr>
+    <attr format="dimension" name="layout_constraintHeight_max"/>
+    <attr format="dimension" name="layout_constraintHeight_min"/>
     <attr format="float" name="layout_constraintHorizontal_bias"/>
     <attr format="enum" name="layout_constraintHorizontal_chainStyle">
         <enum name="spread" value="0"/>
@@ -108,6 +183,12 @@
         <enum name="packed" value="2"/>
     </attr>
     <attr format="float" name="layout_constraintVertical_weight"/>
+    <attr name="layout_constraintWidth_default">
+        <enum name="spread" value="0"/>
+        <enum name="wrap" value="1"/>
+    </attr>
+    <attr format="dimension" name="layout_constraintWidth_max"/>
+    <attr format="dimension" name="layout_constraintWidth_min"/>
     <attr format="dimension" name="layout_editor_absoluteX"/>
     <attr format="dimension" name="layout_editor_absoluteY"/>
     <attr format="dimension" name="layout_goneMarginBottom"/>
@@ -147,6 +228,12 @@
     <attr format="reference" name="style_text_white"/>
     <attr format="reference" name="style_title_dialog"/>
     <attr format="string" name="title"/>
+    <attr format="reference|color" name="zjun_bgColor"/>
+    <attr format="reference|color" name="zjun_gradationColor"/>
+    <attr format="reference|color" name="zjun_indicatorLineColor"/>
+    <attr format="reference|dimension" name="zjun_indicatorLineWidth"/>
+    <attr format="reference|color" name="zjun_textColor"/>
+    <attr format="reference|dimension" name="zjun_textSize"/>
     <bool name="abc_action_bar_embed_tabs">true</bool>
     <bool name="abc_allow_stacked_button_bar">true</bool>
     <bool name="abc_config_actionMenuItemAllCaps">true</bool>
@@ -267,6 +354,15 @@
     <color name="notification_icon_bg_color">#ff9e9e9e</color>
     <color name="notification_material_background_media_default_color">#ff424242</color>
     <color name="orange">#ffff6600</color>
+    <color name="pickerview_bgColor_default">#FFFFFFFF</color>
+    <color name="pickerview_bgColor_overlay">#60000000</color>
+    <color name="pickerview_bg_topbar">#f5f5f5</color>
+    <color name="pickerview_timebtn_nor">#057dff</color>
+    <color name="pickerview_timebtn_pre">#c2daf5</color>
+    <color name="pickerview_topbar_title">#000000</color>
+    <color name="pickerview_wheelview_textcolor_center">#2a2a2a</color>
+    <color name="pickerview_wheelview_textcolor_divider">#d5d5d5</color>
+    <color name="pickerview_wheelview_textcolor_out">#a8a8a8</color>
     <color name="primary_dark_material_dark">@android:color/black</color>
     <color name="primary_dark_material_light">@color/material_grey_600</color>
     <color name="primary_material_dark">@color/material_grey_900</color>
@@ -361,13 +457,13 @@
             
             <enum name="screen" value="15"/>
         </attr></declare-styleable>
-    <declare-styleable name="ConstraintLayout_Layout"><attr name="android:orientation"/><attr name="android:minWidth"/><attr name="android:minHeight"/><attr name="android:maxWidth"/><attr name="android:maxHeight"/><attr name="layout_optimizationLevel"/><attr name="layout_constraintGuide_begin"/><attr name="layout_constraintGuide_end"/><attr name="layout_constraintGuide_percent"/><attr name="layout_constraintLeft_toLeftOf"/><attr name="layout_constraintLeft_toRightOf"/><attr name="layout_constraintRight_toLeftOf"/><attr name="layout_constraintRight_toRightOf"/><attr name="layout_constraintTop_toTopOf"/><attr name="layout_constraintTop_toBottomOf"/><attr name="layout_constraintBottom_toTopOf"/><attr name="layout_constraintBottom_toBottomOf"/><attr name="layout_constraintBaseline_toBaselineOf"/><attr name="layout_constraintStart_toEndOf"/><attr name="layout_constraintStart_toStartOf"/><attr name="layout_constraintEnd_toStartOf"/><attr name="layout_constraintEnd_toEndOf"/><attr name="layout_goneMarginLeft"/><attr name="layout_goneMarginTop"/><attr name="layout_goneMarginRight"/><attr name="layout_goneMarginBottom"/><attr name="layout_goneMarginStart"/><attr name="layout_goneMarginEnd"/><attr name="layout_constraintHorizontal_bias"/><attr name="layout_constraintVertical_bias"/><attr name="layout_constraintLeft_creator"/><attr name="layout_constraintTop_creator"/><attr name="layout_constraintRight_creator"/><attr name="layout_constraintBottom_creator"/><attr name="layout_constraintBaseline_creator"/><attr name="layout_constraintDimensionRatio"/><attr name="layout_constraintHorizontal_weight"/><attr name="layout_constraintVertical_weight"/><attr name="layout_constraintHorizontal_chainStyle"/><attr name="layout_constraintVertical_chainStyle"/><attr name="layout_editor_absoluteX"/><attr name="layout_editor_absoluteY"/></declare-styleable>
-    <declare-styleable name="ConstraintSet"><attr name="android:orientation"/><attr name="android:id"/><attr name="android:visibility"/><attr name="android:layout_width"/><attr name="android:layout_height"/><attr name="android:layout_marginStart"/><attr name="android:layout_marginBottom"/><attr name="android:layout_marginTop"/><attr name="android:layout_marginEnd"/><attr name="android:layout_marginLeft"/><attr name="android:layout_marginRight"/><attr name="layout_constraintGuide_begin"/><attr name="layout_constraintGuide_end"/><attr name="layout_constraintGuide_percent"/><attr name="layout_constraintLeft_toLeftOf"/><attr name="layout_constraintLeft_toRightOf"/><attr name="layout_constraintRight_toLeftOf"/><attr name="layout_constraintRight_toRightOf"/><attr name="layout_constraintTop_toTopOf"/><attr name="layout_constraintTop_toBottomOf"/><attr name="layout_constraintBottom_toTopOf"/><attr name="layout_constraintBottom_toBottomOf"/><attr name="layout_constraintBaseline_toBaselineOf"/><attr name="layout_constraintStart_toEndOf"/><attr name="layout_constraintStart_toStartOf"/><attr name="layout_constraintEnd_toStartOf"/><attr name="layout_constraintEnd_toEndOf"/><attr name="layout_goneMarginLeft"/><attr name="layout_goneMarginTop"/><attr name="layout_goneMarginRight"/><attr name="layout_goneMarginBottom"/><attr name="layout_goneMarginStart"/><attr name="layout_goneMarginEnd"/><attr name="layout_constraintHorizontal_bias"/><attr name="layout_constraintVertical_bias"/><attr name="layout_constraintLeft_creator"/><attr name="layout_constraintTop_creator"/><attr name="layout_constraintRight_creator"/><attr name="layout_constraintBottom_creator"/><attr name="layout_constraintBaseline_creator"/><attr name="layout_constraintDimensionRatio"/><attr name="layout_constraintHorizontal_weight"/><attr name="layout_constraintVertical_weight"/><attr name="layout_constraintHorizontal_chainStyle"/><attr name="layout_constraintVertical_chainStyle"/><attr name="layout_editor_absoluteX"/><attr name="layout_editor_absoluteY"/></declare-styleable>
+    <declare-styleable name="ConstraintLayout_Layout"><attr name="android:orientation"/><attr name="android:minWidth"/><attr name="android:minHeight"/><attr name="android:maxWidth"/><attr name="android:maxHeight"/><attr name="layout_optimizationLevel"/><attr name="constraintSet"/><attr name="layout_constraintGuide_begin"/><attr name="layout_constraintGuide_end"/><attr name="layout_constraintGuide_percent"/><attr name="layout_constraintLeft_toLeftOf"/><attr name="layout_constraintLeft_toRightOf"/><attr name="layout_constraintRight_toLeftOf"/><attr name="layout_constraintRight_toRightOf"/><attr name="layout_constraintTop_toTopOf"/><attr name="layout_constraintTop_toBottomOf"/><attr name="layout_constraintBottom_toTopOf"/><attr name="layout_constraintBottom_toBottomOf"/><attr name="layout_constraintBaseline_toBaselineOf"/><attr name="layout_constraintStart_toEndOf"/><attr name="layout_constraintStart_toStartOf"/><attr name="layout_constraintEnd_toStartOf"/><attr name="layout_constraintEnd_toEndOf"/><attr name="layout_goneMarginLeft"/><attr name="layout_goneMarginTop"/><attr name="layout_goneMarginRight"/><attr name="layout_goneMarginBottom"/><attr name="layout_goneMarginStart"/><attr name="layout_goneMarginEnd"/><attr name="layout_constraintHorizontal_bias"/><attr name="layout_constraintVertical_bias"/><attr name="layout_constraintWidth_default"/><attr name="layout_constraintHeight_default"/><attr name="layout_constraintWidth_min"/><attr name="layout_constraintWidth_max"/><attr name="layout_constraintHeight_min"/><attr name="layout_constraintHeight_max"/><attr name="layout_constraintLeft_creator"/><attr name="layout_constraintTop_creator"/><attr name="layout_constraintRight_creator"/><attr name="layout_constraintBottom_creator"/><attr name="layout_constraintBaseline_creator"/><attr name="layout_constraintDimensionRatio"/><attr name="layout_constraintHorizontal_weight"/><attr name="layout_constraintVertical_weight"/><attr name="layout_constraintHorizontal_chainStyle"/><attr name="layout_constraintVertical_chainStyle"/><attr name="layout_editor_absoluteX"/><attr name="layout_editor_absoluteY"/></declare-styleable>
+    <declare-styleable name="ConstraintSet"><attr name="android:orientation"/><attr name="android:id"/><attr name="android:visibility"/><attr name="android:alpha"/><attr name="android:elevation"/><attr name="android:rotationX"/><attr name="android:rotationY"/><attr name="android:scaleX"/><attr name="android:scaleY"/><attr name="android:transformPivotX"/><attr name="android:transformPivotY"/><attr name="android:translationX"/><attr name="android:translationY"/><attr name="android:translationZ"/><attr name="android:layout_width"/><attr name="android:layout_height"/><attr name="android:layout_marginStart"/><attr name="android:layout_marginBottom"/><attr name="android:layout_marginTop"/><attr name="android:layout_marginEnd"/><attr name="android:layout_marginLeft"/><attr name="android:layout_marginRight"/><attr name="layout_constraintGuide_begin"/><attr name="layout_constraintGuide_end"/><attr name="layout_constraintGuide_percent"/><attr name="layout_constraintLeft_toLeftOf"/><attr name="layout_constraintLeft_toRightOf"/><attr name="layout_constraintRight_toLeftOf"/><attr name="layout_constraintRight_toRightOf"/><attr name="layout_constraintTop_toTopOf"/><attr name="layout_constraintTop_toBottomOf"/><attr name="layout_constraintBottom_toTopOf"/><attr name="layout_constraintBottom_toBottomOf"/><attr name="layout_constraintBaseline_toBaselineOf"/><attr name="layout_constraintStart_toEndOf"/><attr name="layout_constraintStart_toStartOf"/><attr name="layout_constraintEnd_toStartOf"/><attr name="layout_constraintEnd_toEndOf"/><attr name="layout_goneMarginLeft"/><attr name="layout_goneMarginTop"/><attr name="layout_goneMarginRight"/><attr name="layout_goneMarginBottom"/><attr name="layout_goneMarginStart"/><attr name="layout_goneMarginEnd"/><attr name="layout_constraintHorizontal_bias"/><attr name="layout_constraintVertical_bias"/><attr name="layout_constraintWidth_default"/><attr name="layout_constraintHeight_default"/><attr name="layout_constraintWidth_min"/><attr name="layout_constraintWidth_max"/><attr name="layout_constraintHeight_min"/><attr name="layout_constraintHeight_max"/><attr name="layout_constraintLeft_creator"/><attr name="layout_constraintTop_creator"/><attr name="layout_constraintRight_creator"/><attr name="layout_constraintBottom_creator"/><attr name="layout_constraintBaseline_creator"/><attr name="layout_constraintDimensionRatio"/><attr name="layout_constraintHorizontal_weight"/><attr name="layout_constraintVertical_weight"/><attr name="layout_constraintHorizontal_chainStyle"/><attr name="layout_constraintVertical_chainStyle"/><attr name="layout_editor_absoluteX"/><attr name="layout_editor_absoluteY"/></declare-styleable>
     <declare-styleable name="CountdownView"><attr format="boolean" name="isHideTimeBackground"/><attr format="boolean" name="isShowTimeBgDivisionLine"/><attr format="color" name="timeBgDivisionLineColor"/><attr format="dimension" name="timeBgDivisionLineSize"/><attr format="color" name="timeBgColor"/><attr format="dimension" name="timeBgSize"/><attr format="dimension" name="timeBgRadius"/><attr format="boolean" name="isTimeTextBold"/><attr format="dimension" name="timeTextSize"/><attr format="color" name="timeTextColor"/><attr format="boolean" name="isShowDay"/><attr format="boolean" name="isShowHour"/><attr format="boolean" name="isShowMinute"/><attr format="boolean" name="isShowSecond"/><attr format="boolean" name="isShowMillisecond"/><attr format="boolean" name="isSuffixTextBold"/><attr format="dimension" name="suffixTextSize"/><attr format="color" name="suffixTextColor"/><attr format="string" name="suffix"/><attr format="string" name="suffixDay"/><attr format="string" name="suffixHour"/><attr format="string" name="suffixMinute"/><attr format="string" name="suffixSecond"/><attr format="string" name="suffixMillisecond"/><attr name="suffixGravity">
-			<enum name="top" value="0"/>
-			<enum name="center" value="1"/>
-			<enum name="bottom" value="2"/>
-		</attr><attr format="dimension" name="suffixLRMargin"/><attr format="dimension" name="suffixDayLeftMargin"/><attr format="dimension" name="suffixDayRightMargin"/><attr format="dimension" name="suffixHourLeftMargin"/><attr format="dimension" name="suffixHourRightMargin"/><attr format="dimension" name="suffixMinuteLeftMargin"/><attr format="dimension" name="suffixMinuteRightMargin"/><attr format="dimension" name="suffixSecondLeftMargin"/><attr format="dimension" name="suffixSecondRightMargin"/><attr format="dimension" name="suffixMillisecondLeftMargin"/></declare-styleable>
+            <enum name="top" value="0"/>
+            <enum name="center" value="1"/>
+            <enum name="bottom" value="2"/>
+        </attr><attr format="dimension" name="suffixLRMargin"/><attr format="dimension" name="suffixDayLeftMargin"/><attr format="dimension" name="suffixDayRightMargin"/><attr format="dimension" name="suffixHourLeftMargin"/><attr format="dimension" name="suffixHourRightMargin"/><attr format="dimension" name="suffixMinuteLeftMargin"/><attr format="dimension" name="suffixMinuteRightMargin"/><attr format="dimension" name="suffixSecondLeftMargin"/><attr format="dimension" name="suffixSecondRightMargin"/><attr format="dimension" name="suffixMillisecondLeftMargin"/></declare-styleable>
     <declare-styleable name="CustomHProgressBar"><attr format="reference" name="hprogress_bg"/><attr format="reference" name="hprogress_pbg"/><attr format="reference" name="hprogress_arrow"/></declare-styleable>
     <declare-styleable name="CustomProgressBar"><attr format="reference" name="progress_bg"/><attr format="reference" name="progress_pbg"/><attr format="reference" name="progress_arrow"/></declare-styleable>
     <declare-styleable name="DragableViewGroup"><attr format="integer" name="default_screen"/></declare-styleable>
@@ -399,11 +495,12 @@
     <declare-styleable name="NumberRangeTextView"><attr format="integer" name="value"/><attr format="integer" name="maxValue"/><attr format="integer" name="minValue"/><attr format="integer" name="step"/></declare-styleable>
     <declare-styleable name="PopupWindow"><attr format="boolean" name="overlapAnchor"/><attr name="android:popupBackground"/><attr name="android:popupAnimationStyle"/></declare-styleable>
     <declare-styleable name="PopupWindowBackgroundState"><attr format="boolean" name="state_above_anchor"/></declare-styleable>
-    <declare-styleable name="RuleView"><attr format="reference" name="arrow"/><attr format="reference" name="unit"/><attr format="reference" name="line"/><attr format="reference" name="alarm"/></declare-styleable>
+    <declare-styleable name="RuleView"><attr name="zjun_bgColor"/><attr name="zjun_gradationColor"/><attr format="reference|dimension" name="gv_shortLineWidth"/><attr format="reference|dimension" name="gv_longLineWidth"/><attr format="reference|dimension" name="gv_shortGradationLen"/><attr format="reference|dimension" name="gv_longGradationLen"/><attr name="zjun_textColor"/><attr name="zjun_textSize"/><attr name="zjun_indicatorLineColor"/><attr name="zjun_indicatorLineWidth"/><attr format="reference|dimension" name="gv_indicatorLineLen"/><attr format="reference|float" name="gv_minValue"/><attr format="reference|float" name="gv_maxValue"/><attr format="reference|float" name="gv_currentValue"/><attr format="reference|float" name="gv_gradationUnit"/><attr format="reference|integer" name="gv_numberPerCount"/><attr format="reference|dimension" name="gv_gradationGap"/><attr format="reference|dimension" name="gv_gradationNumberGap"/></declare-styleable>
     <declare-styleable name="SearchView"><attr format="reference" name="layout"/><attr format="boolean" name="iconifiedByDefault"/><attr name="android:maxWidth"/><attr format="string" name="queryHint"/><attr format="string" name="defaultQueryHint"/><attr name="android:imeOptions"/><attr name="android:inputType"/><attr format="reference" name="closeIcon"/><attr format="reference" name="goIcon"/><attr format="reference" name="searchIcon"/><attr format="reference" name="searchHintIcon"/><attr format="reference" name="voiceIcon"/><attr format="reference" name="commitIcon"/><attr format="reference" name="suggestionRowLayout"/><attr format="reference" name="queryBackground"/><attr format="reference" name="submitBackground"/><attr name="android:focusable"/></declare-styleable>
     <declare-styleable name="SeekArc"><attr format="reference" name="thumb"/><attr format="dimension" name="thumbOffset"/><attr format="integer" name="max"/><attr format="dimension" name="progressWidth"/><attr format="dimension" name="arcWidth"/><attr format="integer" name="progress"/><attr format="integer" name="rotation"/><attr format="integer" name="startAngle"/><attr format="integer" name="sweepAngle"/><attr format="color" name="arcColor"/><attr format="color" name="progressColor"/><attr format="boolean" name="roundEdges"/><attr format="boolean" name="touchInside"/><attr format="boolean" name="clockwise"/><attr format="boolean" name="enabled"/></declare-styleable>
     <declare-styleable name="SeekArcTheme"><attr format="reference" name="seekArcStyle"/></declare-styleable>
     <declare-styleable name="Spinner"><attr name="android:prompt"/><attr name="popupTheme"/><attr name="android:popupBackground"/><attr name="android:dropDownWidth"/><attr name="android:entries"/></declare-styleable>
+    <declare-styleable name="SwitchButton"><attr format="dimension" name="tbBorderWidth"/><attr format="reference|color" name="tbOffBorderColor"/><attr format="reference|color" name="tbOffColor"/><attr format="reference|color" name="tbOnColor"/><attr format="reference|color" name="tbSpotColor"/><attr format="reference|boolean" name="tbAnimate"/><attr format="reference|boolean" name="tbAsDefaultOn"/></declare-styleable>
     <declare-styleable name="SwitchCompat"><attr name="android:thumb"/><attr format="color" name="thumbTint"/><attr name="thumbTintMode">
             
             <enum name="src_over" value="3"/>
@@ -453,19 +550,24 @@
         </attr></declare-styleable>
     <declare-styleable name="ViewStubCompat"><attr name="android:layout"/><attr name="android:inflatedId"/><attr name="android:id"/></declare-styleable>
     <declare-styleable name="WidgetPickerDouble"><attr format="string" name="pickerDoubleHeader"/><attr format="string" name="pickerDoubleFooter"/><attr format="enum" name="pickerDoubleFormat">
-			<enum name="decimal" value="0"/>
-			<enum name="time" value="1"/>
-		</attr><attr format="integer" name="pickerDoubleRatio"/><attr format="integer" name="pickerDoubleMax"/><attr format="integer" name="pickerDoubleMin"/><attr format="integer" name="pickerDoubleStep"/><attr format="integer" name="pickerDoubleValue"/></declare-styleable>
+            <enum name="decimal" value="0"/>
+            <enum name="time" value="1"/>
+        </attr><attr format="integer" name="pickerDoubleRatio"/><attr format="integer" name="pickerDoubleMax"/><attr format="integer" name="pickerDoubleMin"/><attr format="integer" name="pickerDoubleStep"/><attr format="integer" name="pickerDoubleValue"/></declare-styleable>
     <declare-styleable name="WidgetPickerSingle"><attr format="string" name="pickerSingleHeader"/><attr format="string" name="pickerSingleFooter"/><attr format="enum" name="pickerSingleFormat">
-			<enum name="decimal" value="0"/>
-			<enum name="time" value="1"/>
-			<enum name="integer" value="2"/>
-			<enum name="fraction" value="3"/>
-		</attr><attr format="integer" name="pickerSingleRatio"/><attr format="integer" name="pickerSingleMax"/><attr format="integer" name="pickerSingleMin"/><attr format="integer" name="pickerSingleStep"/><attr format="integer" name="pickerSingleValue"/><attr format="enum" name="pickerSingleOrientation">
-			<enum name="portrait" value="0"/>
-			<enum name="landscape" value="1"/>
-		</attr></declare-styleable>
-    <declare-styleable name="WidgetSettingItem"><attr format="string" name="itemName"/><attr format="string" name="itemValue"/><attr format="boolean" name="isWizard"/><attr format="boolean" name="isCheckBox"/></declare-styleable>
+            <enum name="decimal" value="0"/>
+            <enum name="time" value="1"/>
+            <enum name="integer" value="2"/>
+            <enum name="fraction" value="3"/>
+        </attr><attr format="integer" name="pickerSingleRatio"/><attr format="integer" name="pickerSingleMax"/><attr format="integer" name="pickerSingleMin"/><attr format="integer" name="pickerSingleStep"/><attr format="integer" name="pickerSingleValue"/><attr format="enum" name="pickerSingleOrientation">
+            <enum name="portrait" value="0"/>
+            <enum name="landscape" value="1"/>
+        </attr></declare-styleable>
+    <declare-styleable name="WidgetSettingItem"><attr format="string" name="itemName"/><attr format="string" name="itemValue"/><attr format="boolean" name="isWizard"/><attr format="boolean" name="isCheckBox"/><attr format="boolean" name="hasNext"/></declare-styleable>
+    <declare-styleable name="pickerview"><attr name="wheelview_gravity">
+            <enum name="center" value="17"/>
+            <enum name="left" value="3"/>
+            <enum name="right" value="5"/>
+        </attr><attr format="dimension" name="wheelview_textSize"/><attr format="color" name="wheelview_textColorOut"/><attr format="color" name="wheelview_textColorCenter"/><attr format="color" name="wheelview_dividerColor"/><attr format="float" name="wheelview_lineSpacingMultiplier"/></declare-styleable>
     <dimen name="abc_action_bar_content_inset_material">16dp</dimen>
     <dimen name="abc_action_bar_content_inset_with_nav">72dp</dimen>
     <dimen name="abc_action_bar_default_height_material">56dp</dimen>
@@ -562,6 +664,11 @@
     <dimen name="notification_subtext_size">13sp</dimen>
     <dimen name="notification_top_pad">10dp</dimen>
     <dimen name="notification_top_pad_large_text">5dp</dimen>
+    <dimen name="pickerview_textsize">20sp</dimen>
+    <dimen name="pickerview_topbar_btn_textsize">17sp</dimen>
+    <dimen name="pickerview_topbar_height">44dp</dimen>
+    <dimen name="pickerview_topbar_padding">20dp</dimen>
+    <dimen name="pickerview_topbar_title_textsize">18sp</dimen>
     <dimen name="size0">0dp</dimen>
     <dimen name="size1">1dp</dimen>
     <dimen name="size10">10dp</dimen>
@@ -724,6 +831,7 @@
     <item name="action_bar_spinner" type="id"/>
     <item name="action_menu_divider" type="id"/>
     <item name="action_menu_presenter" type="id"/>
+    <item name="high_light_view" type="id"/>
     <item name="home" type="id"/>
     <item name="progress_circular" type="id"/>
     <item name="progress_horizontal" type="id"/>
@@ -788,7 +896,7 @@
     <string name="actions_bg_active">Active Insulin</string>
     <string name="actions_bg_after">After Meal</string>
     <string name="actions_bg_apply_blood">Please Apply Blood to the Strip</string>
-    <string name="actions_bg_apply_control">Please Apply Control Solution</string>
+    <string name="actions_bg_apply_control">Please Apply Control Solution to the Strip</string>
     <string name="actions_bg_before">Before Meal</string>
     <string name="actions_bg_bolus">Bolus</string>
     <string name="actions_bg_bolus_calc">Bolus Calculator</string>
@@ -827,13 +935,15 @@
     <string name="actions_pump_connect">Please connect new pump, filled reservior and changed battery</string>
     <string name="actions_pump_connecting">Activating</string>
     <string name="actions_pump_continue">Continue</string>
+    <string name="actions_pump_data_empty">Data is empty</string>
+    <string name="actions_pump_data_long">The data length must be less than 18 bits </string>
     <string name="actions_pump_discn_failed">Deactivation failed</string>
     <string name="actions_pump_disconnect">Deactivate old pump\n%s</string>
     <string name="actions_pump_disconnect_prompt">Pump will deactivate, continue?</string>
     <string name="actions_pump_disconnecting">Deactivating</string>
     <string name="actions_pump_enter">Enter New Pump ID</string>
     <string name="actions_pump_id">Pump ID</string>
-    <string name="actions_pump_id_blank">Transmitter ID must have 6 characters</string>
+    <string name="actions_pump_id_blank">Transmitter ID must have 6 or 7 characters</string>
     <string name="actions_pump_not_found">%s was not found</string>
     <string name="actions_pump_pda_deactivate">Fail to connect old pump. Deactivate PDA only?</string>
     <string name="actions_pump_prime">Prime Reservoir</string>
@@ -870,13 +980,15 @@
     <string name="after_meal">After\nMeal</string>
     <string name="alarm">Alarm</string>
     <string name="alarm_dialog_title">Alarm</string>
-    <string name="alarm_expiration">Sensor is expired!</string>
+    <string name="alarm_expiration">Sensor is expired</string>
+    <string name="alarm_expiration2">Sensor is expired</string>
     <string name="alarm_hyper">High BG!</string>
     <string name="alarm_hypo">Low BG!</string>
     <string name="alarm_new_sensor">Check the new sensor for confirmation!</string>
     <string name="alarm_pda_battery">PDA battery low!</string>
+    <string name="alarm_pda_comm_error">communication loss！</string>
     <string name="alarm_pda_error">PDA error!</string>
-    <string name="alarm_sensor_error">Sensor error!</string>
+    <string name="alarm_sensor_error">Sensor error</string>
     <string name="alarm_text_auto_off">Auto off!</string>
     <string name="alarm_text_battery">Battery empty!</string>
     <string name="alarm_text_encoder">Motor error!</string>
@@ -884,6 +996,7 @@
     <string name="alarm_text_occlusion">Occlusion detected!</string>
     <string name="alarm_text_reservoir">Reservoir empty!</string>
     <string name="alarm_text_unknown">Unknown error!</string>
+    <string name="alert">Alert</string>
     <string name="alert_text_auto_off">Auto off in 15 min!</string>
     <string name="alert_text_battery">Battery low!</string>
     <string name="alert_text_expiration_one_hour">Expired after 1 day!</string>
@@ -897,6 +1010,7 @@
     <string name="all">All</string>
     <string name="all_hour">24 Hour</string>
     <string name="all_readings">All Readings</string>
+    <string name="already_paired">This transmitter has already paired with other PDA</string>
     <string name="am">AM</string>
     <string name="app_name">PDA</string>
     <string name="average">Average</string>
@@ -926,6 +1040,7 @@
     <string name="before_meal">Before\nMeal</string>
     <string name="begin">Begin</string>
     <string name="bg">BG</string>
+    <string name="blood_glucose">Blood Glucose!</string>
     <string name="bluetooth_setting_accept">Accept</string>
     <string name="bluetooth_setting_bluetooth_machines">Bluetooth Machines</string>
     <string name="bluetooth_setting_closing">Turning Off…</string>
@@ -936,6 +1051,7 @@
     <string name="bluetooth_setting_match">match with local machine</string>
     <string name="bluetooth_setting_match_content">Match with %s</string>
     <string name="bluetooth_setting_match_error">Match with %s error</string>
+    <string name="bluetooth_setting_match_failed">matched failed</string>
     <string name="bluetooth_setting_match_remove">Remove Match</string>
     <string name="bluetooth_setting_match_success">matched success</string>
     <string name="bluetooth_setting_match_title">BLUETOOTH</string>
@@ -949,6 +1065,7 @@
     <string name="bluetooth_setting_title">Bluetooth</string>
     <string name="bluetooth_setting_visiable">Visiable</string>
     <string name="bluetooth_setting_visiable_time">Visiable time is %s seconds</string>
+    <string name="bluetooth_unmatch_success">Unpair Success</string>
     <string name="bolus_amount_now">Amount now</string>
     <string name="bolus_amt">%sU</string>
     <string name="bolus_amt_extend">Extend Amt</string>
@@ -980,25 +1097,36 @@
     <string name="breakfast">Breakfast</string>
     <string name="btn_no">No</string>
     <string name="btn_yes">Yes</string>
+    <string name="calibrate_blood">Calibration!</string>
+    <string name="calibrate_confirm">Is it sure to record this calibration?</string>
+    <string name="calibrate_failed">Calibrat failed</string>
+    <string name="calibration_done">Calibration done</string>
     <string name="cancel">Cancel</string>
     <string name="carbs">Carbs</string>
     <string name="change_name_title">Change Name</string>
     <string name="chart">CHART</string>
     <string name="choose_cannula_size">Choose Cannula Size</string>
     <string name="clear">Clear</string>
+    <string name="comm_messagetips">Comm loss Alert</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_yesno_tv_content">Are you sure?</string>
     <string name="confirm_yesno_tv_title">Make Choice</string>
     <string name="connect_fail">Connect fail!</string>
+    <string name="connect_timeout">Connect timeout!</string>
     <string name="connecting">Connecting…</string>
     <string name="correction_bolus">Correction Bolus</string>
+    <string name="data_request">Request Data：</string>
+    <string name="data_synchronizing">Data Synchronizing…</string>
+    <string name="data_test">Data Test</string>
     <string name="date">Date</string>
     <string name="day">Day</string>
     <string name="days">Days</string>
     <string name="device">Device</string>
     <string name="dinner">Dinner</string>
+    <string name="done">Done</string>
     <string name="empty_string"/>
     <string name="end">End</string>
+    <string name="ensure">Ensure</string>
     <string name="excel_file_name">history</string>
     <string name="food_library_add">Add/Edit Food</string>
     <string name="food_library_chinese">Chinese</string>
@@ -1017,8 +1145,12 @@
     <string name="food_library_unit">gram/100g</string>
     <string name="food_library_value">Carbohydrates (gram/100g)</string>
     <string name="food_library_value_empty">You must enter an amount of carbohydrate.</string>
+    <string name="force_unpair_info">Faied connect the transmitter,it can be force to unpair.
+        if so,the transmitter will not be able to pair the other devices. Do you want to continue?</string>
+    <string name="force_unpair_info2">If this option is checked,it can be force to unpair.
+        the transmitter will not be able to pair the other devices.</string>
     <string name="fragment_calibrate">Calibrate</string>
-    <string name="fragment_calibration_insert_strip">Please calibrate insert BG strip</string>
+    <string name="fragment_calibration_insert_strip">Please calibrate with BG strip</string>
     <string name="fragment_home_add_data">+ Add Data</string>
     <string name="fragment_home_average_bg">Average BG</string>
     <string name="fragment_home_last_bg_level">Last BG Level</string>
@@ -1027,14 +1159,16 @@
     <string name="fragment_home_remaining_battery">Remaining\nBattery</string>
     <string name="fragment_home_week">Week</string>
     <string name="fragment_manual_calibration">Manual Calibration</string>
+    <string name="fragment_settings_force_unpair">Force unpair</string>
     <string name="fragment_settings_hi_bg_threshold">Hi BG Threshold</string>
     <string name="fragment_settings_hyper_error">Hi BG threshold is ranging from 8mmol/L to 25mmol/L</string>
-    <string name="fragment_settings_hypo_error">Lo BG threshold is ranging from 2mmol/L to 5mmol/L</string>
+    <string name="fragment_settings_hypo_error">Lo BG threshold is ranging from 2.2mmol/L to 5mmol/L</string>
     <string name="fragment_settings_language">English</string>
     <string name="fragment_settings_lo_bg_threshold">Lo BG Threshold</string>
     <string name="fragment_settings_pairing">Transmiter Pairing</string>
     <string name="fragment_settings_startup">Sensor initializing…</string>
     <string name="fragment_settings_unpair">Transmitter will deactivate, continue?</string>
+    <string name="fragment_settings_unpairing">Transmiter UnPairing</string>
     <string name="glucose_error_blood_filling">Blood filling error!</string>
     <string name="glucose_error_blood_not_enough">Blood not enough error!</string>
     <string name="glucose_error_channel">Channel error!</string>
@@ -1046,9 +1180,13 @@
     <string name="glucose_error_title">Notification</string>
     <string name="glucose_error_underflow">Blood glucose underflow error!</string>
     <string name="glucose_error_unknown">Unknown error!</string>
+    <string name="glucose_messagetips">Glucose Check Alert</string>
+    <string name="glucose_recommend">Glucose Recommend Cal</string>
     <string name="graph">Graph</string>
     <string name="half_hour">12 Hour</string>
     <string name="help_title">HELP</string>
+    <string name="hi_messagetips">Hi BG Alert</string>
+    <string name="high">High</string>
     <string name="his_avg_14">14 Days</string>
     <string name="his_avg_30">30 Days</string>
     <string name="his_avg_60">60 Days</string>
@@ -1094,6 +1232,7 @@
     <string name="history_insulin_name3">Bolus</string>
     <string name="history_insulin_name4">Bolus(ext)</string>
     <string name="history_log_title">History Log</string>
+    <string name="history_mode_forbidden">In the history mode，calibration is forbidden</string>
     <string name="history_sd_prompt">your history is leading to your sd card,please
 		wait!
 </string>
@@ -1122,7 +1261,11 @@
     <string name="hyper">Hyper</string>
     <string name="hypo">Hypo</string>
     <string name="image">Image</string>
+    <string name="initializing">Initializing</string>
+    <string name="input_calibration_err">Calibration is rang from 2mmol/L to 30mmol/L</string>
     <string name="input_empty">Input is empty!</string>
+    <string name="input_err">Input Error</string>
+    <string name="input_testdata">Input the Testdata</string>
     <string name="knowledge">Knowledge</string>
     <string name="last_set">Last Temp Basal</string>
     <string name="list">List</string>
@@ -1132,39 +1275,55 @@
     <string name="lockscreen_Default">TextView</string>
     <string name="lockscreen_QuickBolusNotEnable">Quick Bolus function is not enabled.\nPlease check it in settings.</string>
     <string name="login">Login</string>
+    <string name="low">Low</string>
+    <string name="low_messagetips">Lo BG Alert</string>
     <string name="lunch">Lunch</string>
     <string name="mall">Mall</string>
     <string name="meal_bolus">Meal Bolus</string>
     <string name="message">Message</string>
+    <string name="messagetips">Alert</string>
     <string name="midnight">Midnight</string>
+    <string name="minutebefore">Minutes Ago</string>
     <string name="minutes">minutes</string>
     <string name="month">Month</string>
     <string name="more">More</string>
+    <string name="more_hour">More than one hour</string>
+    <string name="next">Next</string>
     <string name="no">NO</string>
     <string name="no_data_dash">--</string>
     <string name="no_set">have not set</string>
     <string name="normal">Normal</string>
     <string name="ok">OK</string>
+    <string name="pair_data_err">Data Error, need to Pair again</string>
     <string name="percent">%</string>
     <string name="pm">PM</string>
+    <string name="prev">Prev</string>
     <string name="prime_cannula_resume">Prime cannula and resume %s</string>
     <string name="rate">Rate</string>
     <string name="readings">Readings</string>
+    <string name="record">Record</string>
+    <string name="record_calibrate_confirm">Is it sure to calibrate?</string>
+    <string name="record_done">Record done</string>
     <string name="recovery">Factory Reset</string>
+    <string name="recovery_clear">If reset,the log will be cleared, continue?</string>
     <string name="recovery_pair">If reset,transmitter will deactivate and the log will be cleared, continue?</string>
     <string name="register">Register</string>
     <string name="remind_again">Snooze</string>
     <string name="remind_off">Off</string>
     <string name="remind_title">Reminder</string>
     <string name="remove">Remove</string>
+    <string name="remove_success">Remove Success</string>
     <string name="remuse_basal_name">Resume %s</string>
     <string name="resume_bolus">Please cancel the bolus,then suspend</string>
     <string name="resume_prompt">The pump will resume after %s minutes of no delivery</string>
     <string name="resume_title">RESUME</string>
+    <string name="retry">Retry</string>
     <string name="sd_not_mount">SD card could not be mounted</string>
     <string name="search_again">Search again</string>
     <string name="search_menu_title">Search</string>
     <string name="searching">Searching…</string>
+    <string name="send_testdata">Send</string>
+    <string name="set_highorlow_failed">set threshold value failed,whether to set it manually</string>
     <string name="setting">Setting</string>
     <string name="setting_alert">Alerts/reminders</string>
     <string name="setting_bg">BG Settings</string>
@@ -1193,6 +1352,7 @@
     <string name="setting_bg_repeat_alarm">Repeat this Reminder?</string>
     <string name="setting_bolus_calc_line_title">Bolus Calculator\nSettings</string>
     <string name="setting_days">Days</string>
+    <string name="setting_failed">Setting failed</string>
     <string name="setting_finish">Finish</string>
     <string name="setting_general">General Settings</string>
     <string name="setting_general_24_hr">24-Hour Format</string>
@@ -1208,9 +1368,13 @@
     <string name="setting_general_date_ymd">yyyy-MM-dd</string>
     <string name="setting_general_days">Pump Expiration</string>
     <string name="setting_general_display">Display</string>
+    <string name="setting_general_historymode_switch">Current mode is Review History mode, Click OK to switch to Real time detection mode</string>
     <string name="setting_general_language">Language</string>
     <string name="setting_general_language_switch">Current language is English, Click OK to switch to Chinese</string>
     <string name="setting_general_line_storage">SD Card</string>
+    <string name="setting_general_mode">Mode</string>
+    <string name="setting_general_mode_history">Review History</string>
+    <string name="setting_general_mode_time">Real_time</string>
     <string name="setting_general_pda_serial">PDA Serial Number</string>
     <string name="setting_general_privacy">Privacy</string>
     <string name="setting_general_pump_serial">Active Pump Serial Number</string>
@@ -1225,13 +1389,14 @@
     <string name="setting_general_screnn_30s">30s</string>
     <string name="setting_general_set_date">Date</string>
     <string name="setting_general_set_time">Time</string>
-    <string name="setting_general_set_timezone">Select TimeZone</string>
+    <string name="setting_general_set_timezone">TimeZone</string>
     <string name="setting_general_sound">Sound</string>
     <string name="setting_general_sound_type">Sound On</string>
     <string name="setting_general_storage">SD Card</string>
     <string name="setting_general_storage_available">Available Space</string>
     <string name="setting_general_storage_export">History Export</string>
     <string name="setting_general_storage_total">Total Space</string>
+    <string name="setting_general_timemode_switch">Current mode is Real time detection mode, Click OK to switch to Review History mode</string>
     <string name="setting_general_title">General\nSettings</string>
     <string name="setting_general_version">Software Version</string>
     <string name="setting_general_vibration_type">Vibrate On</string>
@@ -1269,6 +1434,7 @@
     <string name="setting_status_percent">%</string>
     <string name="setting_status_u">U</string>
     <string name="setting_status_u_hr">(U/hr)</string>
+    <string name="setting_success">Setting Success</string>
     <string name="setting_title">Settings</string>
     <string name="setting_wizard">Settings Wizard</string>
     <string name="setting_wizard_content1">Please set the time and date</string>
@@ -1308,19 +1474,39 @@
     <string name="status_info_pump_battery">Pump Battery</string>
     <string name="stop_content">Stop pump delivery?</string>
     <string name="stop_option">Stop (Pump rewind)</string>
+    <string name="sure_cancel">Are you sure to cancel?</string>
     <string name="suspend_content">Suspend pump delivery?</string>
     <string name="suspend_option">Suspend (Pump not rewind)</string>
     <string name="suspend_title">Suspend/Stop</string>
+    <string name="switchto_blood_calibration">Switch to Blood Test</string>
+    <string name="switchto_control_calibration">Switch to Control Liquid Test</string>
+    <string name="synchronizedata">Synchronize Data</string>
     <string name="table">Table</string>
     <string name="temp_basal_cancel_prompt">Resuming Basal Program 1</string>
     <string name="temp_basal_max_prompt">You have entered a value larger than the Max value</string>
     <string name="temp_basal_title">Temporary Basal</string>
     <string name="text">Text</string>
     <string name="time">Time</string>
+    <string name="time_current">Current time:</string>
+    <string name="time_date_picker_title">Date</string>
+    <string name="time_sure_content">Are you sure time is correct?</string>
+    <string name="time_sure_title">Time Confirm</string>
+    <string name="timeout_lock">ScreenOn time</string>
+    <string name="timepicker_cancel">Cancel</string>
+    <string name="timepicker_day">day</string>
+    <string name="timepicker_finish">OK</string>
+    <string name="timepicker_hour">hour</string>
+    <string name="timepicker_min">min</string>
+    <string name="timepicker_month">mon</string>
+    <string name="timepicker_title">Time</string>
+    <string name="timepicker_title_default">set</string>
+    <string name="timepicker_year">year</string>
+    <string name="timezonepicker_title">Timezone</string>
     <string name="toast_bluetooth_device_not_support">Bluetooth device not support</string>
     <string name="toast_network_connection_failed">Network connection failed</string>
     <string name="toast_network_device_not_open">Network device not open</string>
     <string name="total_suggested_bolus">Total Suggested Bolus</string>
+    <string name="transmitter_id_err">Transmitter ID Error</string>
     <string name="unit_carb_u">g carb/U</string>
     <string name="unit_g">grams</string>
     <string name="unit_hour">hour</string>
@@ -1335,8 +1521,12 @@
     <string name="unit_u">U</string>
     <string name="unit_u_day">U/day</string>
     <string name="unit_u_hr">U/hr</string>
+    <string name="unpair_recovery">Have not been unpired with the transmitter,
+    do you want to cancel the control of the transmitter first?</string>
+    <string name="unpaired">Unpaired</string>
     <string name="update_pump_prompt">if you change the settings of the activated program %s,the pump will update</string>
     <string name="update_pump_title">Update Pump</string>
+    <string name="utilities">Utilities</string>
     <string name="value_out_of_range">Value out of range</string>
     <string name="year">Year</string>
     <string name="yes">YES</string>
@@ -1344,6 +1534,10 @@
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>
     <style name="Animation.AppCompat.Dialog" parent="Base.Animation.AppCompat.Dialog"/>
     <style name="Animation.AppCompat.DropDownUp" parent="Base.Animation.AppCompat.DropDownUp"/>
+    <style name="Animation.Bottom.Rising" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
     <style name="AppBaseTheme" parent="android:Theme.Light">
         
     </style>
@@ -2621,6 +2815,15 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <style name="Theme.Light.NoTitle.Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFrame">@null</item>
+    </style>
+    <style name="Theme.Light.NoTitle.NoShadow.Dialog" parent="Theme.Light.NoTitle.Dialog">
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
     <style name="ThemeDialog" parent="android:style/Theme.Dialog">
 		<item name="android:windowBackground">@color/transparent</item>
 		<item name="android:windowNoTitle">true</item>
@@ -2632,6 +2835,12 @@
     <style name="ThemeOverlay.AppCompat.Dialog" parent="Base.ThemeOverlay.AppCompat.Dialog"/>
     <style name="ThemeOverlay.AppCompat.Dialog.Alert" parent="Base.ThemeOverlay.AppCompat.Dialog.Alert"/>
     <style name="ThemeOverlay.AppCompat.Light" parent="Base.ThemeOverlay.AppCompat.Light"/>
+    <style name="TranslucentScreenTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
     <style name="Widget.AppCompat.ActionBar" parent="Base.Widget.AppCompat.ActionBar">
     </style>
     <style name="Widget.AppCompat.ActionBar.Solid" parent="Base.Widget.AppCompat.ActionBar.Solid">
@@ -2738,7 +2947,7 @@
 	</style>
     <style name="bar_title">
 		<item name="android:layout_width">0dp</item>
-		<item name="android:layout_height">38dp</item>
+		<item name="android:layout_height">50dp</item>
 		<item name="android:background">@color/background_dark</item>
 		<item name="layout_constraintTop_toTopOf">parent</item>
 		<item name="layout_constraintLeft_toLeftOf">parent</item>
@@ -3008,29 +3217,29 @@
 		<item name="android:textColor">@color/white</item>
 	</style>
     <style name="theme_pda" parent="Theme.AppCompat.NoActionBar">
-		<item name="android:windowFullscreen">true</item>
-		<item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
 
-		<item name="style_text_base">@style/text_base</item>
-		<item name="style_text_white">@style/text_white</item>
-		<item name="style_text_black">@style/text_black</item>
-		<item name="style_text_tiny">@style/text_tiny</item>
-		<item name="style_text_small">@style/text_small</item>
-		<item name="style_text_medium">@style/text_medium</item>
-		<item name="style_text_big">@style/text_big</item>
-		<item name="style_text_large">@style/text_large</item>
-		<item name="style_text_title_bar">@style/text_title_bar</item>
-		<item name="style_text_panel_title">@style/text_panel_title</item>
-		<item name="style_text_panel_subtitle">@style/text_panel_subtitle</item>
-		<item name="style_text_panel_comment">@style/text_panel_comment</item>
-		<item name="style_text_input">@style/text_input</item>
-		<item name="style_button_base">@style/button_base</item>
-		<item name="style_button_small">@style/button_small</item>
-		<item name="style_button_tab_main">@style/button_tab_main</item>
-		<item name="style_bar_title">@style/bar_title</item>
-		<item name="style_image_divider">@style/image_divider</item>
-		<item name="style_edit_input">@style/edit_input</item>
-	</style>
+        <item name="style_text_base">@style/text_base</item>
+        <item name="style_text_white">@style/text_white</item>
+        <item name="style_text_black">@style/text_black</item>
+        <item name="style_text_tiny">@style/text_tiny</item>
+        <item name="style_text_small">@style/text_small</item>
+        <item name="style_text_medium">@style/text_medium</item>
+        <item name="style_text_big">@style/text_big</item>
+        <item name="style_text_large">@style/text_large</item>
+        <item name="style_text_title_bar">@style/text_title_bar</item>
+        <item name="style_text_panel_title">@style/text_panel_title</item>
+        <item name="style_text_panel_subtitle">@style/text_panel_subtitle</item>
+        <item name="style_text_panel_comment">@style/text_panel_comment</item>
+        <item name="style_text_input">@style/text_input</item>
+        <item name="style_button_base">@style/button_base</item>
+        <item name="style_button_small">@style/button_small</item>
+        <item name="style_button_tab_main">@style/button_tab_main</item>
+        <item name="style_bar_title">@style/bar_title</item>
+        <item name="style_image_divider">@style/image_divider</item>
+        <item name="style_edit_input">@style/edit_input</item>
+    </style>
     <style name="title" parent="@style/title_text">
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">wrap_content</item>

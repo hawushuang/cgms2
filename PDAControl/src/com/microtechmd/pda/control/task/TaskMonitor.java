@@ -61,7 +61,8 @@ public final class TaskMonitor extends TaskBase {
     private boolean mIsHistorySync = false;
     private int mEventIndexRemote = -1;//广播包数据index最大值
     private int mEventIndexModel = -1;
-    private boolean mBroadcastSave = true;
+    private boolean mBroadcastSave;
+    private boolean time_corrected = false;
     private boolean synchronizeDone;
 
     private History history_broadcast;
@@ -163,6 +164,10 @@ public final class TaskMonitor extends TaskBase {
         mLog.Debug(getClass(), "Set parameter: " + message.getParameter());
 
         switch (message.getParameter()) {
+            case ParameterComm.TIME_CORRECTED:
+                time_corrected = message.getData()[0] != 0;
+                mLog.Error(getClass(), "时间设置接收：" + time_corrected);
+                break;
             case ParameterComm.BROADCAST_SAVA:
                 mBroadcastSave = message.getData()[0] != 0;
 
@@ -288,14 +293,24 @@ public final class TaskMonitor extends TaskBase {
                 "Acknowledge port comm: " + message.getData()[0]);
         if (message.getParameter() == ParameterGlucose.TASK_GLUCOSE_PARAM_NEW_SENSOR) {
             if (message.getData()[0] == EntityMessage.FUNCTION_OK) {
-                if (history_broadcast != null) {
-                    synchronizeDateTime(history_broadcast);
-                }
+                // 强制发送校准时间
+                mLog.Error(getClass(), "强制校准时间");
+                long nowTime = System.currentTimeMillis() - DateTime.BASE_TIME;
+                handleMessage(
+                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                                ParameterGlobal.ADDRESS_REMOTE_MASTER,
+                                ParameterGlobal.PORT_MONITOR, ParameterGlobal.PORT_MONITOR,
+                                EntityMessage.OPERATION_SET,
+                                ParameterMonitor.PARAM_DATETIME, ByteUtil.intToBytes((int) (nowTime / 1000))));
+//                if (history_broadcast != null) {
+//                    synchronizeDateTime(history_broadcast);
+//                }
             }
         }
 
         if (message.getParameter() == ParameterMonitor.PARAM_DATETIME) {
             timeSet = true;
+            forceSynchronizeFlag = false;
         }
     }
 
@@ -691,6 +706,9 @@ public final class TaskMonitor extends TaskBase {
 
 
     private void onNotifyHistoryControl(final EntityMessage message) {
+        if (time_corrected) {
+            return;
+        }
         mLog.Debug(getClass(), "Notify history control begin");
 
         byte[] broadcastBytes = new byte[12];
@@ -782,19 +800,21 @@ public final class TaskMonitor extends TaskBase {
         ////////////////////////////////////////////
 
         //校准时间
+        if (forceSynchronizeFlag) {
+            synchronizeDateTime(history, true);
+            return;
+        }
         long systemDateTime = System.currentTimeMillis();
         long historyDateTime = history.getDateTime().getCalendar().getTimeInMillis()
                 + history.getBattery().getElapsedtime() * 10 * 1000;
         long dateTimeError = Math.abs(systemDateTime - historyDateTime);
 
-        if (dateTimeError < 60 * 1000) {
-            forceSynchronizeFlag = false;
-        } else if ((forceSynchronizeFlag ||
-                (history.getEvent().getEvent() != SENSOR_EXPIRATION && history.getBattery().getElapsedtime() <= 120))
-//                && !timeSet
-        ) {
-            synchronizeDateTime(history);
-            return;
+        if (dateTimeError >= 60 * 1000) {
+            if (((history.getEvent().getEvent() != SENSOR_EXPIRATION &&
+                    history.getBattery().getElapsedtime() <= 120))) {
+                synchronizeDateTime(history, false);
+                return;
+            }
         }
         ////////////////////////////////////////
 
@@ -915,7 +935,17 @@ public final class TaskMonitor extends TaskBase {
     }
 
 
-    private void synchronizeDateTime(History history) {
+    private void synchronizeDateTime(History history, boolean isForced) {
+        if (isForced) {
+            mLog.Error(getClass(), "强制校准时间");
+            handleMessage(
+                    new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                            ParameterGlobal.ADDRESS_REMOTE_MASTER,
+                            ParameterGlobal.PORT_MONITOR, ParameterGlobal.PORT_MONITOR,
+                            EntityMessage.OPERATION_SET,
+                            ParameterMonitor.PARAM_DATETIME, ByteUtil.intToBytes((int) ((System.currentTimeMillis() - DateTime.BASE_TIME) / 1000))));
+            return;
+        }
         final long DATE_TIME_ERROR_MAX = 60 * 1000;
         final int YEAR_MIN = 2017;
 
@@ -962,8 +992,6 @@ public final class TaskMonitor extends TaskBase {
                             EntityMessage.OPERATION_SET,
                             ParameterMonitor.PARAM_DATETIME, ByteUtil.intToBytes((int) (nowTime / 1000))));
             history.setDateTime(dateTime);
-        } else {
-            forceSynchronizeFlag = false;
         }
     }
 }

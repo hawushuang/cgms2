@@ -59,7 +59,6 @@ public class FragmentSettingHistoryLog extends FragmentBase
     private DataSetHistory mDataSetHistory;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,10 +91,12 @@ public class FragmentSettingHistoryLog extends FragmentBase
         mCalendar.set(Calendar.MINUTE, 0);
         mCalendar.set(Calendar.SECOND, 0);
         updateDateTime(mCalendar);
+        showDialogProgress();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 List<DbHistory> dataBaseErrListAll = mDataSetHistory.getErrDbList();
+                dataErrListAll.clear();
                 for (DbHistory dbHistory : dataBaseErrListAll) {
                     if (dbHistory.getEvent_type() == 5 ||
                             dbHistory.getEvent_type() == 6 ||
@@ -105,13 +106,14 @@ public class FragmentSettingHistoryLog extends FragmentBase
                         dataErrListAll.add(dbHistory);
                     }
                 }
-                if (getActivity() == null){
+                if (getActivity() == null) {
                     return;
                 }
 //                dataErrListAll = mDataSetHistory.getErrDbList();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        dismissDialogProgress();
                         queryHistory(mCalendar);
                         if (dataErrListAll.size() > 0) {
                             firstTime = Collections.min(dataErrListAll, new MyComparator()).getDate_time();
@@ -124,6 +126,21 @@ public class FragmentSettingHistoryLog extends FragmentBase
 //        if (dataErrListAll.size() > 0) {
 //            firstTime = Collections.min(dataErrListAll, new MyComparator()).getDate_time();
 //        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        dismissDialogProgress();
+    }
+
+    private void showDialogProgress() {
+        ((ActivityPDA) getActivity()).showDialogProgress();
+    }
+
+
+    private void dismissDialogProgress() {
+        ((ActivityPDA) getActivity()).dismissDialogProgress();
     }
 
     @Override
@@ -252,8 +269,12 @@ public class FragmentSettingHistoryLog extends FragmentBase
         if ("en".equals(AndroidSystemInfoUtil.getLanguage().getLanguage())) {
             template = "E, MMMMM dd, yyyy";
         } else {
-            template = "yyyy" + getString(R.string.year) + "MM" + getString(R.string.month) + "dd" +
-                    getString(R.string.day);
+            if (isAdded()) {
+                template = "yyyy" + getString(R.string.year) + "MM" + getString(R.string.month) + "dd" +
+                        getString(R.string.day);
+            } else {
+                template = "yyyy" + "-" + "MM" + "-" + "dd";
+            }
         }
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(template, Locale.getDefault());

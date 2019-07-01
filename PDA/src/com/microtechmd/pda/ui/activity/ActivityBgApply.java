@@ -64,22 +64,17 @@ public class ActivityBgApply extends ActivityPDA {
     protected void onClickView(View v) {
         super.onClickView(v);
 
-        switch (v.getId()) {
-            case R.id.button_calibration_switch:
-                switch (mode) {
-                    case 0:
-                        setControl(1);
-                        mode_set = 1;
-                        break;
-                    case 1:
-                        setControl(0);
-                        mode_set = 0;
-                        break;
-                }
-                break;
-
-            default:
-                break;
+        if (v.getId() == R.id.button_calibration_switch) {
+            switch (mode) {
+                case 0:
+                    setControl(1);
+                    mode_set = 1;
+                    break;
+                case 1:
+                    setControl(0);
+                    mode_set = 0;
+                    break;
+            }
         }
     }
 
@@ -88,24 +83,20 @@ public class ActivityBgApply extends ActivityPDA {
         super.handleAcknowledgement(message);
         if ((message.getSourceAddress() == ParameterGlobal.ADDRESS_REMOTE_SLAVE) &&
                 (message.getSourcePort() == ParameterGlobal.PORT_GLUCOSE)) {
-            switch (message.getParameter()) {
-                case ParameterGlucose.PARAM_CONTROL:
-                    mode = mode_set;
-                    switch (mode) {
-                        case 0:
-                            initBloodImgs();
-                            text_view_calibration.setText(R.string.actions_bg_apply_blood);
-                            button_calibration_switch.setText(R.string.switchto_control_calibration);
-                            break;
-                        case 1:
-                            initControlImgs();
-                            text_view_calibration.setText(R.string.actions_bg_apply_control);
-                            button_calibration_switch.setText(R.string.switchto_blood_calibration);
-                            break;
-                    }
-                    break;
-                default:
-                    break;
+            if (message.getParameter() == ParameterGlucose.PARAM_CONTROL) {
+                mode = mode_set;
+                switch (mode) {
+                    case 0:
+                        initBloodImgs();
+                        text_view_calibration.setText(R.string.actions_bg_apply_blood);
+                        button_calibration_switch.setText(R.string.switchto_control_calibration);
+                        break;
+                    case 1:
+                        initControlImgs();
+                        text_view_calibration.setText(R.string.actions_bg_apply_control);
+                        button_calibration_switch.setText(R.string.switchto_blood_calibration);
+                        break;
+                }
             }
         }
     }
@@ -141,6 +132,8 @@ public class ActivityBgApply extends ActivityPDA {
                     if (message.getData()[0] == 5) {
                         Intent intent = new Intent(mBaseActivity,
                                 ActivityBgProcessing.class);
+                        intent.putExtra(ActivityBgEnter.EXTRA_BG_MODE,
+                                mode);
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);

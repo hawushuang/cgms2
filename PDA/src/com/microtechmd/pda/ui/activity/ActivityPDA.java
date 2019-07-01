@@ -64,8 +64,11 @@ import com.microtechmd.pda.util.MediaUtil;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Stack;
 import java.util.TimeZone;
 import java.util.Timer;
@@ -127,6 +130,7 @@ public class ActivityPDA extends AppCompatActivity
     public static final String SETTING_TIME_FORMAT = "setting_time_format";
     public static final String SETTING_RF_ADDRESS = "setting_rf_address";
     public static final String GET_RF_MAC_ADDRESS = "get_rf_mac_address";
+    public static final String IS_PAIRED = "isPaired";
     public static final String RFSIGNAL = "rfsignal";
     public static int YEAR_MIN = 2019;
 
@@ -143,7 +147,7 @@ public class ActivityPDA extends AppCompatActivity
     private static boolean sIsPowerdown = false;
     private static boolean sIsPDABatteryLow = false;
     private static boolean sIsPDABatteryCharging = false;
-    private static PowerManager.WakeLock sWakeLock = null;
+    protected static PowerManager.WakeLock sWakeLock = null;
     private static WidgetStatusBar sStatusBar = null;
 
     protected LogPDA mLog = null;
@@ -220,7 +224,8 @@ public class ActivityPDA extends AppCompatActivity
 
         }
     };
-
+    private List<Integer> batteryList;
+    private int batteryMode = 0;
     private Timer signalTimer;
 
     protected class MessageListener
@@ -632,6 +637,7 @@ public class ActivityPDA extends AppCompatActivity
     }
 
     int i = 0;
+    int typ = 10;
 
     @SuppressLint("ShortAlarm")
     @Override
@@ -687,8 +693,28 @@ public class ActivityPDA extends AppCompatActivity
 //                    triggerReaction(reaction);
 //                }
 //            }, 2000);
+//            new CountDownTimer(10 * 1000, 5 * 1000) {
+//
+//                @Override
+//                public void onTick(long l) {
+//                    History h = new History();
+//                    Event e = new Event();
+//                    if (typ == 12) {
+//                        typ = 10;
+//                    }
+//                    e.setEvent(typ);
+//                    typ++;
+//                    h.setEvent(e);
+//                    alertTips(h);
+//                }
+//
+//                @Override
+//                public void onFinish() {
+//
+//                }
+//            }.start();
         }
-
+        batteryList = new ArrayList<>();
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -790,37 +816,37 @@ public class ActivityPDA extends AppCompatActivity
         intentFilter.addAction("comm_err");
         intentFilter.addAction("glucose_display");
         registerReceiver(mBroadcastReceiver, intentFilter);
-        for (int j = 0; j < alarmHour.length; j++) {
-            // 实例化Intent
-            Intent intent = new Intent();
-            // 设置Intent action属性
-            intent.setAction(GLUCOSE_ALARM_ACTION);
-            // 实例化PendingIntent
-            PendingIntent sender = PendingIntent.getBroadcast(this, j,
-                    intent, 0);
-            long systemTime = System.currentTimeMillis();
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-// 这里时区需要设置一下，不然会有8个小时的时间差
-            calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-            calendar.set(Calendar.HOUR_OF_DAY, alarmHour[j]);
-            calendar.set(Calendar.MINUTE, alarmMin[j]);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
-// 选择的定时时间
-            long selectTime = calendar.getTimeInMillis();
-// 如果当前时间大于设置的时间，那么就从第二天的设定时间开始
-            if (systemTime > selectTime) {
-                calendar.add(Calendar.DAY_OF_MONTH, 1);
-                selectTime = calendar.getTimeInMillis();
-            }
-// 进行闹铃注册
-            AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            assert manager != null;
-            manager.setRepeating(AlarmManager.RTC_WAKEUP,
-                    selectTime, 24 * 60 * 60 * 1000, sender);
-        }
+//        for (int j = 0; j < alarmHour.length; j++) {
+//            // 实例化Intent
+//            Intent intent = new Intent();
+//            // 设置Intent action属性
+//            intent.setAction(GLUCOSE_ALARM_ACTION);
+//            // 实例化PendingIntent
+//            PendingIntent sender = PendingIntent.getBroadcast(this, j,
+//                    intent, 0);
+//            long systemTime = System.currentTimeMillis();
+//
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTimeInMillis(System.currentTimeMillis());
+//// 这里时区需要设置一下，不然会有8个小时的时间差
+//            calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+//            calendar.set(Calendar.HOUR_OF_DAY, alarmHour[j]);
+//            calendar.set(Calendar.MINUTE, alarmMin[j]);
+//            calendar.set(Calendar.SECOND, 0);
+//            calendar.set(Calendar.MILLISECOND, 0);
+//// 选择的定时时间
+//            long selectTime = calendar.getTimeInMillis();
+//// 如果当前时间大于设置的时间，那么就从第二天的设定时间开始
+//            if (systemTime > selectTime) {
+//                calendar.add(Calendar.DAY_OF_MONTH, 1);
+//                selectTime = calendar.getTimeInMillis();
+//            }
+//// 进行闹铃注册
+//            AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//            assert manager != null;
+//            manager.setRepeating(AlarmManager.RTC_WAKEUP,
+//                    selectTime, 24 * 60 * 60 * 1000, sender);
+//        }
         pushScreenWindow(getWindow());
         mBaseActivity = this;
         mToastLastShowTime = 0;
@@ -926,11 +952,50 @@ public class ActivityPDA extends AppCompatActivity
                 break;
         }
 
+        mLog.Error(getClass(), "电量上报：" + level + "电量模式：" + batteryMode);
+
+        batteryList.add(level);
+
+        switch (batteryMode) {
+            case 0:
+                if (batteryList.size() < 25) {
+                    return;
+                }
+                for (int j = 0; j < 5; j++) {
+                    batteryList.remove(Collections.max(batteryList));
+                }
+                for (int j = 0; j < 5; j++) {
+                    batteryList.remove(Collections.min(batteryList));
+                }
+                int sum = 0;
+                for (int i1 = 0; i1 < batteryList.size(); i1++) {
+                    sum += batteryList.get(i);
+                }
+                level = sum / batteryList.size();
+                break;
+            case 1:
+                if (batteryList.size() < 5) {
+                    return;
+                }
+                level = batteryList.get(batteryList.size() - 1);
+                batteryMode = 0;
+                break;
+            default:
+
+                break;
+        }
+
+        mLog.Error(getClass(), "电量集合数量：" + batteryList.size() + Arrays.toString(new List[]{batteryList}));
+        batteryList.clear();
         getStatusBar().setPDABattery(level);
 
         if ((!sIsPDABatteryLow) && (level <= BATTERY_LEVEL_LOW)) {
             sIsPDABatteryLow = true;
-
+            if (ActivityStackManager.containActivity("ActivityBgEnter")) {
+                if ("ActivityMain".equals(getClass().getSimpleName())) {
+                    return;
+                }
+            }
             Event event = new Event(0, PDA_BATTERY_LOW, 0);
             History history = new History(
                     new DateTime(Calendar.getInstance()), new Status(), event);
@@ -951,8 +1016,10 @@ public class ActivityPDA extends AppCompatActivity
                         .getBoolean(SETTING_TIME_FORMAT, true));
     }
 
-    private void onScreenOn() {
+    protected void onScreenOn() {
         mLog.Debug(getClass(), "Screen on");
+        batteryMode = 1;
+        batteryList.clear();
 
         handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
                 ParameterGlobal.ADDRESS_REMOTE_SLAVE, ParameterGlobal.PORT_COMM,
@@ -1086,24 +1153,29 @@ public class ActivityPDA extends AppCompatActivity
 
     public void dismissDialogProgress() {
         mLog.Debug(getClass(), "Dismiss progress dialog");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+//                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                if (mDialogLoadingCount > 0) {
+                    mDialogLoadingCount--;
+                }
 
-        if (mDialogLoadingCount > 0) {
-            mDialogLoadingCount--;
-        }
+                if (mDialogLoadingCount <= 0) {
+                    mDialogLoadingCount = 0;
 
-        if (mDialogLoadingCount <= 0) {
-            mDialogLoadingCount = 0;
-
-            if (mFragmentProgress != null) {
-                mFragmentProgress.setComment(getString(R.string.connecting));
-                mFragmentProgress.dismiss();
-                mFragmentProgress = null;
-            }
+                    if (mFragmentProgress != null) {
+                        mFragmentProgress.setComment(getString(R.string.connecting));
+                        mFragmentProgress.dismiss();
+                        mFragmentProgress = null;
+                    }
 
 //            if (mFragmentDialog != null) {
 //                mFragmentDialog.dismissAllowingStateLoss();
 //            }
-        }
+                }
+            }
+        }, 500);
     }
 
     public void showDialogLoading() {
@@ -1272,6 +1344,11 @@ public class ActivityPDA extends AppCompatActivity
                 if (value == 0xFF) {
                     if (newSensorFlag) {
 //                        if (mIsForeground || hasWindowFocus()) {
+                        if (ActivityStackManager.containActivity("ActivityBgEnter")) {
+                            if ("ActivityMain".equals(getClass().getSimpleName())) {
+                                return;
+                            }
+                        }
                         notifyNewSensorEventAlert(history);
                         newSensorFlag = false;
 //                        }
@@ -1303,6 +1380,10 @@ public class ActivityPDA extends AppCompatActivity
 
         if ((message.getSourcePort() == ParameterGlobal.PORT_COMM) &&
                 (message.getParameter() == ParameterComm.PARAM_RF_SIGNAL)) {
+            boolean isPaired = (boolean) SPUtils.get(this, IS_PAIRED, false);
+            if (!isPaired) {
+                return;
+            }
             SPUtils.put(this, RFSIGNAL, signal);
             if ((int) message.getData()[0] > 0) {
                 signal = (int) message.getData()[0];
@@ -1398,6 +1479,11 @@ public class ActivityPDA extends AppCompatActivity
 //
 //            }
 //        }
+        if (ActivityStackManager.containActivity("ActivityBgEnter")) {
+            if ("ActivityMain".equals(getClass().getSimpleName())) {
+                return;
+            }
+        }
         if ((message.getSourcePort() == ParameterGlobal.PORT_COMM) &&
                 (message.getParameter() == ParameterComm.COMM_ERR_RECOVERY)) {
             Event event = new Event(0, PDA_COMM_ERROR, 0);
@@ -1414,7 +1500,7 @@ public class ActivityPDA extends AppCompatActivity
             History history = new History(
                     new DateTime(Calendar.getInstance()), new Status(), event);
             if (commErrorFlag) {
-                boolean comm_messageFlag = (boolean) SPUtils.get(context, COMMMESSAGETIPS, true);
+                boolean comm_messageFlag = (boolean) SPUtils.get(context, COMMMESSAGETIPS, false);
                 if (comm_messageFlag) {
                     notifyErrEventAlert(history, COMM_ERR_TYPE);
                 }
@@ -1500,6 +1586,14 @@ public class ActivityPDA extends AppCompatActivity
                                     EntityMessage.OPERATION_SET,
                                     ParameterMonitor.COUNTDOWNVIEW_VISIBLE,
                                     new ValueInt(60).getByteArray()));
+
+                    handleMessage(
+                            new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                    ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                                    ParameterGlobal.PORT_MONITOR,
+                                    ParameterGlobal.PORT_MONITOR,
+                                    EntityMessage.OPERATION_SET,
+                                    ParameterComm.FORCESYNCHRONIZEFLAG, new byte[]{}));
                 }
             }
         }
@@ -2053,6 +2147,7 @@ public class ActivityPDA extends AppCompatActivity
 
         switch (reaction) {
             case ParameterSystem.REACTION_ALARM:
+                mLog.Error(getClass(), "报警声");
                 acquireWakeLock();
                 MediaUtil.playMp3ByType(this, "beep_alarm.mp3", false);
 
@@ -2074,6 +2169,7 @@ public class ActivityPDA extends AppCompatActivity
                 break;
 
             case ParameterSystem.REACTION_ALERT:
+                mLog.Error(getClass(), "报警声");
                 acquireWakeLock();
                 MediaUtil.playMp3ByType(this, "beep_alert.mp3", false);
                 break;

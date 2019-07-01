@@ -1,77 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:background="@color/background_dark">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark">
 
-	<android.support.v7.widget.Toolbar
-		android:id="@+id/toolbar"
-		style="?style_bar_title"
-		android:layout_width="0dp"
-		android:layout_height="wrap_content"
-		app:navigationIcon="@null">
-		<ImageButton
-			android:id="@+id/ibt_back"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:background="@drawable/button_back"/>
-		<TextView
-			android:id="@+id/text_view_title_bar"
-			style="?style_text_title_bar"
-			android:text="@string/history_log_title"/>
-	</android.support.v7.widget.Toolbar>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="?style_bar_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@null">
 
-	<RelativeLayout
-		android:id="@+id/rl_date"
-		android:layout_width="0dp"
-		android:layout_height="wrap_content"
-		app:layout_constraintLeft_toLeftOf="parent"
-		app:layout_constraintRight_toRightOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        <ImageButton
+            android:id="@+id/ibt_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_back" />
 
-		<ImageView
-			android:id="@+id/btn_left"
-			android:layout_width="60dp"
-			android:layout_height="40dp"
-			android:layout_alignParentLeft="true"
-			android:clickable="true"
-			android:focusable="true"
-			android:scaleType="centerInside"
-			android:src="@drawable/btn_animation_left"/>
+        <TextView
+            android:id="@+id/text_view_title_bar"
+            style="?style_text_title_bar"
+            android:text="@string/history_log_title" />
+    </android.support.v7.widget.Toolbar>
 
-		<TextView
-			android:id="@+id/tv_date"
-			style="@style/text_medium"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_centerInParent="true"
-			android:text="Monday,January 3,2012"/>
+    <RelativeLayout
+        android:id="@+id/rl_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-		<ImageView
-			android:id="@+id/btn_right"
-			android:layout_width="60dp"
-			android:layout_height="40dp"
-			android:layout_alignParentRight="true"
-			android:clickable="true"
-			android:focusable="true"
-			android:scaleType="centerInside"
-			android:src="@drawable/btn_animation_right"/>
-	</RelativeLayout>
+        <ImageView
+            android:id="@+id/btn_left"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/btn_animation_left" />
 
-	<ListView
-		android:id="@+id/lv_log"
-		android:layout_width="0dp"
-		android:layout_height="match_parent"
-		android:cacheColorHint="#00000000"
-		android:divider="@null"
-		android:fadingEdge="none"
-		android:listSelector="@null"
-		android:scrollbarStyle="outsideOverlay"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintLeft_toLeftOf="parent"
-		app:layout_constraintRight_toRightOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/rl_date"/>
+        <TextView
+            android:id="@+id/tv_date"
+            style="@style/text_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="2018" />
+
+        <ImageView
+            android:id="@+id/btn_right"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/btn_animation_right" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_log"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:fadingEdge="none"
+        android:listSelector="#00000000"
+        android:scrollbarStyle="outsideOverlay"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_date" />
 
 </android.support.constraint.ConstraintLayout>

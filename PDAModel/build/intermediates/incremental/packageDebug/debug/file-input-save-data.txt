@@ -1,15 +1,21 @@
 #Internal package file, do not edit.
-#Thu Dec 14 10:39:33 CST 2017
-1.base=E\:\\Project\\cgms2\\PDAModel\\build\\intermediates\\transforms\\dexMerger\\debug\\19
-1.file=E\:\\Project\\cgms2\\PDAModel\\build\\intermediates\\transforms\\dexMerger\\debug\\19\\classes.dex
-2.base=E\:\\Project\\cgms2\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_
-3.set=ANDROID_RESOURCE
+#Fri Mar 22 09:13:20 CST 2019
+2.base=E\:\\Project\\cgms2_test\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_
+5.file=E\:\\Project\\cgms2_test\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable-mdpi-v4\\ic_launcher.png
+5.set=ANDROID_RESOURCE
+3.base=E\:\\Project\\cgms2_test\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_
 2.set=ANDROID_RESOURCE
-2.file=E\:\\Project\\cgms2\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_\\resources.arsc
-count=4
+4.base=E\:\\Project\\cgms2_test\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_
+count=6
+0.file=E\:\\Project\\cgms2_test\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable-xhdpi-v4\\ic_launcher.png
+5.base=E\:\\Project\\cgms2_test\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_
+4.set=ANDROID_RESOURCE
+1.file=E\:\\Project\\cgms2_test\\PDAModel\\build\\intermediates\\transforms\\dexMerger\\debug\\0\\classes.dex
 1.set=DEX
-3.base=E\:\\Project\\cgms2\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_
+2.file=E\:\\Project\\cgms2_test\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable-hdpi-v4\\ic_launcher.png
+0.base=E\:\\Project\\cgms2_test\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_
+3.file=E\:\\Project\\cgms2_test\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_\\resources.arsc
+3.set=ANDROID_RESOURCE
+1.base=E\:\\Project\\cgms2_test\\PDAModel\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+4.file=E\:\\Project\\cgms2_test\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_\\AndroidManifest.xml
 0.set=ANDROID_RESOURCE
-0.base=E\:\\Project\\cgms2\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_
-3.file=E\:\\Project\\cgms2\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_\\AndroidManifest.xml
-0.file=E\:\\Project\\cgms2\\PDAModel\\build\\intermediates\\res\\debug\\resources-debug.ap_\\res\\drawable-mdpi-v4\\ic_launcher.png

@@ -115,12 +115,14 @@ public class FragmentDialog extends DialogFragment
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_HOME) {
                     if (homeCancelFlag) {
-                        dismissAllowingStateLoss();
+                        dialog.dismiss();
+//                        dismissAllowingStateLoss();
                     }
                     return true;
                 } else if (keyCode == KeyEvent.KEYCODE_BACK) {
                     if (homeCancelFlag) {
-                        dismissAllowingStateLoss();
+                        dialog.dismiss();
+//                        dismissAllowingStateLoss();
                     }
                     return true;
                 } else {
@@ -246,10 +248,12 @@ public class FragmentDialog extends DialogFragment
     public void show(FragmentManager manager, String tag) {
         try {
             super.show(manager, tag);
+            mLog.Error(getClass(), "弹窗");
         } catch (IllegalStateException ignore) {
             FragmentTransaction ft = manager.beginTransaction();
             ft.add(this, tag);
             ft.commitAllowingStateLoss();
+            mLog.Error(getClass(), "弹窗报错");
         }
     }
 

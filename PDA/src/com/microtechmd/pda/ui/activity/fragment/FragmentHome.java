@@ -26,6 +26,8 @@ import com.microtechmd.pda.library.entity.DataList;
 import com.microtechmd.pda.library.entity.EntityMessage;
 import com.microtechmd.pda.library.entity.ParameterComm;
 import com.microtechmd.pda.library.entity.ParameterMonitor;
+import com.microtechmd.pda.library.entity.ParameterSystem;
+import com.microtechmd.pda.library.entity.ValueInt;
 import com.microtechmd.pda.library.entity.monitor.DateTime;
 import com.microtechmd.pda.library.entity.monitor.Event;
 import com.microtechmd.pda.library.entity.monitor.History;
@@ -36,6 +38,7 @@ import com.microtechmd.pda.library.utility.SPUtils;
 import com.microtechmd.pda.ui.activity.ActivityMain;
 import com.microtechmd.pda.ui.activity.ActivityPDA;
 import com.microtechmd.pda.ui.widget.countdownview.CountdownView;
+import com.microtechmd.pda.util.ToastUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -155,8 +158,8 @@ public class FragmentHome extends FragmentBase
 
         boolean realtimeFlag = (boolean) SPUtils.get(getActivity(), REALTIMEFLAG, true);
         if (realtimeFlag) {
-            synchronize.setVisibility(View.GONE);
-            tv_mode.setVisibility(View.GONE);
+            synchronize.setVisibility(View.INVISIBLE);
+            tv_mode.setVisibility(View.INVISIBLE);
         } else {
             synchronize.setVisibility(View.VISIBLE);
             tv_mode.setVisibility(View.VISIBLE);
@@ -166,10 +169,11 @@ public class FragmentHome extends FragmentBase
             public void onClick(View view) {
                 int rfsignal = (int) SPUtils.get(getActivity(), RFSIGNAL, 0);
                 if (rfsignal == 0) {
-                    Toast.makeText(getActivity(),
-                            getActivity().getResources().getString(R.string.connect_fail),
-                            Toast.LENGTH_SHORT)
-                            .show();
+                    ToastUtils.showToast(getActivity(), R.string.connect_fail);
+//                    Toast.makeText(getActivity(),
+//                            getActivity().getResources().getString(R.string.connect_fail),
+//                            Toast.LENGTH_SHORT)
+//                            .show();
                 } else {
                     if (getActivity() != null) {
                         ((ActivityPDA) getActivity()).handleMessage(
@@ -277,27 +281,39 @@ public class FragmentHome extends FragmentBase
             if (message.getData()[0] == 0) {
                 synchronize.setVisibility(View.VISIBLE);
                 tv_mode.setVisibility(View.VISIBLE);
-                setTimeVisible("");
-                setDisplayUnKnow();
-                textView_g_recommend_cal.setVisibility(View.GONE);
+                if (text_view_countdown.getVisibility() == View.GONE) {
+                    setTimeVisible("");
+                    setGlucoseVisible(true);
+                    setDisplayUnKnow();
+                    textView_g_recommend_cal.setVisibility(View.GONE);
+                }
                 firstLauncher = true;
                 fragmentNewGraph.firstRefresh();
             } else {
-                synchronize.setVisibility(View.GONE);
-                tv_mode.setVisibility(View.GONE);
+                synchronize.setVisibility(View.INVISIBLE);
+                tv_mode.setVisibility(View.INVISIBLE);
             }
         }
         if (message.getParameter() == ParameterMonitor.COUNTDOWNVIEW_VISIBLE) {
             if (message.getData() != null) {
+                mHistory = null;
                 int value = ByteUtil.bytesToInt(message.getData());
                 setCountdownViewVisible(value);
 //                setGlucoseVisible(true);
             }
         }
         if (message.getParameter() == ParameterMonitor.GLUCOSE_DISPLAY) {
+            boolean realtimeFlag = (boolean) SPUtils.get(getActivity(), REALTIMEFLAG, true);
+            if (!realtimeFlag) {
+                return;
+            }
             if (mHistory != null) {
                 long space = System.currentTimeMillis() - mHistory.getDateTime().getCalendar().getTimeInMillis();
                 int minute = (int) (space / 60000);
+                mLog.Error(getClass(), "系统时间： " + minute);
+                if (glucoseState == 1) {
+                    return;
+                }
                 if (minute < -1) {
                     setTimeVisible("");
                     setDisplayUnKnow();
@@ -306,6 +322,10 @@ public class FragmentHome extends FragmentBase
                 } else if (minute < 15) {
                     setTimeVisible(String.valueOf(minute));
                 } else {
+                    if (textView_g_err.getVisibility() == View.VISIBLE) {
+                        setTimeVisible(String.valueOf(minute));
+                        return;
+                    }
                     setTimeVisible("");
                     setDisplayUnKnow();
                     textView_g_recommend_cal.setVisibility(View.GONE);
@@ -321,6 +341,7 @@ public class FragmentHome extends FragmentBase
                     setTimeVisible("");
                     textView_g_recommend_cal.setVisibility(View.GONE);
                     mHistory = null;
+                    glucoseState = 0;
                     break;
                 case 1:
                     radio_group.check(R.id.btn_1);
@@ -335,6 +356,7 @@ public class FragmentHome extends FragmentBase
 
     private void setDisplayUnKnow() {
         textView_g.setText(STRING_UNKNOWN);
+        textView_unit.setText(R.string.unit_mmol_l);
         ActivityMain.setStatus(null);
     }
 
@@ -366,6 +388,17 @@ public class FragmentHome extends FragmentBase
     }
 
     private void handleNotification(final EntityMessage message) {
+        //通信异常清除显示
+        if ((message.getSourcePort() == ParameterGlobal.PORT_COMM) &&
+                (message.getParameter() == ParameterComm.COMM_ERR)) {
+            if (glucoseState == 2) {
+                mHistory = null;
+                setTimeVisible("");
+                setGlucoseVisible(true);
+                setDisplayUnKnow();
+            }
+        }
+
         if (message.getSourcePort() == ParameterGlobal.PORT_MONITOR) {
             switch (message.getParameter()) {
                 case ParameterMonitor.PARAM_STATUS:
@@ -460,6 +493,7 @@ public class FragmentHome extends FragmentBase
 //        }
     }
 
+    private int glucoseState = 0;
 
     @SuppressLint("SetTextI18n")
     private void updateStatus(History history) {
@@ -476,16 +510,40 @@ public class FragmentHome extends FragmentBase
 //                    ActivityMain.setStatus(history);
                     textView_g_err.setBackgroundResource(R.drawable.expirtion_err);
                     //判断血糖时间
-                    long space = System.currentTimeMillis() - history.getDateTime().getCalendar().getTimeInMillis();
-                    int minute = (int) (space / 60000);
-                    setTimeVisible(String.valueOf(minute));
-
+//                    long space = System.currentTimeMillis() - history.getDateTime().getCalendar().getTimeInMillis();
+//                    int minute = (int) (space / 60000);
+                    setTimeVisible("");
+                    textView_unit.setText(R.string.alarm_expiration);
+                    glucoseState = 1;
                     setGlucoseVisible(false);
-                    mHistory = history;
+//                    mHistory = history;
                     return;
                 }
+                textView_unit.setText(R.string.unit_mmol_l);
                 if (Math.abs(time_space) < 15 * 60 * 1000) {
+                    if ((history.getEvent().getEventFlag() & 0x20) != 0) {
+                        if (glucoseState != 2) {
+                            mHistory = history;
+                            setDisplayUnKnow();
+                            //判断血糖时间
+                            long space = System.currentTimeMillis() - history.getDateTime().getCalendar().getTimeInMillis();
+                            int minute = (int) (space / 60000);
+                            setTimeVisible(String.valueOf(minute));
+                            mLog.Error(getClass(), "故障广播包时间： " + minute);
+                        }
+                        textView_g_err.setBackgroundResource(R.drawable.glucose_err);
+                        textView_unit.setText(R.string.alarm_sensor_error);
+                        textView_g_recommend_cal.setVisibility(View.GONE);
+                        setGlucoseVisible(false);
+                        glucoseState = 2;
+                        return;
+                    } else {
+                        setGlucoseVisible(true);
+                        textView_g.setTextColor(getResources().getColor(R.color.green));
+                    }
+
                     mHistory = history;
+                    glucoseState = 0;
                     switch (history.getEvent().getEvent()) {
                         case SENSOR_ERROR:
                             setDisplayUnKnow();
@@ -534,21 +592,23 @@ public class FragmentHome extends FragmentBase
                             textView_g_recommend_cal.setVisibility(View.GONE);
                             break;
                     }
-                    if ((history.getEvent().getEventFlag() & 0x20) != 0) {
-                        if (textView_g_err.getVisibility() == View.GONE) {
-                            setDisplayUnKnow();
-                            //判断血糖时间
-                            long space = System.currentTimeMillis() - history.getDateTime().getCalendar().getTimeInMillis();
-                            int minute = (int) (space / 60000);
-                            setTimeVisible(String.valueOf(minute));
-                        }
-                        textView_g_err.setBackgroundResource(R.drawable.glucose_err);
-                        textView_g_recommend_cal.setVisibility(View.GONE);
-                        setGlucoseVisible(false);
-                    } else {
-                        setGlucoseVisible(true);
-                        textView_g.setTextColor(getResources().getColor(R.color.green));
-                    }
+//                    if ((history.getEvent().getEventFlag() & 0x20) != 0) {
+//                        if (textView_g_err.getVisibility() == View.GONE) {
+//                            setDisplayUnKnow();
+//                            //判断血糖时间
+//                            long space = System.currentTimeMillis() - history.getDateTime().getCalendar().getTimeInMillis();
+//                            int minute = (int) (space / 60000);
+//                            setTimeVisible(String.valueOf(minute));
+//                            mLog.Error(getClass(), "故障广播包时间： " + minute);
+//                        }
+//                        textView_g_err.setBackgroundResource(R.drawable.glucose_err);
+//                        textView_unit.setText(R.string.alarm_sensor_error);
+//                        textView_g_recommend_cal.setVisibility(View.GONE);
+//                        setGlucoseVisible(false);
+//                    } else {
+//                        setGlucoseVisible(true);
+//                        textView_g.setTextColor(getResources().getColor(R.color.green));
+//                    }
                     if (firstLauncher) {
                         firstLauncher = false;
                         fragmentNewGraph.firstRefresh();
@@ -565,6 +625,7 @@ public class FragmentHome extends FragmentBase
             tv_minutes.setVisibility(View.GONE);
             textView_g_err.setVisibility(View.GONE);
             textView_unit.setVisibility(View.GONE);
+            textView_g_recommend_cal.setVisibility(View.GONE);
 
             text_view_countdown.setVisibility(View.VISIBLE);
             countdownView.setVisibility(View.VISIBLE);
@@ -596,6 +657,11 @@ public class FragmentHome extends FragmentBase
         if (TextUtils.isEmpty(time)) {
             tv_minutes.setVisibility(View.GONE);
         } else {
+            if (Integer.parseInt(time) > 60) {
+                tv_minutes.setVisibility(View.GONE);
+                textView_t.setText(R.string.more_hour);
+                return;
+            }
             tv_minutes.setVisibility(View.VISIBLE);
         }
     }

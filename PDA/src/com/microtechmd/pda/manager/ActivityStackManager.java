@@ -28,6 +28,22 @@ public class ActivityStackManager {
         sActivityList.add(activity);
     }
 
+    public static int getActivitySize() {
+        return sActivityList.size();
+    }
+
+    public static boolean containActivity(String className) {
+        for (Activity activity : sActivityList) {
+            if (activity == null) {
+                continue;
+            }
+            if (activity.getClass().getSimpleName().equals(className)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static String getTopActivity(Context context) {
         android.app.ActivityManager manager = (android.app.ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);

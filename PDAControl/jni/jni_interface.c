@@ -6,6 +6,8 @@
 
 #include <jni.h>
 #include <stddef.h>
+#include <stdlib.h>
+#include <fcntl.h>
 
 #include "driver/drv.h"
 #include "task_comm.h"
@@ -73,6 +75,123 @@ JNIEXPORT void JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_op
 JNIEXPORT void JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_close
         (JNIEnv *tp_Env, jobject t_This) {
 }
+
+int volbtch[] = {
+        4210, 4206, 4204, 4202, 4200, 4195, 4187, 4179, 4171, 4160, 4153,
+        4149, 4143, 4139, 4138, 4135, 4131, 4130, 4120, 4111, 4105,
+        4097, 4089, 4083, 4079, 4075, 4072, 4065, 4058, 4051, 4045,
+        4038, 4035, 4028, 4026, 4020, 4016, 4010, 4007, 4003, 3997,
+        3995, 3992, 3989, 3985, 3981, 3978, 3975, 3973, 3970, 3968,
+        3965, 3963, 3962, 3961, 3960, 3959, 3958, 3957, 3956, 3955,
+        3954, 3953, 3952, 3951, 3950, 3949, 3948, 3947, 3946, 3945,
+        3944, 3943, 3942, 3941, 3940, 3938, 3936, 3933, 3930, 3926,
+        3921, 3916, 3910, 3903, 3896, 3888, 3878, 3870, 3859, 3852,
+        3843, 3833, 3825, 3814, 3806, 3796, 3784, 3768, 3570, 3550,
+};
+int volbt[] = {
+        4120, 4110, 4102, 4091, 4080, 4070, 4061, 4052, 4043,
+        4031, 4023, 4012, 4003, 3993, 3984, 3975, 3969, 3959, 3949,
+        3941, 3934, 3925, 3916, 3908, 3899, 3891, 3885, 3876, 3867,
+        3859, 3853, 3844, 3837, 3831, 3822, 3816, 3808, 3804, 3796,
+        3790, 3786, 3779, 3773, 3769, 3764, 3759, 3754, 3750, 3746,
+        3742, 3738, 3736, 3732, 3727, 3723, 3719, 3718, 3714, 3709,
+        3706, 3705, 3700, 3700, 3696, 3695, 3691, 3691, 3689, 3686,
+        3685, 3682, 3682, 3680, 3677, 3674, 3673, 3671, 3668, 3664,
+        3663, 3659, 3655, 3651, 3646, 3642, 3637, 3631, 3623, 3617,
+        3609, 3599, 3589, 3579, 3569, 3556, 3542, 3524, 3497, 3470,
+        3438, 3400,
+};
+
+static int bty_value[20];
+static int bty_frist = 0;
+static int bty_index = 0;
+
+int readFromFile(const char *path, char *buf, size_t size) {
+    if (!path)
+        return -1;
+    int fd = open(path, O_RDONLY, 0);
+    if (fd == -1) {
+        return -1;
+    }
+
+    size_t count = (size_t) read(fd, buf, size);
+    if (count > 0) {
+        count = (count < size) ? count : size - 1;
+        while (count > 0 && buf[count - 1] == '\n') count--;
+        buf[count] = '\0';
+    } else {
+        buf[0] = '\0';
+    }
+
+    close(fd);
+    return (int) count;
+}
+
+int get_btlevel(int value, int *bt) {
+    int i = 0;
+    for (i = 0; i < 100; i++) {
+        if (value > bt[i]) break;
+    }
+    return 100 - i;
+}
+
+int get_btylevel(int value) {
+    int BTY_MAX = 10;
+    int temp = 0;
+    int i;
+    int bty_leve;
+    if ((bty_frist == 0) && (get_btlevel(value, volbtch) > 0)) {
+        for (i = 0; i < BTY_MAX; i++) {
+            bty_value[i] = get_btlevel(value, volbt);
+        }
+        bty_frist = 1;
+    }
+
+    bty_value[bty_index] = get_btlevel(value, volbt);
+    bty_index++;
+    if (bty_index == BTY_MAX) {
+        bty_index = 0;
+    }
+
+    for (i = 0; i < BTY_MAX; i++) {
+        temp = bty_value[i] + temp;
+    }
+    for (i = 0; i < BTY_MAX; i++) {
+        LOGE("lijun >>>value[%d]:%d", i, bty_value[i]);
+    }
+
+    bty_leve = temp / BTY_MAX;
+    return bty_leve;
+}
+
+JNIEXPORT jint JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_battery
+        (JNIEnv *tp_Env, jobject t_This) {
+    int value = 30000, nvalue, i;
+    const int SIZE = 5;
+    char buf[SIZE];
+    char status[SIZE];
+    for (i = 0; i < 1; i++) {
+        if (readFromFile("/sys/devices/platform/omap/ti_tscadc/tiadc/iio:device0/in_voltage7_raw",
+                         buf, SIZE) > 0) {
+
+            if (atoi(buf) < 0) {
+                continue;
+            }
+            nvalue = atoi(buf) * 100 * 6 * 18 / ((2 << 11) - 1);
+            value = value > nvalue ? nvalue : value;
+        }
+    }
+
+    readFromFile("/sys/class/power_supply/tps65217-ac/status", status, SIZE);
+    LOGE("电池status:%s", status);
+    if (status[0] == 'C') {
+        return get_btlevel(value, volbtch);
+    } else {
+        return get_btylevel(value);
+    }
+}
+
+
 /*
  * Class:     com_microtechmd_pda_control_platform_JNIInterface
  * Method:    turnOff
@@ -305,8 +424,7 @@ static uint JNI_HandleEvent
                 uint8 u8_SourcePort,
                 uint8 u8_TargetPort,
                 uint8 u8_Event
-        )
-{
+        ) {
     jint t_Return;
     jclass t_Class;
     JNIEnv *tp_Env;
@@ -314,101 +432,90 @@ static uint JNI_HandleEvent
 
     LOGD("Attach thread");
 
-    if ((*m_tp_JavaVM)->AttachCurrentThread(m_tp_JavaVM, &tp_Env, NULL) < 0)
-    {
+    if ((*m_tp_JavaVM)->AttachCurrentThread(m_tp_JavaVM, &tp_Env, NULL) < 0) {
         LOGE("Attach thread fail");
         return FUNCTION_FAIL;
     }
 
-    if ((*tp_Env)->IsSameObject(tp_Env, m_t_Class, NULL))
-    {
+    if ((*tp_Env)->IsSameObject(tp_Env, m_t_Class, NULL)) {
         LOGE("Object release");
-        t_Return = (jint)FUNCTION_FAIL;
-    }
-    else
-    {
+        t_Return = (jint) FUNCTION_FAIL;
+    } else {
         t_Class = (*tp_Env)->NewLocalRef(tp_Env, m_t_Class);
         t_Return = (*tp_Env)->CallStaticIntMethod(tp_Env, t_Class,
-                                                  m_t_MethodIDHandleEvent, (jint)u8_Address, (jint)u8_SourcePort,
-                                                  (jint)u8_TargetPort, (jint)u8_Event);
+                                                  m_t_MethodIDHandleEvent, (jint) u8_Address,
+                                                  (jint) u8_SourcePort,
+                                                  (jint) u8_TargetPort, (jint) u8_Event);
         (*tp_Env)->DeleteLocalRef(tp_Env, t_Class);
     }
 
     LOGD("Detach thread");
 
-    if ((*m_tp_JavaVM)->DetachCurrentThread(m_tp_JavaVM) < 0)
-    {
+    if ((*m_tp_JavaVM)->DetachCurrentThread(m_tp_JavaVM) < 0) {
         LOGE("Detach thread fail");
         return FUNCTION_FAIL;
     }
 
-    return (uint)t_Return;
+    return (uint) t_Return;
 }
 
 
 static uint JNI_HandleCommand
-(
-	uint8 u8_Address,
-	uint8 u8_SourcePort,
-	uint8 u8_TargetPort,
-	const task_comm_command *tp_Command,
-	uint8 u8_Mode
-)
-{
-	JNIEnv *tp_Env;
-	jint t_Return;
-	jclass t_Class;
-	jbyteArray t_Data;
+        (
+                uint8 u8_Address,
+                uint8 u8_SourcePort,
+                uint8 u8_TargetPort,
+                const task_comm_command *tp_Command,
+                uint8 u8_Mode
+        ) {
+    JNIEnv *tp_Env;
+    jint t_Return;
+    jclass t_Class;
+    jbyteArray t_Data;
 
 
-	LOGD("Attach thread");
+    LOGD("Attach thread");
 
-	if ((*m_tp_JavaVM)->AttachCurrentThread(m_tp_JavaVM, &tp_Env, NULL) < 0)
-	{
-		LOGE("Attach thread fail");
-		return FUNCTION_FAIL;
-	}
+    if ((*m_tp_JavaVM)->AttachCurrentThread(m_tp_JavaVM, &tp_Env, NULL) < 0) {
+        LOGE("Attach thread fail");
+        return FUNCTION_FAIL;
+    }
 
-	if (tp_Command->u8_Length > 0)
-	{
-		t_Data = (*tp_Env)->NewByteArray(tp_Env, (jsize)tp_Command->u8_Length);
-		(*tp_Env)->SetByteArrayRegion(tp_Env, t_Data, 0,
-			(jsize)tp_Command->u8_Length, (const jbyte *)tp_Command->u8p_Data);
-	}
-	else
-	{
-		t_Data = NULL;
-	}
+    if (tp_Command->u8_Length > 0) {
+        t_Data = (*tp_Env)->NewByteArray(tp_Env, (jsize) tp_Command->u8_Length);
+        (*tp_Env)->SetByteArrayRegion(tp_Env, t_Data, 0,
+                                      (jsize) tp_Command->u8_Length,
+                                      (const jbyte *) tp_Command->u8p_Data);
+    } else {
+        t_Data = NULL;
+    }
 
 
-	if ((*tp_Env)->IsSameObject(tp_Env, m_t_Class, NULL))
-	{
-		LOGE("Object release");
-		t_Return = (jint)FUNCTION_FAIL;
-	}
-	else
-	{
-		t_Class = (*tp_Env)->NewLocalRef(tp_Env, m_t_Class);
-		t_Return = (*tp_Env)->CallStaticIntMethod(tp_Env, t_Class,
-			m_t_MethodIDHandleCommand, (jint) u8_Address, (jint) u8_SourcePort,
-			(jint) u8_TargetPort, (jint) u8_Mode,
-			(jint) tp_Command->u8_Operation, (jint) tp_Command->u8_Parameter,
-			t_Data);
-		(*tp_Env)->DeleteLocalRef(tp_Env, t_Class);
-	}
+    if ((*tp_Env)->IsSameObject(tp_Env, m_t_Class, NULL)) {
+        LOGE("Object release");
+        t_Return = (jint) FUNCTION_FAIL;
+    } else {
+        t_Class = (*tp_Env)->NewLocalRef(tp_Env, m_t_Class);
+        t_Return = (*tp_Env)->CallStaticIntMethod(tp_Env, t_Class,
+                                                  m_t_MethodIDHandleCommand, (jint) u8_Address,
+                                                  (jint) u8_SourcePort,
+                                                  (jint) u8_TargetPort, (jint) u8_Mode,
+                                                  (jint) tp_Command->u8_Operation,
+                                                  (jint) tp_Command->u8_Parameter,
+                                                  t_Data);
+        (*tp_Env)->DeleteLocalRef(tp_Env, t_Class);
+    }
 
-	if (t_Data != NULL)
-	{
-		(*tp_Env)->DeleteLocalRef(tp_Env, t_Data);
-	}
+    if (t_Data != NULL) {
+        (*tp_Env)->DeleteLocalRef(tp_Env, t_Data);
+    }
 
-	LOGD("Detach thread");
+    LOGD("Detach thread");
 
-	if ((*m_tp_JavaVM)->DetachCurrentThread(m_tp_JavaVM) < 0)
-	{
-		LOGE("Detach thread fail");
-		return FUNCTION_FAIL;
-	}
+    if ((*m_tp_JavaVM)->DetachCurrentThread(m_tp_JavaVM) < 0) {
+        LOGE("Detach thread fail");
+        return FUNCTION_FAIL;
+    }
 
-	return (uint)t_Return;
+    return (uint) t_Return;
 }

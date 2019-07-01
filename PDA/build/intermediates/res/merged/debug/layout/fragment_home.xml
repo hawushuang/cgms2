@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_dark">
@@ -8,7 +9,9 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         style="?style_bar_title"
-        app:navigationIcon="@null">
+        android:visibility="gone"
+        app:navigationIcon="@null"
+        tools:ignore="MissingConstraints">
 
         <TextView
             android:id="@+id/text_view_title_bar"
@@ -16,18 +19,69 @@
             android:text="@string/activity_main_tab_home" />
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/text_view_glucose"
-        style="?style_text_large"
+    <RelativeLayout
+        android:id="@+id/rl_glucose"
         android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:text="13.5"
-        android:textColor="@color/green"
-        android:textSize="50sp"
+        android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <TextView
+            android:id="@+id/text_view_glucose"
+            style="?style_text_large"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="@color/green"
+            android:textSize="50sp"
+            tools:text="13.5" />
+
+        <TextView
+            android:id="@+id/text_view_glucose_recommend"
+            style="?style_text_base"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="@dimen/size8"
+            android:layout_toRightOf="@+id/text_view_glucose"
+            android:gravity="bottom"
+            android:text="@string/glucose_recommend"
+            android:textColor="@color/red"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/glucose_err"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/size15"
+            android:background="@drawable/glucose_err"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/synchronize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/size8"
+            android:background="@drawable/button_synchronize"
+            android:padding="@dimen/size5"
+            android:text="@string/synchronizedata"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            android:id="@+id/tv_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/setting_general_mode_history" />
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/text_view_unit"
@@ -38,35 +92,71 @@
         android:text="@string/unit_mmol_l"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_glucose" />
+        app:layout_constraintTop_toBottomOf="@+id/rl_glucose" />
+
+    <LinearLayout
+        android:id="@+id/ll_time_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_unit">
+
+        <TextView
+            android:id="@+id/text_view_date_time"
+            style="?style_text_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tv_minutes"
+            style="?style_text_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size5"
+            android:layout_marginLeft="@dimen/size5"
+            android:gravity="center"
+            android:text="@string/minutebefore"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/text_view_date_time"
-        style="?style_text_medium"
+        android:id="@+id/text_view_countdown"
+        style="?style_text_big"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size20"
         android:gravity="center"
-        android:text="2010-10-10 13:00:00"
+        android:text="@string/fragment_settings_startup"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_unit" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_time_content" />
 
     <com.microtechmd.pda.ui.widget.countdownview.CountdownView
         android:id="@+id/countdown_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:visibility="gone"
         app:isShowDay="false"
         app:isShowHour="true"
         app:isShowMillisecond="false"
         app:isShowMinute="true"
-        app:isShowSecond="true"
-        app:suffixGravity="center"
-        app:suffixTextColor="@color/text_white"
-        app:timeTextColor="@color/text_white"
+        app:isShowSecond="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_date_time" />
+        app:layout_constraintTop_toBottomOf="@+id/text_view_countdown"
+        app:suffixGravity="center"
+        app:suffixHour="@string/unit_hour"
+        app:suffixMinute="@string/minutes"
+        app:suffixTextColor="@color/text_white"
+        app:suffixTextSize="@dimen/textSize10"
+        app:timeTextColor="@color/text_white"
+        app:timeTextSize="@dimen/textSize20" />
 
     <TextView
         android:id="@+id/text_view_alarm"
@@ -83,7 +173,7 @@
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_date_time" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_time_content" />
 
     <RadioGroup
         android:id="@+id/radio_group"
@@ -93,9 +183,9 @@
         android:layout_marginRight="8dp"
         android:gravity="center"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/layout_graph"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countdown_view">
+        app:layout_constraintRight_toRightOf="parent">
 
         <RadioButton
             android:id="@+id/btn_0"
@@ -105,7 +195,7 @@
             android:background="@drawable/radio"
             android:button="@null"
             android:gravity="center"
-            android:padding="3dp"
+            android:padding="10dp"
             android:text="@string/six_hour"
             android:textColor="@color/text_white" />
 
@@ -119,7 +209,7 @@
             android:background="@drawable/radio"
             android:button="@null"
             android:gravity="center"
-            android:padding="3dp"
+            android:padding="10dp"
             android:text="@string/half_hour"
             android:textColor="@color/text_white" />
 
@@ -130,9 +220,8 @@
             android:layout_weight="1"
             android:background="@drawable/radio"
             android:button="@null"
-            android:checked="true"
             android:gravity="center"
-            android:padding="3dp"
+            android:padding="10dp"
             android:text="@string/all_hour"
             android:textColor="@color/text_white" />
     </RadioGroup>
@@ -140,7 +229,8 @@
     <FrameLayout
         android:id="@+id/layout_graph"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="230dp"
+        android:paddingBottom="@dimen/size8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

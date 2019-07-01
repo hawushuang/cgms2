@@ -179,9 +179,9 @@ public class WidgetStatusBar {
         if (ivPDABattery != null) {
             ivPDABattery.setImageLevel(value);
         }
-        if (tv_battery_percent != null) {
-            tv_battery_percent.setText(value + "%");
-        }
+//        if (tv_battery_percent != null) {
+//            tv_battery_percent.setText(value + "%");
+//        }
     }
 
 

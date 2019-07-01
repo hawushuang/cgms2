@@ -57,6 +57,7 @@ public class LineChartRenderer extends AbstractChartRenderer {
         linePaint.setAntiAlias(true);
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setStrokeCap(Cap.ROUND);
+        linePaint.setStrokeJoin(Paint.Join.ROUND);
         linePaint.setStrokeWidth(ChartUtils.dp2px(density, DEFAULT_LINE_STROKE_WIDTH_DP));
 
         pointPaint.setAntiAlias(true);

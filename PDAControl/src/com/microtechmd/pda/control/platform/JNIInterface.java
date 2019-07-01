@@ -63,6 +63,8 @@ class JNIInterface {
 
     native void close();
 
+    native int battery();
+
 
     native int send(int address, int sourcePort, int targetPort, int mode,
                     int operation, int parameter, byte[] data);

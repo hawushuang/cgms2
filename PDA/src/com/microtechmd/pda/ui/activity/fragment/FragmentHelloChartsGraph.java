@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Service;
 import android.graphics.Color;
+import android.graphics.CornerPathEffect;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -631,13 +632,13 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
         }
 
         //添加血糖校准线
-        List<CalibrationHistory> list = (List<CalibrationHistory>) CalibrationSaveUtil.get(getActivity(), CALIBRATION_HISTORY);
-        if (list != null) {
-            if (list.size() > 0) {
-                Line calibrationLine = getCalibrationLine(list);
-                lines.add(calibrationLine);
-            }
-        }
+//        List<CalibrationHistory> list = (List<CalibrationHistory>) CalibrationSaveUtil.get(getActivity(), CALIBRATION_HISTORY);
+//        if (list != null) {
+//            if (list.size() > 0) {
+//                Line calibrationLine = getCalibrationLine(list);
+//                lines.add(calibrationLine);
+//            }
+//        }
 
         //添加阈值线
         Line lowLine = getLimitLine("low");
@@ -765,18 +766,18 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
         long now = System.currentTimeMillis();
         displayLeft = (now - zero + 60 * 60 * 1000 - 6 * step) / pointSpace;
         displayRight = (now - zero + 60 * 60 * 1000) / pointSpace;
-        if (valuesAll.size() > 0) {
-            PointValue maxPoint = Collections.max(valuesAll, new MyComparator());
-            float l = maxPoint.getX() - (step * 5) / pointSpace;
-            float r = maxPoint.getX() + step / pointSpace;
-            if (l < minLimit / pointSpace) {
-                displayLeft = minLimit / pointSpace;
-                displayRight = (minLimit + 6 * step) / pointSpace;
-            } else {
-                displayLeft = l;
-                displayRight = r;
-            }
-        }
+//        if (valuesAll.size() > 0) {
+//            PointValue maxPoint = Collections.max(valuesAll, new MyComparator());
+//            float l = maxPoint.getX() - (step * 5) / pointSpace;
+//            float r = maxPoint.getX() + step / pointSpace;
+//            if (l < minLimit / pointSpace) {
+//                displayLeft = minLimit / pointSpace;
+//                displayRight = (minLimit + 6 * step) / pointSpace;
+//            } else {
+//                displayLeft = l;
+//                displayRight = r;
+//            }
+//        }
         v.left = displayLeft;
         v.right = displayRight;
 
@@ -823,8 +824,10 @@ public class FragmentHelloChartsGraph extends FragmentBase implements EntityMess
     private Line getGlucoseLine(List<PointValue> values) {
         Line line = new Line(values);
 //        line.setPointColor(Color.parseColor("#FF00DEFF"));
-//        line.setPointRadius(2);
+        line.setPointRadius(2);
         line.setHasLines(true);
+//        line.setCubic(true);
+//        line.setPathEffect(new CornerPathEffect(30));
         line.setColor(Color.parseColor("#FF00DEFF"));
         line.setHasPoints(false);
         return line;

@@ -24,6 +24,13 @@ JNIEXPORT void JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_cl
         (JNIEnv *, jobject);
 /*
  * Class:     com_microtechmd_pda_control_platform_JNIInterface
+ * Method:    battery
+ * Signature: ()V
+ */
+JNIEXPORT jint JNICALL Java_com_microtechmd_pda_control_platform_JNIInterface_battery
+        (JNIEnv *, jobject);
+/*
+ * Class:     com_microtechmd_pda_control_platform_JNIInterface
  * Method:    turnOff
  * Signature: ()V
  */

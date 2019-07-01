@@ -1,4 +1,4 @@
-#Mon Dec 25 13:06:36 CST 2017
-base.0=E\:\\Project\\cgms2\\PDAControl\\build\\intermediates\\transforms\\dexMerger\\debug\\19
+#Thu May 30 09:58:40 CST 2019
+base.0=E\:\\Project\\cgms2_test\\PDAControl\\build\\intermediates\\transforms\\dexMerger\\debug\\0
 renamed.0=classes.dex
-file.0=E\:\\Project\\cgms2\\PDAControl\\build\\intermediates\\transforms\\dexMerger\\debug\\19\\classes.dex
+file.0=E\:\\Project\\cgms2_test\\PDAControl\\build\\intermediates\\transforms\\dexMerger\\debug\\0\\classes.dex

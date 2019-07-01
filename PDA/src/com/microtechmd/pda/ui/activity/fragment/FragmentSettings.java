@@ -1,8 +1,10 @@
 package com.microtechmd.pda.ui.activity.fragment;
 
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.microtechmd.pda.ApplicationPDA;
@@ -23,6 +26,7 @@ import com.microtechmd.pda.library.entity.EntityMessage;
 import com.microtechmd.pda.library.entity.ParameterComm;
 import com.microtechmd.pda.library.entity.ParameterGlucose;
 import com.microtechmd.pda.library.entity.ParameterMonitor;
+import com.microtechmd.pda.library.entity.ParameterSystem;
 import com.microtechmd.pda.library.entity.ValueByte;
 import com.microtechmd.pda.library.entity.ValueInt;
 import com.microtechmd.pda.library.entity.comm.RFAddress;
@@ -37,15 +41,18 @@ import com.microtechmd.pda.ui.activity.ActivityMain;
 import com.microtechmd.pda.ui.activity.ActivityPDA;
 import com.microtechmd.pda.ui.widget.WidgetSettingItem;
 import com.microtechmd.pda.util.TimeUtil;
+import com.microtechmd.pda.util.ToastUtils;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import static com.microtechmd.pda.library.entity.ParameterComm.CLOSE_COMM;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.COMMMESSAGETIPS;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.COMM_CLOSE;
+import static com.microtechmd.pda.ui.activity.ActivityPDA.IS_PAIRED;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_DATE_TIME;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_HISTORY_LOG;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_TIPS;
@@ -383,9 +390,35 @@ public class FragmentSettings extends FragmentBase
     private void handlePair(EntityMessage message) {
         if (message.getParameter() == ParameterComm.PARAM_MAC) {
             if (!(message.getData()[0] == EntityMessage.FUNCTION_OK)) {
-                Toast.makeText(getActivity(), getResources().getString(R.string.bluetooth_setting_match_failed),
-                        Toast.LENGTH_SHORT)
-                        .show();
+                ToastUtils.showToast(getActivity(),R.string.bluetooth_setting_match_failed);
+//                Toast.makeText(getActivity(), getResources().getString(R.string.bluetooth_setting_match_failed),
+//                        Toast.LENGTH_SHORT)
+//                        .show();
+                FragmentDialog fragmentDialog = new FragmentDialog();
+                FragmentMessage message1 = new FragmentMessage();
+                message1.setComment(getString(R.string.already_paired));
+
+                fragmentDialog.setTitle(getString(R.string.glucose_error_title));
+                fragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_POSITIVE,
+                        "");
+                fragmentDialog.setButtonText(FragmentDialog.BUTTON_ID_NEGATIVE,
+                        null);
+                fragmentDialog.setContent(message1);
+                fragmentDialog.setCancelable(false);
+                fragmentDialog.show(getActivity().getSupportFragmentManager(), null);
+//                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity().getApplicationContext());
+//                builder.setTitle(getString(R.string.glucose_error_title))
+//                        .setMessage(getString(R.string.already_paired))
+//                        .setCancelable(false)
+//                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                            }
+//                        });
+//                Dialog dialog = builder.create();
+//                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+//                dialog.show();
+
                 mRFAddress = RFAddress.RF_ADDRESS_UNPAIR;
                 pair(RFAddress.RF_ADDRESS_UNPAIR);
                 mIsProgressNotDismiss = false;
@@ -456,10 +489,11 @@ public class FragmentSettings extends FragmentBase
                                         lastByes));
                     }
                 }
-
-                Toast.makeText(getActivity(), getResources().getString(R.string.bluetooth_setting_match_success),
-                        Toast.LENGTH_SHORT)
-                        .show();
+                ToastUtils.showToast(getActivity(),R.string.bluetooth_setting_match_success);
+//                Toast.makeText(getActivity(), getResources().getString(R.string.bluetooth_setting_match_success),
+//                        Toast.LENGTH_SHORT)
+//                        .show();
+                SPUtils.put(getActivity(), IS_PAIRED, true);
                 if (pairFragmentDialog != null) {
                     pairFragmentDialog.dismissAllowingStateLoss();
                 }
@@ -536,9 +570,11 @@ public class FragmentSettings extends FragmentBase
                             ParameterComm.UNPAIR_SUCCESS,
                             null));
             SPUtils.put(getActivity(), COMM_CLOSE, false);
-            Toast.makeText(getActivity(), getResources().getString(R.string.bluetooth_unmatch_success),
-                    Toast.LENGTH_SHORT)
-                    .show();
+            ToastUtils.showToast(getActivity(),R.string.bluetooth_unmatch_success);
+//            Toast.makeText(getActivity(), getResources().getString(R.string.bluetooth_unmatch_success),
+//                    Toast.LENGTH_SHORT)
+//                    .show();
+            SPUtils.put(getActivity(), IS_PAIRED, false);
         }
     }
 
@@ -638,10 +674,11 @@ public class FragmentSettings extends FragmentBase
                             pair(RFAddress.RF_ADDRESS_UNPAIR);
                             mIsProgressNotDismiss = false;
                             dismissDialogProgress();
-                            Toast.makeText(getActivity(),
-                                    getActivity().getResources().getString(R.string.connect_fail),
-                                    Toast.LENGTH_SHORT)
-                                    .show();
+                            ToastUtils.showToast(getActivity(),R.string.connect_fail);
+//                            Toast.makeText(getActivity(),
+//                                    getActivity().getResources().getString(R.string.connect_fail),
+//                                    Toast.LENGTH_SHORT)
+//                                    .show();
                         }
                     }
                 }
@@ -1364,9 +1401,10 @@ public class FragmentSettings extends FragmentBase
                                             address = address.substring(1);
                                         }
                                         if (!address.matches("[\\da-zA-Z]+")) {
-                                            Toast.makeText(getActivity(),
-                                                    R.string.transmitter_id_err,
-                                                    Toast.LENGTH_SHORT).show();
+                                            ToastUtils.showToast(getActivity(),R.string.transmitter_id_err);
+//                                            Toast.makeText(getActivity(),
+//                                                    R.string.transmitter_id_err,
+//                                                    Toast.LENGTH_SHORT).show();
                                         } else {
                                             showDialogProgress();
                                             pair(address.trim());
@@ -1377,9 +1415,10 @@ public class FragmentSettings extends FragmentBase
                                         }
                                         return false;
                                     } else {
-                                        Toast.makeText(getActivity(),
-                                                R.string.actions_pump_id_blank,
-                                                Toast.LENGTH_SHORT).show();
+                                        ToastUtils.showToast(getActivity(),R.string.actions_pump_id_blank);
+//                                        Toast.makeText(getActivity(),
+//                                                R.string.actions_pump_id_blank,
+//                                                Toast.LENGTH_SHORT).show();
                                         return false;
                                     }
 
@@ -1442,9 +1481,11 @@ public class FragmentSettings extends FragmentBase
                                                         ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
                                                         ParameterComm.UNPAIRNOSIGNAL,
                                                         null));
-                                        Toast.makeText(getActivity(), getResources().getString(R.string.remove_success),
-                                                Toast.LENGTH_SHORT)
-                                                .show();
+                                        ToastUtils.showToast(getActivity(),R.string.remove_success);
+//                                        Toast.makeText(getActivity(), getResources().getString(R.string.remove_success),
+//                                                Toast.LENGTH_SHORT)
+//                                                .show();
+                                        SPUtils.put(getActivity(), IS_PAIRED, false);
                                     } else {
                                         mIsProgressNotDismiss = true;
                                         showDialogProgress();

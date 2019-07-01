@@ -84,9 +84,9 @@
     <string name="calibrate_blood">Calibration!</string>
     <string name="blood_glucose">Blood Glucose!</string>
     <string name="alarm_new_sensor">Check the new sensor for confirmation!</string>
-    <string name="alarm_expiration">Sensor is expired!</string>
-    <string name="alarm_expiration2">Sensor is expired!</string>
-    <string name="alarm_sensor_error">Sensor error!</string>
+    <string name="alarm_expiration">Sensor is expired</string>
+    <string name="alarm_expiration2">Sensor is expired</string>
+    <string name="alarm_sensor_error">Sensor error</string>
     <string name="alarm_pda_error">PDA error!</string>
     <string name="alarm_pda_comm_error">communication loss！</string>
     <string name="alarm_pda_battery">PDA battery low!</string>
@@ -700,6 +700,7 @@
     <string name="time_sure_title">Time Confirm</string>
     <string name="shutdown_content">Do you want to shut down?</string>
     <string name="time_sure_content">Are you sure time is correct?</string>
+    <string name="time_current">Current time:</string>
 
     <!--
        lockSceen
@@ -804,4 +805,7 @@
     <string name="sure_cancel">Are you sure to cancel?</string>
     <string name="set_highorlow_failed">set threshold value failed,whether to set it manually</string>
     <string name="history_mode_forbidden">In the history mode，calibration is forbidden</string>
+    <string name="already_paired">This transmitter has already paired with other PDA</string>
+    <string name="more_hour">More than one hour</string>
+    <string name="unpaired">Unpaired</string>
 </resources>

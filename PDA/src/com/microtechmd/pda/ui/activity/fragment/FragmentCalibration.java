@@ -49,18 +49,8 @@ public class FragmentCalibration extends FragmentBase {
     public void onClick(View v) {
         super.onClick(v);
 
-        switch (v.getId()) {
-            case R.id.button_calibration:
-                boolean realtimeFlag = (boolean) SPUtils.get(getActivity(), REALTIMEFLAG, true);
-                if (realtimeFlag) {
-                    startActivity(new Intent(getActivity(), ActivityBgEnter.class));
-                } else {
-                    Toast.makeText(app, R.string.history_mode_forbidden, Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            default:
-                break;
+        if (v.getId() == R.id.button_calibration) {
+            startActivity(new Intent(getActivity(), ActivityBgEnter.class));
         }
     }
 

@@ -84,7 +84,7 @@ public class FragmentSettingUtilities extends FragmentBase
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_setting_utilities, container, false);
-        screen_off_timeout = (int) SPUtils.get(getActivity(), SCREEN_OFF_TIMEOUT, SCREEN_OFF_TIMEOUT_10S);
+        screen_off_timeout = (int) SPUtils.get(getActivity(), SCREEN_OFF_TIMEOUT, SCREEN_OFF_TIMEOUT_1M);
         items = getResources().getStringArray(R.array.screen_timeout_array);
         updateVersion();
         switch (screen_off_timeout) {
@@ -107,6 +107,8 @@ public class FragmentSettingUtilities extends FragmentBase
                 break;
         }
         settingItem = (WidgetSettingItem) mRootView.findViewById(R.id.item_timeout_lock);
+        Settings.System.putInt(getActivity().getContentResolver(),
+                android.provider.Settings.System.SCREEN_OFF_TIMEOUT, screen_off_timeout);
         if (settingItem != null) {
             settingItem.setItemValue(items[checkIndex]);
         }
@@ -409,7 +411,7 @@ public class FragmentSettingUtilities extends FragmentBase
                 return false;
             }
         });
-        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+//        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
 
         title.setText(R.string.about);
         message.setText(getResources().getString(R.string.setting_general_version) + versionName);
@@ -603,6 +605,9 @@ public class FragmentSettingUtilities extends FragmentBase
                                     calendar.set(Calendar.YEAR, 2000);
                                     calendar.set(Calendar.MONTH, 0);
                                     calendar.set(Calendar.DAY_OF_MONTH, 1);
+                                    calendar.set(Calendar.HOUR_OF_DAY, 0);
+                                    calendar.set(Calendar.MINUTE, 0);
+                                    calendar.set(Calendar.SECOND, 0);
                                     SystemClock.setCurrentTimeMillis(calendar.getTimeInMillis());
                                     ((ActivityPDA) getActivity())
                                             .handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
@@ -732,6 +737,8 @@ public class FragmentSettingUtilities extends FragmentBase
         ((ApplicationPDA) getActivity().getApplication()).setDataListAll(dataList);
         DataCleanUtil.cleanSharedPreference(getActivity());
         SPUtils.clear(getActivity());
+        Settings.System.putInt(getActivity().getContentResolver(),
+                android.provider.Settings.System.SCREEN_OFF_TIMEOUT, SCREEN_OFF_TIMEOUT_10S);
         ((ActivityPDA) getActivity())
                 .getDataStorage(ActivityPDA.class.getSimpleName())
                 .clear();

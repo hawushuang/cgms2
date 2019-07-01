@@ -21,6 +21,7 @@ import com.microtechmd.pda.library.parameter.ParameterGlobal;
 import com.microtechmd.pda.library.utility.SPUtils;
 import com.microtechmd.pda.ui.activity.ActivityPDA;
 import com.microtechmd.pda.ui.widget.WidgetSettingTipsItem;
+import com.microtechmd.pda.util.ToastUtils;
 
 import java.text.DecimalFormat;
 
@@ -164,7 +165,7 @@ public class FragmentSettingTips extends FragmentBase
     private void initCheckBox() {
         boolean hi_messageFlag = (boolean) SPUtils.get(getActivity(), HIMESSAGETIPS, true);
         boolean low_messageFlag = (boolean) SPUtils.get(getActivity(), LOMESSAGETIPS, true);
-        boolean comm_messageFlag = (boolean) SPUtils.get(getActivity(), COMMMESSAGETIPS, true);
+        boolean comm_messageFlag = (boolean) SPUtils.get(getActivity(), COMMMESSAGETIPS, false);
 
         rb_checkbox_hi.setChecked(hi_messageFlag);
         rb_checkbox_lo.setChecked(low_messageFlag);
@@ -279,16 +280,18 @@ public class FragmentSettingTips extends FragmentBase
             if (message.getSourcePort() == ParameterGlobal.PORT_GLUCOSE) {
                 if (message.getParameter() == ParameterGlucose.PARAM_FILL_LIMIT) {
                     if (!(message.getData()[0] == EntityMessage.FUNCTION_OK)) {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.setting_failed),
-                                Toast.LENGTH_SHORT)
-                                .show();
+                        ToastUtils.showToast(getActivity(),R.string.setting_failed);
+//                        Toast.makeText(getActivity(), getResources().getString(R.string.setting_failed),
+//                                Toast.LENGTH_SHORT)
+//                                .show();
                         setHypo();
                         return;
                     }
                     mLog.Debug(getClass(), "Set hypo success!");
-                    Toast.makeText(getActivity(), getResources().getString(R.string.setting_success),
-                            Toast.LENGTH_SHORT)
-                            .show();
+                    ToastUtils.showToast(getActivity(),R.string.setting_success);
+//                    Toast.makeText(getActivity(), getResources().getString(R.string.setting_success),
+//                            Toast.LENGTH_SHORT)
+//                            .show();
                     updateHypo(mHypo);
                     if (lowFragmentDialog != null) {
                         lowFragmentDialog.dismissAllowingStateLoss();
@@ -305,16 +308,18 @@ public class FragmentSettingTips extends FragmentBase
                 }
                 if (message.getParameter() == ParameterGlucose.PARAM_BG_LIMIT) {
                     if (!(message.getData()[0] == EntityMessage.FUNCTION_OK)) {
-                        Toast.makeText(getActivity(), getResources().getString(R.string.setting_failed),
-                                Toast.LENGTH_SHORT)
-                                .show();
+                        ToastUtils.showToast(getActivity(),R.string.setting_failed);
+//                        Toast.makeText(getActivity(), getResources().getString(R.string.setting_failed),
+//                                Toast.LENGTH_SHORT)
+//                                .show();
                         setHyper();
                         return;
                     }
                     mLog.Debug(getClass(), "Set hyper success!");
-                    Toast.makeText(getActivity(), getResources().getString(R.string.setting_success),
-                            Toast.LENGTH_SHORT)
-                            .show();
+                    ToastUtils.showToast(getActivity(),R.string.setting_success);
+//                    Toast.makeText(getActivity(), getResources().getString(R.string.setting_success),
+//                            Toast.LENGTH_SHORT)
+//                            .show();
                     updateHyper(mHyper);
                     if (highFragmentDialog != null) {
                         highFragmentDialog.dismissAllowingStateLoss();
@@ -377,9 +382,10 @@ public class FragmentSettingTips extends FragmentBase
                                     mHyper = (int) (Float.parseFloat(fragmentInput.getGlucose()) * 10.0f);
 
                                     if ((mHyper > HYPER_MAX) || (mHyper < HYPER_MIN)) {
-                                        Toast.makeText(getActivity(),
-                                                R.string.fragment_settings_hyper_error,
-                                                Toast.LENGTH_SHORT).show();
+                                        ToastUtils.showToast(getActivity(),R.string.fragment_settings_hyper_error);
+//                                        Toast.makeText(getActivity(),
+//                                                R.string.fragment_settings_hyper_error,
+//                                                Toast.LENGTH_SHORT).show();
                                         return false;
                                     } else {
                                         if ((!mRFAddress.equals("")) && (!mRFAddress
@@ -404,7 +410,8 @@ public class FragmentSettingTips extends FragmentBase
                                         }
                                     }
                                 } catch (Exception e) {
-                                    Toast.makeText(getContext(), R.string.input_err, Toast.LENGTH_SHORT).show();
+                                    ToastUtils.showToast(getActivity(),R.string.input_err);
+//                                    Toast.makeText(getContext(), R.string.input_err, Toast.LENGTH_SHORT).show();
                                     return false;
                                 }
 
@@ -448,9 +455,10 @@ public class FragmentSettingTips extends FragmentBase
                                     mHypo = (int) (Float.parseFloat(fragmentInput.getGlucose()) * 10.0f);
 
                                     if ((mHypo > HYPO_MAX) || (mHypo < HYPO_MIN)) {
-                                        Toast.makeText(getActivity(),
-                                                R.string.fragment_settings_hypo_error,
-                                                Toast.LENGTH_SHORT).show();
+                                        ToastUtils.showToast(getActivity(),R.string.fragment_settings_hypo_error);
+//                                        Toast.makeText(getActivity(),
+//                                                R.string.fragment_settings_hypo_error,
+//                                                Toast.LENGTH_SHORT).show();
                                         return false;
                                     } else {
                                         if ((!mRFAddress.equals("")) && (!mRFAddress

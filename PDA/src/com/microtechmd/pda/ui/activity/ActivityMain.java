@@ -4,8 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Display;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -17,6 +22,7 @@ import com.microtechmd.pda.library.entity.EntityMessage;
 import com.microtechmd.pda.library.entity.ParameterComm;
 import com.microtechmd.pda.library.entity.ParameterGlucose;
 import com.microtechmd.pda.library.entity.ParameterMonitor;
+import com.microtechmd.pda.library.entity.ParameterSystem;
 import com.microtechmd.pda.library.entity.monitor.DateTime;
 import com.microtechmd.pda.library.entity.monitor.History;
 import com.microtechmd.pda.library.parameter.ParameterGlobal;
@@ -27,9 +33,14 @@ import com.microtechmd.pda.ui.activity.fragment.FragmentCalibration;
 import com.microtechmd.pda.ui.activity.fragment.FragmentHome;
 import com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer;
 import com.microtechmd.pda.ui.widget.highlight.HighLight;
+import com.microtechmd.pda.util.ToastUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.SETTING_TIME_CORRECT;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_DATE_TIME;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_SETTING;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettings.REALTIMEFLAG;
@@ -53,6 +64,10 @@ public class ActivityMain extends ActivityPDA {
     private long mStartupTime = 0;
     private RadioGroup radioGroup;
     private HighLight mHightLight;
+    private AlertDialog timeDialog;
+    private AlertDialog dialog;
+
+    private boolean isTimeSure = false;
 
     public static History getStatus() {
         return history;
@@ -139,6 +154,12 @@ public class ActivityMain extends ActivityPDA {
                                         .get(Calendar.YEAR) >= YEAR_MIN) {
                                     changToMainSetting();
                                 }
+
+//                                handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                                        ParameterGlobal.ADDRESS_LOCAL_CONTROL, ParameterGlobal.PORT_SYSTEM,
+//                                        ParameterGlobal.PORT_SYSTEM, EntityMessage.OPERATION_SET,
+//                                        ParameterSystem.PARAM_BATTERY,
+//                                        null));
                                 break;
 
                             case R.id.radio_button_tab_calibration:
@@ -154,6 +175,11 @@ public class ActivityMain extends ActivityPDA {
                                         .get(Calendar.YEAR) >= YEAR_MIN) {
                                     changToMainSetting();
                                 }
+//                                handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+//                                        ParameterGlobal.ADDRESS_LOCAL_CONTROL, ParameterGlobal.PORT_SYSTEM,
+//                                        ParameterGlobal.PORT_SYSTEM, EntityMessage.OPERATION_SET,
+//                                        ParameterSystem.PARAM_BATTERY,
+//                                        null));
                                 break;
 
                             case R.id.radio_button_tab_settings:
@@ -189,10 +215,15 @@ public class ActivityMain extends ActivityPDA {
 
                 registerMessageListener(
                         ParameterGlobal.PORT_GLUCOSE, mMessageListener);
-        if (Calendar.getInstance()
-                .get(Calendar.YEAR) >= YEAR_MIN) {
-            showTimeSetting();
-        }
+//        if (Calendar.getInstance()
+//                .get(Calendar.YEAR) >= YEAR_MIN) {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showTimeSetting();
+            }
+        }, 300);
+//        }
     }
 
     private void dismissDialog() {
@@ -225,29 +256,78 @@ public class ActivityMain extends ActivityPDA {
     }
 
     private void showTimeSetting() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        isTimeSure = false;
+        handleMessage(
+                new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                        ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                        ParameterGlobal.PORT_MONITOR,
+                        ParameterGlobal.PORT_MONITOR,
+                        EntityMessage.OPERATION_SET,
+                        ParameterComm.TIME_CORRECTED, new byte[]
+                        {
+                                (byte) 1
+                        }));
+        mLog.Error(getClass(), "时间设置发送：1");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.time_sure_title))
-                .setMessage(getString(R.string.time_sure_content))
+                .setMessage(getString(R.string.time_current) + format.format(new Date()) + "\n" + getString(R.string.time_sure_content))
                 .setCancelable(false)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        handleMessage(
+                                new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                        ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                                        ParameterGlobal.PORT_MONITOR,
+                                        ParameterGlobal.PORT_MONITOR,
+                                        EntityMessage.OPERATION_SET,
+                                        ParameterComm.TIME_CORRECTED, new byte[]
+                                        {
+                                                (byte) 0
+                                        }));
+                        isTimeSure = true;
                     }
                 })
                 .setNegativeButton(R.string.setting, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        SPUtils.put(ActivityMain.this, SETTING_TIME_CORRECT, true);
                         radioGroup.check(R.id.radio_button_tab_settings);
                         handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
                                 ParameterGlobal.ADDRESS_LOCAL_VIEW, ParameterGlobal.PORT_COMM,
                                 ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
                                 ParameterComm.SETTING_TYPE,
                                 new byte[]{(byte) TYPE_DATE_TIME}));
+                        isTimeSure = true;
                     }
                 });
-        AlertDialog dialog = builder.create();
-        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        dialog.show();
+        timeDialog = builder.create();
+//        timeDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        timeDialog.show();
+        timeDialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(Color.WHITE);
+        timeDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackgroundColor(Color.WHITE);
+        setMargins(timeDialog.getButton(AlertDialog.BUTTON_POSITIVE), 0, 0, 2, 0);
+    }
+
+    public static void setMargins(View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
+    }
+
+    @Override
+    protected void onTimeTick() {
+        super.onTimeTick();
+        if (timeDialog == null) {
+            return;
+        }
+        if (timeDialog.isShowing()) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+            timeDialog.setMessage(getString(R.string.time_current) + format.format(new Date()) + "\n" + getString(R.string.time_sure_content));
+        }
     }
 
     @Override
@@ -297,16 +377,16 @@ public class ActivityMain extends ActivityPDA {
         if ((message.getSourcePort() == ParameterGlobal.PORT_GLUCOSE) &&
                 (message.getParameter() == ParameterGlucose.PARAM_SIGNAL_PRESENT)) {
             if (getStatusBar().getGlucose()) {
-                boolean realtimeFlag = (boolean) SPUtils.get(this, REALTIMEFLAG, true);
-                if (realtimeFlag) {
-                    Intent intent = new Intent(this, ActivityBgApply.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                if (isTimeSure) {
+                    if (hasWindowFocus()) {
+                        Intent intent = new Intent(this, ActivityBgApply.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
                 } else {
-                    Toast.makeText(this, R.string.history_mode_forbidden, Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast(this, R.string.time_sure_title);
                 }
-
             }
         }
     }
@@ -316,7 +396,7 @@ public class ActivityMain extends ActivityPDA {
         super.setParameter(message);
         switch (message.getParameter()) {
             case ParameterMonitor.CAN_SEND_FAILD:
-                if (radioGroup.getCheckedRadioButtonId() !=R.id.radio_button_tab_settings){
+                if (radioGroup.getCheckedRadioButtonId() != R.id.radio_button_tab_settings) {
                     radioGroup.check(R.id.radio_button_tab_settings);
                 }
                 break;
@@ -339,9 +419,17 @@ public class ActivityMain extends ActivityPDA {
 //                }));
 //    }
 //
-    protected void onScreenOff() {
-        mLog.Debug(getClass(), "Screen off");
+    private boolean isHelpShowed = false;
 
+    protected void onScreenOff() {
+//        if (dialog != null && dialog.isShowing()) {
+//            dialog.dismiss();
+//            isHelpShowed = true;
+//        }
+        mLog.Debug(getClass(), "Screen off");
+        if (!sWakeLock.isHeld()) {
+            sWakeLock.acquire(500);
+        }
         handleMessage(new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
                 ParameterGlobal.ADDRESS_REMOTE_SLAVE, ParameterGlobal.PORT_COMM,
                 ParameterGlobal.PORT_COMM, EntityMessage.OPERATION_SET,
@@ -356,4 +444,50 @@ public class ActivityMain extends ActivityPDA {
         ActivityPathManager.getInstance().registerSourceActivity(getAddTime());
     }
 
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        if (isHelpShowed) {
+//            showHelpDialog();
+//            isHelpShowed = false;
+//        }
+//    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            showHelpDialog();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void showHelpDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.help_title))
+                .setCancelable(true)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+        /**
+         * 设置内容区域为自定义View
+         */
+        View loginDialog = getLayoutInflater().inflate(R.layout.dialog_help, null);
+        builder.setView(loginDialog);
+        dialog = builder.create();
+//        dialog.getWindow().setGravity(Gravity.BOTTOM);
+//        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(Color.WHITE);
+
+        WindowManager m = getWindowManager();
+        Display d = m.getDefaultDisplay();  //为获取屏幕宽、高
+        WindowManager.LayoutParams p = dialog.getWindow().getAttributes();  //获取对话框当前的参数值
+        p.height = (int) (d.getHeight() * 0.8);   //高度设置为屏幕的
+        p.width = (int) (d.getWidth() * 0.95);    //宽度设置为屏幕的
+        dialog.getWindow().setAttributes(p);     //设置生效
+    }
 }

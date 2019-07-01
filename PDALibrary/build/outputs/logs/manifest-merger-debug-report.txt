@@ -1,39 +1,39 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:1:1-17:12
-INJECTED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:1:1-17:12
-INJECTED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:1:1-17:12
-INJECTED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:1:1-17:12
-INJECTED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:1:1-17:12
-INJECTED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:1:1-17:12
-INJECTED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:1:1-17:12
+ADDED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:1:1-17:12
+INJECTED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:1:1-17:12
+INJECTED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:1:1-17:12
+INJECTED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:1:1-17:12
+INJECTED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:1:1-17:12
+INJECTED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:1:1-17:12
+INJECTED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:1:1-17:12
 	package
-		ADDED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:2:5-42
-		INJECTED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml
-		INJECTED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml
+		ADDED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:2:5-42
+		INJECTED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml
+		INJECTED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml
 	android:versionName
-		ADDED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:4:5-30
-		INJECTED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml
-		INJECTED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml
+		ADDED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:4:5-30
+		INJECTED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml
+		INJECTED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml
 	xmlns:android
-		ADDED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:1:11-69
+		ADDED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:1:11-69
 	android:versionCode
-		ADDED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:3:5-28
-		INJECTED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml
-		INJECTED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml
+		ADDED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:3:5-28
+		INJECTED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml
+		INJECTED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml
 uses-sdk
-ADDED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:6:5-8:41
+ADDED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:6:5-8:41
 	android:targetSdkVersion
-		ADDED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:8:9-38
+		ADDED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:8:9-38
 	android:minSdkVersion
-		ADDED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:7:9-34
+		ADDED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:7:9-34
 application
-ADDED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:10:5-15:19
+ADDED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:10:5-15:19
 	android:label
-		ADDED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:13:9-41
+		ADDED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:13:9-41
 	android:icon
-		ADDED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:12:9-45
+		ADDED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:12:9-45
 	android:allowBackup
-		ADDED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:11:9-35
+		ADDED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:11:9-35
 	android:theme
-		ADDED from E:\Project\cgms2\PDALibrary\AndroidManifest.xml:14:9-40
+		ADDED from E:\Project\cgms2_test\PDALibrary\AndroidManifest.xml:14:9-40

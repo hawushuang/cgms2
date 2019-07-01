@@ -31,6 +31,8 @@ public class FragmentSettingContainer extends FragmentBase
     private static final String TAG_SETTING_HISTORY_LOG = "setting_history_log";
     private static final String TAG_SETTING_TIPS = "setting_tips";
 
+    public static final String SETTING_TIME_CORRECT = "setting_time_correct";
+
     private FragmentSettings fragmentSetting;
     private FragmentSettingUtilities fragmentSettingUtilities;
     private FragmentSettingDateAndTime fragmentSettingDateAndTime;

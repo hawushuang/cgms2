@@ -93,6 +93,7 @@ public class ActivityDataTest extends ActivityPDA {
                 } else {
                     byte[] sendData = new byte[18];
                     System.arraycopy(request.getBytes(), 0, sendData, 0, request.getBytes().length);
+                    mLog.Error(getClass(), "测试数据发送：" + Arrays.toString(sendData));
                     handleMessage(new EntityMessage(
                             ParameterGlobal.ADDRESS_LOCAL_VIEW,
                             ParameterGlobal.ADDRESS_REMOTE_MASTER,

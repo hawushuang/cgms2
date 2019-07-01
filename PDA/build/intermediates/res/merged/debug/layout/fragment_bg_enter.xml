@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:seekarc="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_dark">
@@ -9,55 +9,20 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         style="?style_bar_title"
-        app:navigationIcon="@null">
+        app:navigationIcon="@null"
+        tools:ignore="MissingConstraints">
+
+        <ImageButton
+            android:id="@+id/ibt_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_back" />
 
         <TextView
             android:id="@+id/text_view_title_bar"
             style="?style_text_title_bar"
             android:text="@string/activity_main_tab_calibration" />
     </android.support.v7.widget.Toolbar>
-
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
-
-        <com.triggertrap.seekarc.SeekArc
-            android:id="@+id/seekArc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="40dp"
-            seekarc:touchInside="false" />
-    </FrameLayout>
-
-    <EditText
-        android:id="@+id/edit_text_glucose"
-        style="?style_text_large"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
-        android:background="@null"
-        android:gravity="center"
-        android:imeOptions="actionDone"
-        android:inputType="numberDecimal"
-        android:selectAllOnFocus="true"
-        android:text="13.5"
-        android:textColor="@color/text_white"
-        android:textSize="50sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <TextView
-        android:id="@+id/text_view_unit"
-        style="?style_text_base"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/unit_mmol_l"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_glucose"/>
 
     <Button
         android:id="@+id/button_calibrate"
@@ -71,14 +36,91 @@
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
-        android:id="@+id/button_cancel"
+        android:id="@+id/button_record"
         style="?style_button_small"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:text="@string/cancel"
+        android:text="@string/record"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/calibrate_time_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size20"
+        android:gravity="center"
+        android:padding="@dimen/size5"
+        android:text="20180816"
+        android:textSize="@dimen/textSize20"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/button_calibrate" />
+
+    <RelativeLayout
+        android:id="@+id/ll_glucose_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size100"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/calibrate_time_tv"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <Button
+            android:id="@+id/button_sub"
+            android:layout_width="@dimen/size40"
+            android:layout_height="@dimen/size40"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/size15"
+            android:layout_marginLeft="@dimen/size15"
+            android:background="@drawable/jian_bg" />
+
+        <TextView
+            android:id="@+id/tv_glucose"
+            android:layout_width="@dimen/size150"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="5.0"
+            android:textColor="@color/text_white"
+            android:textSize="75sp" />
+
+        <Button
+            android:id="@+id/button_add"
+            android:layout_width="@dimen/size40"
+            android:layout_height="@dimen/size40"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/size15"
+            android:layout_marginRight="@dimen/size15"
+            android:background="@drawable/jia_bg" />
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/unit_mmol_l"
+        android:textSize="@dimen/textSize20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_glucose_content" />
+
+    <com.microtechmd.pda.ui.widget.RuleView
+        android:id="@+id/ruleView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size70"
+        android:layout_marginLeft="@dimen/size10"
+        android:layout_marginRight="@dimen/size10"
+        app:gv_indicatorLineLen="@dimen/size25"
+        app:layout_constraintTop_toBottomOf="@+id/tv_unit"
+        app:zjun_bgColor="@color/transparent"
+        app:zjun_textColor="@color/text_white"
+        app:zjun_textSize="@dimen/textSize25" />
+
 
 </android.support.constraint.ConstraintLayout>

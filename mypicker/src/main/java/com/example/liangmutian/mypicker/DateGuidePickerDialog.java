@@ -136,7 +136,7 @@ public class DateGuidePickerDialog extends Dialog {
             Calendar c = Calendar.getInstance();
 
             final LoopView loopDay = (LoopView) view.findViewById(R.id.loop_day);
-            loopDay.setArrayList(d(1, 30));
+            loopDay.setArrayList(d(1, 31));
             if (selectDay != null) {
                 loopDay.setCurrentItem(selectDay);
             } else {

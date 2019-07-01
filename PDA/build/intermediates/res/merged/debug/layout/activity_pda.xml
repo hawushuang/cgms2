@@ -1,117 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-	<RelativeLayout
-		android:id="@+id/rl_status_bar"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:background="@color/background_dark"
-		android:gravity="center_vertical">
+    <RelativeLayout
+        android:id="@+id/rl_status_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_dark"
+        android:gravity="center_vertical">
 
-		<ImageView
-			android:id="@+id/iv_warnting"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentLeft="true"
-			android:src="@drawable/icon_warning"
-			android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/iv_warnting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/icon_warning"
+            android:visibility="gone" />
 
-		<ImageView
-			android:id="@+id/iv_workdrum"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_toRightOf="@id/iv_warnting"
-			android:src="@drawable/status_work_drum"
-			android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/iv_workdrum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_warnting"
+            android:src="@drawable/status_work_drum"
+            android:visibility="gone" />
 
-		<ImageView
-			android:id="@+id/iv_battery"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_toRightOf="@id/iv_workdrum"
-			android:src="@drawable/status_battery"
-			android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/iv_battery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_workdrum"
+            android:src="@drawable/status_battery"
+            android:visibility="gone" />
 
-		<ImageView
-			android:id="@+id/iv_pda_battery"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginRight="10dp"
-			android:layout_alignParentRight="true"
-			android:layout_centerVertical="true"
-			android:src="@drawable/status_pda_battery"/>
+        <TextView
+            android:id="@+id/battery_percent"
+            style="@style/text_14_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp" />
 
-		<ImageView
-			android:id="@+id/iv_pda_charger"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginRight="10dp"
-			android:layout_toLeftOf="@id/iv_pda_battery"
-			android:layout_centerVertical="true"
-			android:visibility="gone"
-			android:src="@drawable/icon_pda_battery_charging"/>
+        <ImageView
+            android:id="@+id/iv_pda_battery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/battery_percent"
+            android:src="@drawable/status_pda_battery" />
 
-		<ImageView
-			android:id="@+id/iv_signal"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp"
-			android:layout_alignParentLeft="true"
-			android:layout_centerVertical="true"
-			android:src="@drawable/status_signal"/>
+        <ImageView
+            android:id="@+id/iv_pda_charger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/iv_pda_battery"
+            android:src="@drawable/icon_pda_battery_charging"
+            android:visibility="gone" />
 
-		<ImageView
-			android:id="@+id/iv_bluetooth"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_toLeftOf="@id/iv_signal"
-			android:src="@drawable/status_bluetooth"
-			android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/iv_signal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/status_signal" />
 
-		<ImageView
-			android:id="@+id/iv_clock"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_toLeftOf="@id/iv_bluetooth"
-			android:src="@drawable/icon_clock"
-			android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/iv_bluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/iv_signal"
+            android:src="@drawable/status_bluetooth"
+            android:visibility="gone" />
 
-		<TextView
-			android:id="@+id/tv_status_time"
-			style="@style/text_16_white"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_centerHorizontal="true"
-			android:textStyle="bold"/>
-	</RelativeLayout>
+        <ImageView
+            android:id="@+id/iv_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/iv_bluetooth"
+            android:src="@drawable/icon_clock"
+            android:visibility="gone" />
 
-	<ViewStub
-		android:id="@+id/stub_activity"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_below="@id/rl_status_bar"
-		android:inflatedId="@+id/layout_activity"/>
+        <TextView
+            android:id="@+id/tv_status_time"
+            style="@style/text_16_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
-	<Button
-		android:id="@+id/btn_status_down"
-		style="@style/text_16_black"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_centerHorizontal="true"
-		android:background="@drawable/btn_status_down"
-		android:focusable="true"
-		android:gravity="top|center_horizontal"
-		android:paddingTop="@dimen/size3"
-		android:textStyle="bold"
-		android:visibility="gone"/>
+    <ViewStub
+        android:id="@+id/stub_activity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_status_bar"
+        android:inflatedId="@+id/layout_activity" />
 
-	<TextView
-		android:id="@+id/tv_title"
-		style="@style/title"
-		android:layout_width="140dp"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/rl_status_bar"/>
+    <Button
+        android:id="@+id/btn_status_down"
+        style="@style/text_16_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_status_down"
+        android:focusable="true"
+        android:gravity="top|center_horizontal"
+        android:paddingTop="@dimen/size3"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/title"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_status_bar" />
 
 </RelativeLayout>

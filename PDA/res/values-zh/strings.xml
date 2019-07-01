@@ -84,9 +84,9 @@
     <string name="calibrate_blood">校准血糖测量！</string>
     <string name="blood_glucose">指血血糖测量！</string>
     <string name="alarm_new_sensor">检测到新传感器，请确认！</string>
-    <string name="alarm_expiration">传感器到达使用期限！</string>
-    <string name="alarm_expiration2">传感器过期！</string>
-    <string name="alarm_sensor_error">传感器故障！</string>
+    <string name="alarm_expiration">传感器到达使用期限</string>
+    <string name="alarm_expiration2">传感器过期</string>
+    <string name="alarm_sensor_error">传感器故障</string>
     <string name="alarm_pda_error">便携式显示器故障！</string>
     <string name="alarm_pda_comm_error">通信异常！</string>
     <string name="alarm_pda_battery">便携式显示器电量低！</string>
@@ -728,6 +728,7 @@
     <string name="time_sure_title">时间确认</string>
     <string name="shutdown_content">你确定要关机吗？</string>
     <string name="time_sure_content">你确定时间是正确的吗？</string>
+    <string name="time_current">当前时间:</string>
 
     <!-- lockSceen
        * @author qian.zhou
@@ -827,5 +828,8 @@
     <string name="sure_cancel">确认取消吗？</string>
     <string name="set_highorlow_failed">设置阈值失败,是否手动设置？</string>
     <string name="history_mode_forbidden">回顾模式下禁止校准</string>
+    <string name="already_paired">该发射器已与其他便携式显示器配对</string>
+    <string name="more_hour">大于1小时</string>
+    <string name="unpaired">未配对</string>
 
 </resources>

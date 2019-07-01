@@ -31,6 +31,7 @@ import com.microtechmd.pda.library.entity.ParameterComm;
 import com.microtechmd.pda.library.entity.ParameterMonitor;
 import com.microtechmd.pda.library.parameter.ParameterGlobal;
 import com.microtechmd.pda.library.utility.SPUtils;
+import com.microtechmd.pda.ui.activity.ActivityMain;
 import com.microtechmd.pda.ui.activity.ActivityPDA;
 import com.microtechmd.pda.ui.widget.WidgetSettingItem;
 import com.microtechmd.pda.util.TimeUtil;
@@ -45,6 +46,7 @@ import java.util.TimeZone;
 
 import static com.microtechmd.pda.ui.activity.ActivityPDA.DATE_CHANGE;
 import static com.microtechmd.pda.ui.activity.ActivityPDA.SETTING_TIME_FORMAT;
+import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.SETTING_TIME_CORRECT;
 import static com.microtechmd.pda.ui.activity.fragment.FragmentSettingContainer.TYPE_SETTING;
 
 public class FragmentSettingDateAndTime extends FragmentBase
@@ -103,10 +105,21 @@ public class FragmentSettingDateAndTime extends FragmentBase
 
         if (Calendar.getInstance()
                 .get(Calendar.YEAR) < ActivityPDA.YEAR_MIN) {
+            AlarmManager mAlarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+            assert mAlarmManager != null;
+            mAlarmManager.setTimeZone("GMT+08:00");
+            setGuideTime();
+            setGuideDate();
+            setGuideTimezone();
+            return;
+        }
+        boolean isTimeCorrected = (boolean) SPUtils.get(getActivity(), SETTING_TIME_CORRECT, false);
+        if (isTimeCorrected){
             setGuideTime();
             setGuideDate();
             setGuideTimezone();
         }
+
     }
 
     @Override
@@ -246,7 +259,7 @@ public class FragmentSettingDateAndTime extends FragmentBase
                 return false;
             }
         });
-        dateDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+//        dateDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
 
     }
 
@@ -292,7 +305,7 @@ public class FragmentSettingDateAndTime extends FragmentBase
                 return false;
             }
         });
-        dateDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+//        dateDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
 
     }
 
@@ -329,7 +342,7 @@ public class FragmentSettingDateAndTime extends FragmentBase
                 return false;
             }
         });
-        timeDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+//        timeDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
     }
 
     private void setGuideTime() {
@@ -350,6 +363,17 @@ public class FragmentSettingDateAndTime extends FragmentBase
                 SystemClock.setCurrentTimeMillis(
                         calendar.getTimeInMillis());
                 dateOrTimeChanged();
+                SPUtils.put(getActivity(), SETTING_TIME_CORRECT, false);
+                ((ActivityPDA) getActivity()).handleMessage(
+                        new EntityMessage(ParameterGlobal.ADDRESS_LOCAL_VIEW,
+                                ParameterGlobal.ADDRESS_LOCAL_CONTROL,
+                                ParameterGlobal.PORT_MONITOR,
+                                ParameterGlobal.PORT_MONITOR,
+                                EntityMessage.OPERATION_SET,
+                                ParameterComm.TIME_CORRECTED, new byte[]
+                                {
+                                        (byte) 0
+                                }));
             }
         }).setPrevSelectedListener(new TimeGuidePickerDialog.OnPrevSelectedListener() {
             @Override
@@ -371,7 +395,7 @@ public class FragmentSettingDateAndTime extends FragmentBase
                 return false;
             }
         });
-        timeDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+//        timeDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
     }
 
     private void setTimezone() {
@@ -412,7 +436,7 @@ public class FragmentSettingDateAndTime extends FragmentBase
                 return false;
             }
         });
-        timezoneDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+//        timezoneDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
 
         timezoneDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -461,7 +485,7 @@ public class FragmentSettingDateAndTime extends FragmentBase
                 return false;
             }
         });
-        timezoneDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+//        timezoneDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
     }
 
     private void dateOrTimeChanged() {
